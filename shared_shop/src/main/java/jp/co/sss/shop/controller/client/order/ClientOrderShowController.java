@@ -43,8 +43,10 @@ public class ClientOrderShowController {
 	@GetMapping("/client/order/detail/{id}")
 	public String showUserDetail(Model model, @PathVariable int id) {
 
+		//注文情報取得
 		Order order = orderRepository.getReferenceById(id);
 
+		//注文商品情報取得
 		List<OrderItem> orderItemList = orderItemRepository.findByOrderId(id);
 
 		model.addAttribute("order", order);
@@ -52,4 +54,5 @@ public class ClientOrderShowController {
 
 		return "client/order/detail";
 	}
+
 }
