@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -44,7 +45,7 @@ public class ClientBasketController {
 	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
-	public String addBasket(Integer id) {
+	public String addBasket(Integer id, Model model) {
 		// セッションのリストを取得
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
 
@@ -56,8 +57,13 @@ public class ClientBasketController {
 			for (BasketBean basketBean : basketBeans) {
 				// 同じ商品の場合
 				if (id == basketBean.getId()) {
-					// orderNumをインクリメントし、リダイレクト
-					basketBean.setOrderNum(basketBean.getOrderNum() + 1);
+					if (basketBean.getOrderNum() == basketBean.getStock()) {
+						model.addAttribute("itemNameListLessThan", basketBean.getName());
+						return "client/basket/list";
+					} else {
+						// orderNumをインクリメントし、リダイレクト
+						basketBean.setOrderNum(basketBean.getOrderNum() + 1);
+					}
 					return "redirect:/client/basket/list";
 				}
 			}
