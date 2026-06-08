@@ -43,19 +43,64 @@ public class ClientItemShowController {
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 
-		/*TODO 現在は全件表示を行っている
-		 * これを売れ筋（注文回数が多い順）に改修する*/
+		//初期値：売れ筋順
+		Integer sortType = 2;
 
-		// 注文情報の商品情報を全件表示
-		List<Item> itemList = itemRepository.findAll();
+		//売れ筋順取得（未実装のため、仮で新着順）
+		List<Item> itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+
+		//売れ筋商品がない場合
+		if (itemList == null || itemList.isEmpty()) {
+
+			//新着順へ変更
+			sortType = 1;
+		}
 
 		// エンティティ内の検索結果をJavaBeansにコピー
 		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
 
 		// 商品情報をViewへ渡す
 		model.addAttribute("items", itemBeanList);
+		model.addAttribute("sortType", sortType);
 
 		return "index";
+	}
+
+	/**
+	 * 商品一覧表示
+	 * @param sortType 並び順
+	 * @param model Viewとの値受渡し
+	 * @return "client/item/list" 商品一覧画面
+	
+	 */
+	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.GET)
+	public String showItemSort(@PathVariable Integer sortType, Model model) {
+
+		List<Item> itemList;
+
+		// 新着順
+		if (sortType == 1) {
+
+			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+
+		} else {
+
+			/*TODO 現在は全件表示を行っている
+			 * これを売れ筋（注文回数が多い順）に改修する*/
+			// 売れ筋順（仮で新着順）
+			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+		}
+
+		// Entity → Bean
+		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
+
+		// Viewへ渡す
+		model.addAttribute("items", itemBeanList);
+
+		// 並び順
+		model.addAttribute("sortType", sortType);
+
+		return "client/item/list";
 	}
 
 	/**
