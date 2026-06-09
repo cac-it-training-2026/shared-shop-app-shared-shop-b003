@@ -85,14 +85,47 @@ public class ClientBasketController {
 		return "redirect:/client/basket/list";
 	}
 
+	/**
+	 * 買い物かご内の対象商品の数を減らす。
+	 * @param id
+	 * @return "redirect:/client/basket/list" 削除後のリストを表示
+	 */
 	@RequestMapping(path = "/client/basket/delete", method = RequestMethod.POST)
-	public String deleteBasket() {
-		return "";
+	public String deleteBasket(Integer id) {
+		// セッションのリストを取得
+		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
+
+		// 同じ商品を探す
+		for (BasketBean basketBean : basketBeans) {
+			// 同じ商品の場合
+			if (id == basketBean.getId()) {
+				// orderNumをデクリメントし、リダイレクト
+				if (basketBean.getOrderNum() == 1) {
+					// basketBeansから削除
+					basketBeans.remove(basketBean);
+					// 買い物かごが空なら、セッションから買い物かご情報を削除
+					if (basketBeans.size() == 0) {
+						session.removeAttribute("basketBeans");
+					}
+				} else {
+					basketBean.setOrderNum(basketBean.getOrderNum() - 1);
+				}
+
+				return "redirect:/client/basket/list";
+			}
+		}
+		return "redirect:/client/basket/list";
 	}
 
+	/**
+	 * 買い物かごを空にする
+	 * @return "redirect:/client/basket/list" 削除後のページを表示
+	 */
 	@RequestMapping(path = "/client/basket/allDelete", method = RequestMethod.POST)
 	public String allDeleteBasket() {
-		return "";
+		// セッションから買い物かご情報を削除
+		session.removeAttribute("basketBeans");
+		return "redirect:/client/basket/list";
 	}
 
 }
