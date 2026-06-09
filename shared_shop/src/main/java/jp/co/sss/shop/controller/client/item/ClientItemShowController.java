@@ -93,7 +93,7 @@ public class ClientItemShowController {
 	 */
 
 	//required = false→カテゴリ検索しないURL（/client/item/list/1）でも動くようにするため
-	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showItemSort(@PathVariable Integer sortType, @RequestParam(required = false) Integer categoryId,
 			Model model) {
 
