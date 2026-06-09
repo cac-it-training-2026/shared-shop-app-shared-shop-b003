@@ -104,6 +104,7 @@ public class ClientUserDeleteController {
 
 		// セッションの削除対象情報を削除
 		session.removeAttribute("userForm");
+		session.removeAttribute("itemForm");
 
 		// 削除完了画面　表示処理
 		return "redirect:/client/user/delete/complete";
