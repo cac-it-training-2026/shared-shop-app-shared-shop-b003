@@ -77,10 +77,10 @@ public class ClientUserDeleteController {
 	/**
 	 * 会員情報削除完了処理
 	 *
-	 * @return "redirect:/admin/user/delete/complete" 会員情報 削除完了画面へ
+	 * @return "redirect:/client/user/delete/complete" 会員情報 削除完了画面へ
 	 */
 	@RequestMapping(path = "/client/user/delete/complete", method = RequestMethod.POST)
-	public String deleteComplete() {
+	public String userDeleteComplete() {
 
 		// セッションから削除対象フォーム情報を取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
@@ -106,18 +106,18 @@ public class ClientUserDeleteController {
 		session.removeAttribute("userForm");
 
 		// 削除完了画面　表示処理
-		return "redirect:/delete/complete";
+		return "redirect:/client/user/delete/complete";
 	}
 
 	/**
 	 * 会員情報削除完了処理
 	 *
-	 * @return "admin/user/delete_complete" 会員情報 削除完了画面へ
+	 * @return "client/user/delete_complete" 会員情報 削除完了画面へ
 	 */
-	@RequestMapping(path = "/delete/complete", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/user/delete/complete", method = RequestMethod.GET)
 	public String deleteCompleteFinish() {
 
-		return "/delete_complete";
+		return "client/user/delete_complete";
 	}
 
 }
