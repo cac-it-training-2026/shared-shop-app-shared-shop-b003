@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Dec 25 18:10:13 JST 2025
+spring-context-7.0.2.jar>central=
+spring-context-7.0.2.pom>central=
+spring-context-7.0.2-sources.jar>central=
