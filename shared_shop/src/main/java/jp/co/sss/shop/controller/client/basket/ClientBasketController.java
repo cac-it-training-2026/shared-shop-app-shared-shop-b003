@@ -27,6 +27,9 @@ public class ClientBasketController {
 	@Autowired
 	HttpSession session;
 
+	/**
+	 * アイテム情報 リポジトリ
+	 */
 	@Autowired
 	ItemRepository itemRepository;
 
@@ -41,7 +44,7 @@ public class ClientBasketController {
 
 	/**
 	 * idで主キー検索をし、リストに追加
-	 * @param id
+	 * @param id 追加したい商品のID
 	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
@@ -55,7 +58,7 @@ public class ClientBasketController {
 		} else {
 			// 同じ商品を探す
 			for (BasketBean basketBean : basketBeans) {
-				// 同じ商品の場合
+				// 同じ商品があった場合
 				if (id == basketBean.getId()) {
 					if (basketBean.getOrderNum() == basketBean.getStock()) {
 						model.addAttribute("itemNameListLessThan", basketBean.getName());
@@ -87,7 +90,7 @@ public class ClientBasketController {
 
 	/**
 	 * 買い物かご内の対象商品の数を減らす。
-	 * @param id
+	 * @param id 減らしたい商品のID
 	 * @return "redirect:/client/basket/list" 削除後のリストを表示
 	 */
 	@RequestMapping(path = "/client/basket/delete", method = RequestMethod.POST)
