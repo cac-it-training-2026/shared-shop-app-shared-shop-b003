@@ -49,6 +49,18 @@ public class ClientBasketController {
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
 	public String addBasket(Integer id, Model model) {
+		// BasketBeanを作成
+		BasketBean basketBean = new BasketBean();
+		// 主キー検索をし、コピー
+		BeanUtils.copyProperties(itemRepository.getReferenceById(id), basketBean);
+
+		// 在庫数の確認
+		if (basketBean.getStock() == 0) {
+			// エラーメッセージの追加
+			model.addAttribute("itemNameListZero", basketBean.getName());
+			return "client/basket/list";
+		}
+
 		// セッションのリストを取得
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
 
@@ -57,28 +69,22 @@ public class ClientBasketController {
 			basketBeans = new ArrayList<>();
 		} else {
 			// 同じ商品を探す
-			for (BasketBean basketBean : basketBeans) {
+			for (BasketBean bean : basketBeans) {
 				// 同じ商品があった場合
-				if (id == basketBean.getId()) {
-					if (basketBean.getOrderNum() == basketBean.getStock()) {
-						model.addAttribute("itemNameListLessThan", basketBean.getName());
+				if (id == bean.getId()) {
+					if (bean.getOrderNum() == bean.getStock()) {
+						// エラーメッセージの追加
+						model.addAttribute("itemNameListLessThan", bean.getName());
 						return "client/basket/list";
 					} else {
 						// orderNumをインクリメントし、リダイレクト
-						basketBean.setOrderNum(basketBean.getOrderNum() + 1);
+						bean.setOrderNum(bean.getOrderNum() + 1);
 					}
 					return "redirect:/client/basket/list";
 				}
 			}
 		}
 		// 同じ商品がなかった場合
-
-		// BasketBeanを作成
-		BasketBean basketBean = new BasketBean();
-
-		// 主キー検索をし、コピー
-		BeanUtils.copyProperties(itemRepository.getReferenceById(id), basketBean);
-
 		// Listに追加
 		basketBeans.add(basketBean);
 
