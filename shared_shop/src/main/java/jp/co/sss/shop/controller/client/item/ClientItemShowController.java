@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
@@ -34,6 +35,9 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	BeanTools beanTools;
+
+	@Autowired
+	CategoryRepository categoryRepository;
 
 	/**
 	 * トップ画面 表示処理
@@ -75,6 +79,7 @@ public class ClientItemShowController {
 		// 商品情報をViewへ渡す
 		model.addAttribute("items", itemBeanList);
 		model.addAttribute("sortType", sortType);
+		model.addAttribute("categories", categoryRepository.findAll());
 
 		return "index";
 	}
@@ -101,7 +106,7 @@ public class ClientItemShowController {
 			//カテゴリ検索あり+新着順
 			if (sortType.equals(1)) {
 
-				//onstant.NOT_DELETED→削除されていない商品だけを取得
+				//Constant.NOT_DELETED→削除されていない商品だけを取得
 				itemList = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(categoryId,
 						Constant.NOT_DELETED);
 
@@ -135,6 +140,9 @@ public class ClientItemShowController {
 
 		// 並び順
 		model.addAttribute("sortType", sortType);
+
+		//カテゴリー検索
+		model.addAttribute("categories", categoryRepository.findAll());
 
 		return "client/item/list";
 	}

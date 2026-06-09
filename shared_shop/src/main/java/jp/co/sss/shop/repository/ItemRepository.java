@@ -33,6 +33,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	/**
 	 * 売れ筋順
+	 * 注文商品テーブル（OrderItem）から
+	 * ・商品ごとに集計
+	 * ・quantity毎に集計
+	 * ・多い順
+	 * に並べる
 	 */
 
 	@Query("""
