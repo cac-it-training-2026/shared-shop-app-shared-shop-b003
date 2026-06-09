@@ -26,6 +26,39 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			Integer deleteFlag);
 
 	/**
+	* カテゴリ別新着順
+	*/
+	List<Item> findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(
+			Integer categoryId, Integer deleteFlag);
+
+	/**
+	 * 売れ筋順
+	 */
+
+	@Query("""
+			SELECT oi.item
+			FROM OrderItem oi
+			WHERE oi.item.deleteFlag = 0
+			GROUP BY oi.item
+			ORDER BY SUM(oi.quantity) DESC
+			""")
+	List<Item> findPopularItems();
+
+	/**
+	 * カテゴリ別売れ筋順
+	 */
+	@Query("""
+			SELECT oi.item
+			FROM OrderItem oi
+			WHERE oi.item.category.id = :categoryId
+			AND oi.item.deleteFlag = 0
+			GROUP BY oi.item
+			ORDER BY SUM(oi.quantity) DESC
+			""")
+	List<Item> findPopularItemsByCategoryId(
+			@Param("categoryId") Integer categoryId);
+
+	/**
 	 * 商品情報を登録日付順に取得 管理者機能で利用
 	 * @param deleteFlag 削除フラグ
 	 * @param pageable ページング情報

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
@@ -39,6 +40,15 @@ public class ClientItemShowController {
 	 *
 	 * @param model    Viewとの値受渡し
 	 * @return "index" トップ画面
+	 * 
+	 * 商品一覧表示の並び順を「売れ筋順」に初期化
+	 * ↓
+	 * 売れ筋商品取得
+	 * ↓
+	 * なかったら新着順取得
+	 * 
+	 * つまりトップ画面での優先順位は
+	 * 売れ筋順→なければ新着順と表示
 	 */
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
@@ -46,14 +56,17 @@ public class ClientItemShowController {
 		//初期値：売れ筋順
 		Integer sortType = 2;
 
-		//売れ筋順取得（未実装のため、仮で新着順）
-		List<Item> itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+		//売れ筋順取得
+		List<Item> itemList = itemRepository.findPopularItems();
 
 		//売れ筋商品がない場合
 		if (itemList == null || itemList.isEmpty()) {
 
 			//新着順へ変更
 			sortType = 1;
+
+			//新着順をDBから取得
+			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 		}
 
 		// エンティティ内の検索結果をJavaBeansにコピー
@@ -73,22 +86,45 @@ public class ClientItemShowController {
 	 * @return "client/item/list" 商品一覧画面
 	
 	 */
+
+	//required = false→カテゴリ検索しないURL（/client/item/list/1）でも動くようにするため
 	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.GET)
-	public String showItemSort(@PathVariable Integer sortType, Model model) {
+	public String showItemSort(@PathVariable Integer sortType, @RequestParam(required = false) Integer categoryId,
+			Model model) {
 
 		List<Item> itemList;
 
-		// 新着順
-		if (sortType == 1) {
+		//外側if→どの商品を表示するか、内側if→どう並べるか
+		//カテゴリ検索あり
+		if (categoryId != null) {
 
-			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+			//カテゴリ検索あり+新着順
+			if (sortType.equals(1)) {
 
+				//onstant.NOT_DELETED→削除されていない商品だけを取得
+				itemList = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(categoryId,
+						Constant.NOT_DELETED);
+
+				//カテゴリ検索あり+売れ筋順
+			} else {
+
+				/*TODO 現在は全件表示を行っている
+				 * これを売れ筋（注文回数が多い順）に改修する*/
+				// 売れ筋順
+				itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
+			}
+
+			//カテゴリ検索なし
 		} else {
 
-			/*TODO 現在は全件表示を行っている
-			 * これを売れ筋（注文回数が多い順）に改修する*/
-			// 売れ筋順（仮で新着順）
-			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+			//全件+新着順
+			if (sortType.equals(1)) {
+				itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
+			} else {
+
+				//全件+売れ筋順
+				itemList = itemRepository.findPopularItems();
+			}
 		}
 
 		// Entity → Bean
