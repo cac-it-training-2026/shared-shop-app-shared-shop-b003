@@ -1,6 +1,7 @@
 package jp.co.sss.shop.controller.client.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ import jp.co.sss.shop.repository.UserRepository;
  * 会員詳細表示用のコントローラークラス
  * 
  */
+@Controller
 public class ClientUserShowController {
 
 	/**
@@ -35,11 +37,11 @@ public class ClientUserShowController {
 	 * @return "client/user/detail" 会員詳細表示画面へ
 	 * 
 	 */
-	@RequestMapping(path = "/client/user/detail", method = RequestMethod.POST)
+	@RequestMapping(path = "/client/user/detail", method = { RequestMethod.POST, RequestMethod.GET })
 	public String showUserDetail(Model model) {
 
 		// TODO ログイン中の会員情報を取得
-		// User user = ○○;
+		// User user = ？;
 
 		UserBean userBean = new UserBean();
 
