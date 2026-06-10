@@ -118,7 +118,6 @@ public class ClientOrderRegistController {
 
 		// 注文確認画面に表示する商品リストを作る準備
 		List<OrderItemBean> orderItemBeans = new ArrayList<>();
-
 		int total = 0;
 
 		// 買い物かごの商品を１件ずつDBから商品情報を取得

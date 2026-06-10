@@ -22,6 +22,7 @@ import jp.co.sss.shop.repository.OrderRepository;
  * @autor hayato takahashi
  */
 @Controller
+
 public class ClientOrderShowController {
 
 	/**
