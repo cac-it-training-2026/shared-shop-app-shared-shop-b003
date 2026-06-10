@@ -53,6 +53,7 @@ public class ClientBasketController {
 	 * @param id 追加したい商品のID
 	 * @param model Viewとの値受渡し
 	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
+	 * @return "/client/basket/list" エラーメッセージをスコープに追加し、買い物かご一覧を表示
 	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
@@ -64,14 +65,14 @@ public class ClientBasketController {
 		}
 
 		// BasketBeanを作成
-		BasketBean basketBean = new BasketBean();
+		BasketBean inputbasketBean = new BasketBean();
 		// 主キー検索をし、コピー
-		BeanUtils.copyProperties(itemRepository.getReferenceById(id), basketBean);
+		BeanUtils.copyProperties(itemRepository.getReferenceById(id), inputbasketBean);
 
 		// 在庫数の確認
-		if (basketBean.getStock() == 0) {
+		if (inputbasketBean.getStock() == 0) {
 			// エラーメッセージの追加
-			model.addAttribute("itemNameListZero", basketBean.getName());
+			model.addAttribute("itemNameListZero", inputbasketBean.getName());
 			return "client/basket/list";
 		}
 
@@ -100,7 +101,7 @@ public class ClientBasketController {
 		}
 		// 同じ商品がなかった場合
 		// Listに追加
-		basketBeans.add(basketBean);
+		basketBeans.add(inputbasketBean);
 
 		// リストをセッションにセット
 		session.setAttribute("basketBeans", basketBeans);
@@ -133,7 +134,6 @@ public class ClientBasketController {
 				} else {
 					basketBean.setOrderNum(basketBean.getOrderNum() - 1);
 				}
-
 				return "redirect:/client/basket/list";
 			}
 		}
