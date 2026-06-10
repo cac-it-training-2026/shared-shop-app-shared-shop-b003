@@ -214,17 +214,23 @@ public class ClientOrderRegistController {
 	}
 
 	/*
-	 * 支払い方法選択画面へ戻る
-	 * @return 支払い方法選択画面
+	 * 届け先入力画面へ戻る
+	 * 入力情報は保持
+	 * @return 届け先入力画面
 	 */
 	@PostMapping("/client/order/payment/back")
-	public String back(OrderForm orderForm, Model model) {
-		if (orderForm.getPayMethod() == null) {
-			orderForm.setPayMethod(1);
+	public String back(Model model, HttpSession session) {
+		// セッションに保存してある届け先情報を取得
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+
+		// 念のため、なければ空フォーム
+		if (orderForm == null) {
+			orderForm = new OrderForm();
 		}
 
-		model.addAttribute("payMethod", orderForm.getPayMethod());
+		model.addAttribute("orderForm", orderForm);
 
-		return "client/order/payment_input";
+		return "client/order/address_input";
+
 	}
 }
