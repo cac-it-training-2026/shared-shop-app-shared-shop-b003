@@ -1,5 +1,7 @@
 package jp.co.sss.shop.controller.client.user;
 
+import java.sql.Date;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -150,4 +152,66 @@ public class ClientUserUpdateController {
 		return "client/user/update_check";
 
 	}
+
+	/**
+	 * 変更登録、完了画面表示処理
+	 *
+	 * @return "redirect:/client/user/update/complete" 変更完了画面　表示へ
+	 */
+	@RequestMapping(path = "/client/user/update/complete", method = RequestMethod.POST)
+	public String updateComplete() {
+
+		//セッション保持情報から入力値再取得
+		UserForm userForm = (UserForm) session.getAttribute("userForm");
+		if (userForm == null) {
+			// セッション情報がない場合、エラー
+			return "redirect:/syserror";
+		}
+
+		// 変更対象情報を取得
+		User user = userRepository.findByIdAndDeleteFlag(userForm.getId(), Constant.NOT_DELETED);
+		if (user == null) {
+			// 対象が無い場合、エラー
+			return "redirect:/syserror";
+		}
+		// DB保持項目を退避
+		Integer deleteFlag = user.getDeleteFlag();
+		Date insertDate = user.getInsertDate();
+
+		// 入力フォーム情報を変更用エンティティに設定
+		BeanUtils.copyProperties(userForm, user);
+
+		// 入力値以外の項目を設定
+		user.setDeleteFlag(deleteFlag);
+		user.setInsertDate(insertDate);
+
+		// DBを更新
+		userRepository.save(user);
+
+		// ログインユーザ情報変更の場合、セッション保存ユーザ情報を更新
+		UserBean loginUser = (UserBean) session.getAttribute("user");
+
+		loginUser.setName(userForm.getName());
+
+		session.setAttribute("user", loginUser);
+
+		//セッション情報の削除
+		session.removeAttribute("userForm");
+
+		// 変更完了画面　表示処理
+		//二重送信防止のためリダイレクトを行う
+		return "redirect:/client/user/update/complete";
+	}
+
+	/**
+	 * 変更完了画面　表示
+	 * 
+	 * @return "client/user/update_complete"
+	 */
+	@RequestMapping(path = "/client/user/update/complete", method = RequestMethod.GET)
+	public String updateCompleteFinish() {
+
+		return "client/user/update_complete";
+	}
+
 }
