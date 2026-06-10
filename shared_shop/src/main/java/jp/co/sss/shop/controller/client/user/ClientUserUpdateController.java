@@ -19,11 +19,20 @@ import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
 
+/**
+ *  会員変更機能(一般会員)のコントローラクラス
+ *  
+ *  @author 
+ *  
+ */
 @Controller
 public class ClientUserUpdateController {
 
 	/**
 	 * 会員情報　リポジトリ
+	 * 
+	 * @author fujino
+	 * 
 	 */
 	@Autowired
 	UserRepository userRepository;
