@@ -16,6 +16,8 @@ import jp.co.sss.shop.util.Constant;
 /**
  * 会員詳細表示用のコントローラークラス
  * 
+ * @author fujino
+ * 
  */
 @Controller
 public class ClientUserShowController {
