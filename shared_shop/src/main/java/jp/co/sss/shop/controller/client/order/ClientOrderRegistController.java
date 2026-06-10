@@ -212,4 +212,19 @@ public class ClientOrderRegistController {
 
 		return "client/order/complete";
 	}
+
+	/*
+	 * 支払い方法選択画面へ戻る
+	 * @return 支払い方法選択画面
+	 */
+	@PostMapping("/client/order/payment/back")
+	public String back(OrderForm orderForm, Model model) {
+		if (orderForm.getPayMethod() == null) {
+			orderForm.setPayMethod(1);
+		}
+
+		model.addAttribute("payMethod", orderForm.getPayMethod());
+
+		return "client/order/payment_input";
+	}
 }
