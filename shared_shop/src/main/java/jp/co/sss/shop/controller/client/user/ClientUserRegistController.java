@@ -1,6 +1,5 @@
 package jp.co.sss.shop.controller.client.user;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +31,10 @@ public class ClientUserRegistController {
 	HttpSession session;
 
 	/**
-	 * ① 新規会員登録リンククリック時
-	 * 
-	 * @return
-	 */
+	    * ① 初期表示処理
+	    * 
+	    * 入力画面へリダイレクトする
+	    */
 
 	@RequestMapping(path = "/input/init", method = RequestMethod.GET)
 	public String init() {
@@ -51,19 +50,25 @@ public class ClientUserRegistController {
 	@RequestMapping(path = "/input", method = RequestMethod.GET)
 	public String registInput(Model model) {
 
-		// 上書きの防止
-		if (!model.containsAttribute("userForm")) {
+		// セッションからフォームの取得
+		UserForm form = (UserForm) session.getAttribute("userForm");
 
-			// セッションからフォームの取得
-			UserForm form = (UserForm) session.getAttribute("userForm");
-
-			// なかった場合新規作成
-			if (form == null) {
-				form = new UserForm();
-			}
-			// 画面に渡す
-			model.addAttribute("userForm", form);
+		// セッションにデータがない場合は新規作成
+		if (form == null) {
+			form = new UserForm();
 		}
+		// 画面に渡す
+		model.addAttribute("userForm", form);
+
+		// エラー情報をセッションから取得
+		BindingResult result = (BindingResult) session.getAttribute("result");
+		// エラーが存在する場合のみ画面に渡す
+		if (result != null) {
+			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
+			// 一度表示したエラー情報は削除
+			session.removeAttribute("result");
+		}
+
 		// 入力画面表示
 		return "client/user/regist_input";
 	}
@@ -87,25 +92,25 @@ public class ClientUserRegistController {
 	public String registCheck(@Valid UserForm form, BindingResult result, RedirectAttributes redirectAttributes) {
 		// 入力チェック
 		if (result.hasErrors()) {
-			// エラー情報をリダイレクト語も使えるように
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
-			// 入力値の保持
-			redirectAttributes.addFlashAttribute("userForm", form);
+			// エラー情報と入力値をセッションに保持
+			session.setAttribute("result", result);
+			session.setAttribute("userForm", form);
+
 			// 入力画面へ戻る
 			return "redirect:/client/user/regist/input";
 
 		}
 
-		// メール重複チェック
+		// メールアドレス重複チェック
 		User user = userRepository.findByEmail(form.getEmail());
 		if (user != null) {
 
 			// メールが重複した際のエラーメッセージを追加
 			result.rejectValue("email", "error.email.duplicate", "メールアドレスが既に登録されています");//error.email.duplicateの追加
-			// エラー内容の保持
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
-			// 入力値の保持
-			redirectAttributes.addFlashAttribute("userForm", form);
+			// エラー情報と入力値をセッションに保持
+			session.setAttribute("result", result);
+			session.setAttribute("userForm", form);
+
 			// 入力画面へ戻る
 			return "redirect:/client/user/regist/input";
 		}
@@ -138,10 +143,17 @@ public class ClientUserRegistController {
 	public String showUserRegistComplete() {
 		// セッションから入力されたフォーム情報を取得
 		UserForm form = (UserForm) session.getAttribute("userForm");
-		// Entity生成
+
+		// Entityに値をセット
 		User user = new User();
-		// FormからEntityを一括コピー （※後で手動setに変更
-		BeanUtils.copyProperties(form, user);
+		user.setName(form.getName());
+		user.setEmail(form.getEmail());
+		user.setPassword(form.getPassword());
+		user.setPostalCode(form.getPostalCode());
+		user.setAddress(form.getAddress());
+		user.setPhoneNumber(form.getPhoneNumber());
+		user.setAuthority(form.getAuthority());
+
 		// DB登録
 		userRepository.save(user);
 		// セッション削除
@@ -153,6 +165,9 @@ public class ClientUserRegistController {
 
 	/**
 	 * ⑦ 完了画面表示
+	 */
+	/**
+	 * @return
 	 */
 	@RequestMapping(path = "/complete", method = RequestMethod.GET)
 	public String completeView() {
