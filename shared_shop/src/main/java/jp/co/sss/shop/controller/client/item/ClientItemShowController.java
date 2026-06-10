@@ -22,6 +22,9 @@ import jp.co.sss.shop.util.Constant;
  *
  * @author SystemShared
  */
+/**
+ * 
+ */
 @Controller
 public class ClientItemShowController {
 	/**
@@ -42,6 +45,7 @@ public class ClientItemShowController {
 	/**
 	 * トップ画面 表示処理
 	 *
+	 * @author Emi Shioda
 	 * @param model    Viewとの値受渡し
 	 * @return "index" トップ画面
 	 * 
@@ -57,19 +61,19 @@ public class ClientItemShowController {
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 
-		//初期値：売れ筋順
+		// 初期値：売れ筋順
 		Integer sortType = 2;
 
-		//売れ筋順取得
+		// 売れ筋順取得
 		List<Item> itemList = itemRepository.findPopularItems();
 
-		//売れ筋商品がない場合
+		// 売れ筋商品がない場合
 		if (itemList == null || itemList.isEmpty()) {
 
-			//新着順へ変更
+			// 新着順へ変更
 			sortType = 1;
 
-			//新着順をDBから取得
+			// 新着順をDBから取得
 			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 		}
 
@@ -87,47 +91,47 @@ public class ClientItemShowController {
 	/**
 	 * 商品一覧表示
 	 * @param sortType 並び順
+	 * @param categoryId カテゴリーID
 	 * @param model Viewとの値受渡し
 	 * @return "client/item/list" 商品一覧画面
 	
 	 */
 
-	//required = false→カテゴリ検索しないURL（/client/item/list/1）でも動くようにするため
+	// required = false→カテゴリ検索しないURL（/client/item/list/1）でも動くようにするため
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showItemSort(@PathVariable Integer sortType, @RequestParam(required = false) Integer categoryId,
 			Model model) {
 
 		List<Item> itemList;
 
-		//外側if→どの商品を表示するか、内側if→どう並べるか
-		//カテゴリ検索あり
+		// 外側if→どの商品を表示するか、内側if→どう並べるか
+		// カテゴリ検索あり
 		if (categoryId != null) {
 
-			//カテゴリ検索あり+新着順
+			// カテゴリ検索あり + 新着順
 			if (sortType.equals(1)) {
 
-				//Constant.NOT_DELETED→削除されていない商品だけを取得
+				// Constant.NOT_DELETED→削除されていない商品だけを取得
 				itemList = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(categoryId,
 						Constant.NOT_DELETED);
 
-				//カテゴリ検索あり+売れ筋順
+				// カテゴリ検索あり + 売れ筋順
 			} else {
 
 				/*TODO 現在は全件表示を行っている
 				 * これを売れ筋（注文回数が多い順）に改修する*/
-				// 売れ筋順
 				itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
 			}
 
-			//カテゴリ検索なし
+			// カテゴリ検索なし
 		} else {
 
-			//全件+新着順
+			// 全件 + 新着順
 			if (sortType.equals(1)) {
 				itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 			} else {
 
-				//全件+売れ筋順
+				// 全件 + 売れ筋順
 				itemList = itemRepository.findPopularItems();
 			}
 		}

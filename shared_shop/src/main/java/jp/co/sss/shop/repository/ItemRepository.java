@@ -22,6 +22,10 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	/**
 	 * 商品一覧を新着順で取得
 	 */
+	/**
+	 * @author Emi shioda
+	 * @param deleteFlag 削除フラグ
+	 */
 	List<Item> findByDeleteFlagOrderByInsertDateDesc(
 			Integer deleteFlag);
 
@@ -39,7 +43,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 * ・多い順
 	 * に並べる
 	 */
-
 	@Query("""
 			SELECT oi.item
 			FROM OrderItem oi
