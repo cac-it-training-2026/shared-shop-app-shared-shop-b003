@@ -36,19 +36,33 @@ public class ClientBasketController {
 	/**
 	 * 買い物かご一覧表示処理
 	 * @return "client/basket/list" 買い物かご一覧表示
+	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
 	@RequestMapping(path = "/client/basket/list", method = RequestMethod.GET)
 	public String showBasketList() {
+		// 会員情報の確認
+		if (session.getAttribute("user") == null) {
+			// 未ログインの場合、ログイン画面へ
+			return "redirect:/login";
+		}
 		return "client/basket/list";
 	}
 
 	/**
 	 * idで主キー検索をし、リストに追加
 	 * @param id 追加したい商品のID
+	 * @param model Viewとの値受渡し
 	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
+	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
 	public String addBasket(Integer id, Model model) {
+		// 会員情報の確認
+		if (session.getAttribute("user") == null) {
+			// 未ログインの場合、ログイン画面へ
+			return "redirect:/login";
+		}
+
 		// BasketBeanを作成
 		BasketBean basketBean = new BasketBean();
 		// 主キー検索をし、コピー
