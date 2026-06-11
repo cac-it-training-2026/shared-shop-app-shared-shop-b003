@@ -52,31 +52,39 @@ public class ClientUserUpdateController {
 	@RequestMapping(path = "/client/user/update/input", method = RequestMethod.POST)
 	public String userUpdateInputInit() {
 
-		// セッションからログイン中の会員情報を取得
-		UserBean loginUser = (UserBean) session.getAttribute("user");
+		// セッションに入力情報が残っているか確認
+		UserForm userForm = (UserForm) session.getAttribute("userForm");
 
-		// DBから会員情報を取得
-		User user = userRepository.findByIdAndDeleteFlag(
-				loginUser.getId(),
-				Constant.NOT_DELETED);
+		// 初回表示時のみDBから取得
+		if (userForm == null) {
 
-		// 会員情報が存在しない場合
-		if (user == null) {
-			return "redirect:/syserror";
+			// セッションからログイン中の会員情報を取得
+			UserBean loginUser = (UserBean) session.getAttribute("user");
+
+			if (loginUser == null) {
+				return "redirect:/login";
+			}
+
+			// DBから会員情報を取得
+			User user = userRepository.findByIdAndDeleteFlag(
+					loginUser.getId(),
+					Constant.NOT_DELETED);
+
+			if (user == null) {
+				return "redirect:/syserror";
+			}
+
+			// 入力フォーム生成
+			userForm = new UserForm();
+
+			// Entity → Formへコピー
+			BeanUtils.copyProperties(user, userForm);
+
+			// セッションへ保存
+			session.setAttribute("userForm", userForm);
 		}
 
-		// 変更画面で使用する入力フォームオブジェクトを生成
-		UserForm userForm = new UserForm();
-
-		// ログイン会員情報を入力フォームへコピー
-		// （変更画面の初期表示値として利用するため）
-		BeanUtils.copyProperties(user, userForm);
-
-		// 入力フォーム情報をセッションへ保存
-		// （リダイレクト後の画面でも利用できるようにするため）
-		session.setAttribute("userForm", userForm);
-
-		// GETの入力画面表示処理へリダイレクト
+		// GETへリダイレクト
 		return "redirect:/client/user/update/input";
 	}
 
