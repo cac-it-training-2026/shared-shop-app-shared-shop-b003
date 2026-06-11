@@ -1,5 +1,6 @@
 package jp.co.sss.shop.controller.client.user;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
@@ -178,8 +180,14 @@ public class ClientUserRegistController {
 
 		// DB登録
 		userRepository.save(user);
-		// ログイン状態にする
-		session.setAttribute("user", user);
+
+		// EntityをBeanに変換
+		UserBean userBean = new UserBean();
+		BeanUtils.copyProperties(user, userBean);
+
+		// セッションはUserBeanで統一
+		session.setAttribute("user", userBean);
+
 		// セッション削除（二重送信防止）
 		session.removeAttribute("userForm");
 		// 完了画面へリダイレクト
