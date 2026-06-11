@@ -178,6 +178,8 @@ public class ClientUserRegistController {
 
 		// DB登録
 		userRepository.save(user);
+		// ログイン状態にする
+		session.setAttribute("user", user);
 		// セッション削除（二重送信防止）
 		session.removeAttribute("userForm");
 		// 完了画面へリダイレクト
