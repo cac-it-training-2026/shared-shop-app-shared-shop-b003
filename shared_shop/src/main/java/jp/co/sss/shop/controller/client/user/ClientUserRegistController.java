@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -14,6 +13,12 @@ import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
 
+/**
+ * 会員登録画面の処理を行うコントローラクラス
+ * 入力・確認・登録完了までの一連の処理を担当する
+ * 
+ * @author kamagata
+ */
 @Controller
 @RequestMapping("/client/user/regist")
 public class ClientUserRegistController {
@@ -32,8 +37,9 @@ public class ClientUserRegistController {
 
 	/**
 	    * ① 初期表示処理
-	    * 
 	    * 入力画面へリダイレクトする
+	    * 
+	    * @return 入力画面へのリダイレクトURL
 	    */
 
 	@RequestMapping(path = "/input/init", method = RequestMethod.GET)
@@ -43,9 +49,25 @@ public class ClientUserRegistController {
 	}
 
 	/**
+	 *  ②一覧画面からの新規登録ボタン入力処理
+	 *  一覧画面から遷移してきた際の入力値をセッションに保持する
+	 *  
+	 *  @param form 入力された会員情報
+	 *  @return 入力画面へのURL（リダイレクト）
+	 */
+	@RequestMapping(path = "/input", method = RequestMethod.POST)
+	public String registSubmit(UserForm form) {
+		// 入力値をセッションに保持
+		session.setAttribute("userForm", form);
+		// 入力画面へリダイレクト
+		return "redirect:/client/user/regist/input";
+	}
+
+	/**
 	 * ③入力画面の表示
-	 * @param model
-	 * @return
+	 * 
+	 * @param model 画面に値を渡すためのModel
+	 * @return 入力画面View名
 	 */
 	@RequestMapping(path = "/input", method = RequestMethod.GET)
 	public String registInput(Model model) {
@@ -57,13 +79,14 @@ public class ClientUserRegistController {
 		if (form == null) {
 			form = new UserForm();
 		}
-		// 画面に渡す
+		// フォームを画面に渡す
 		model.addAttribute("userForm", form);
 
 		// エラー情報をセッションから取得
 		BindingResult result = (BindingResult) session.getAttribute("result");
 		// エラーが存在する場合のみ画面に渡す
 		if (result != null) {
+			// BindingResultをリダイレクト後の画面に引き継ぐ（エラーメッセージ表示用）
 			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
 			// 一度表示したエラー情報は削除
 			session.removeAttribute("result");
@@ -74,23 +97,17 @@ public class ClientUserRegistController {
 	}
 
 	/**
-	 *  ②新規登録ボタン押す
-	 */
-	@RequestMapping(path = "/input", method = RequestMethod.POST)
-	public String registSubmit(UserForm form) {
-		// 入力値をセッションに保持
-		session.setAttribute("userForm", form);
-		// 入力画面へリダイレクト
-		return "redirect:/client/user/regist/input";
-	}
-
-	/**
-	 * ④ 確認ボタン押す（入力チェック）
+	 * ④ 登録入力画面の確認ボタン入力処理
+	 *  入力チェックおよびメール重複チェックを行う
+	 *  
+	 *  @param form 入力された会員情報
+	 *  @param result 入力チェック結果
+	 *  @return 遷移先URL（エラー時は入力画面へリダイレクト、正常時は確認画面へリダイレクト）
 	 */
 
 	@RequestMapping(path = "/check", method = RequestMethod.POST)
-	public String registCheck(@Valid UserForm form, BindingResult result, RedirectAttributes redirectAttributes) {
-		// 入力チェック
+	public String registCheck(@Valid UserForm form, BindingResult result) {
+		// 入力チェックエラーがある場合
 		if (result.hasErrors()) {
 			// エラー情報と入力値をセッションに保持
 			session.setAttribute("result", result);
@@ -124,6 +141,9 @@ public class ClientUserRegistController {
 
 	/**
 	 * ⑤ 確認画面表示
+	 * 
+	 * @param model 画面に値を渡すためのModel
+	 * @return 確認画面View名
 	 */
 	@RequestMapping(path = "/check", method = RequestMethod.GET)
 	public String checkView(Model model) {
@@ -137,6 +157,8 @@ public class ClientUserRegistController {
 
 	/**
 	 * ⑥ 登録処理（登録ボタン押した）
+	 * 
+	 * @return 完了画面URL（リダイレクト）
 	 */
 	// 画面で入力されたデータをDBに保存し完了画面へ
 	@RequestMapping(path = "/complete", method = RequestMethod.POST)
@@ -156,7 +178,7 @@ public class ClientUserRegistController {
 
 		// DB登録
 		userRepository.save(user);
-		// セッション削除
+		// セッション削除（二重送信防止）
 		session.removeAttribute("userForm");
 		// 完了画面へリダイレクト
 		return "redirect:/client/user/regist/complete";
@@ -165,10 +187,10 @@ public class ClientUserRegistController {
 
 	/**
 	 * ⑦ 完了画面表示
+	 * 
+	 * @return 完了画面View名
 	 */
-	/**
-	 * @return
-	 */
+
 	@RequestMapping(path = "/complete", method = RequestMethod.GET)
 	public String completeView() {
 
