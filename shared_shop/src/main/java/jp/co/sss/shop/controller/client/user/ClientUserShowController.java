@@ -16,7 +16,7 @@ import jp.co.sss.shop.util.Constant;
 /**
  * 会員詳細表示用のコントローラークラス
  * 
- * @author fujino
+ * @author Fujino Tatsuya
  * 
  */
 @Controller
@@ -37,7 +37,6 @@ public class ClientUserShowController {
 	/**
 	 * 詳細表示処理
 	 *
-	 * 
 	 * @param model Viewとの値受渡し
 	 * @return "client/user/detail" 会員詳細表示画面へ
 	 * 
@@ -54,7 +53,9 @@ public class ClientUserShowController {
 
 		// 対象会員が存在しない場合
 		if (user == null) {
+
 			return "redirect:/syserror";
+
 		}
 
 		// EntityからBeanへコピー
@@ -69,5 +70,6 @@ public class ClientUserShowController {
 
 		//詳細表示
 		return "client/user/detail";
+
 	}
 }

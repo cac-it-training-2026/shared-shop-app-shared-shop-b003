@@ -22,7 +22,7 @@ import jp.co.sss.shop.util.Constant;
 /**
  *  会員変更機能(一般会員)のコントローラクラス
  *  
- *  @author 
+ *  @author Fujino Tatsuya
  *  
  */
 @Controller
@@ -30,9 +30,6 @@ public class ClientUserUpdateController {
 
 	/**
 	 * 会員情報　リポジトリ
-	 * 
-	 * @author fujino
-	 * 
 	 */
 	@Autowired
 	UserRepository userRepository;
@@ -82,6 +79,7 @@ public class ClientUserUpdateController {
 
 			// セッションへ保存
 			session.setAttribute("userForm", userForm);
+
 		}
 
 		// GETへリダイレクト
@@ -89,7 +87,7 @@ public class ClientUserUpdateController {
 	}
 
 	/**
-	 * 入力画面　表示処理
+	 * 入力画面表示処理
 	 *
 	 * @param model Viewとの値受渡し
 	 * @return "client/user/update_input" 変更入力画面 表示
@@ -110,9 +108,11 @@ public class ClientUserUpdateController {
 
 		BindingResult result = (BindingResult) session.getAttribute("result");
 		if (result != null) {
+
 			//セッションにエラー情報がある場合、エラー情報を画面表示設定
 			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
 			session.removeAttribute("result");
+
 		}
 
 		return "client/user/update_input";
@@ -146,6 +146,7 @@ public class ClientUserUpdateController {
 
 		//変更確認画面　表示処理
 		return "redirect:/client/user/update/check";
+
 	}
 
 	/**
@@ -156,12 +157,17 @@ public class ClientUserUpdateController {
 	 */
 	@RequestMapping(path = "/client/user/update/check", method = RequestMethod.GET)
 	public String updateCheck(Model model) {
+
 		//セッションから入力フォーム情報取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
+
 		if (userForm == null) {
+
 			// セッション情報がない場合、エラー
 			return "redirect:/syserror";
+
 		}
+
 		//入力フォーム情報をスコープへ設定
 		model.addAttribute("userForm", userForm);
 
@@ -180,17 +186,24 @@ public class ClientUserUpdateController {
 
 		//セッション保持情報から入力値再取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
+
 		if (userForm == null) {
+
 			// セッション情報がない場合、エラー
 			return "redirect:/syserror";
+
 		}
 
 		// 変更対象情報を取得
 		User user = userRepository.findByIdAndDeleteFlag(userForm.getId(), Constant.NOT_DELETED);
+
 		if (user == null) {
+
 			// 対象が無い場合、エラー
 			return "redirect:/syserror";
+
 		}
+
 		// DB保持項目を退避
 		Integer deleteFlag = user.getDeleteFlag();
 		Date insertDate = user.getInsertDate();
@@ -218,6 +231,7 @@ public class ClientUserUpdateController {
 		// 変更完了画面　表示処理
 		//二重送信防止のためリダイレクトを行う
 		return "redirect:/client/user/update/complete";
+
 	}
 
 	/**
@@ -229,6 +243,7 @@ public class ClientUserUpdateController {
 	public String updateCompleteFinish() {
 
 		return "client/user/update_complete";
+
 	}
 
 }
