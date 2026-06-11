@@ -40,7 +40,7 @@ public class ClientBasketController {
 	 * @return "client/basket/list" 買い物かご一覧表示
 	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
-	@RequestMapping(path = "/client/basket/list", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/basket/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showBasketList(Model model) {
 		// 会員情報の確認
 		if (session.getAttribute("user") == null) {
