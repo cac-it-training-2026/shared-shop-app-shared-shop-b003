@@ -53,7 +53,7 @@ public class ClientBasketController {
 	 * @param id 追加したい商品のID
 	 * @param model Viewとの値受渡し
 	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
-	 * @return "/client/basket/list" エラーメッセージをスコープに追加し、買い物かご一覧を表示
+	 * @return "client/basket/list" エラーメッセージをスコープに追加し、買い物かご一覧を表示
 	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
 	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
@@ -86,12 +86,14 @@ public class ClientBasketController {
 			// 同じ商品を探す
 			for (BasketBean bean : basketBeans) {
 				// 同じ商品があった場合
-				if (id == bean.getId()) {
-					if (bean.getOrderNum() == bean.getStock()) {
-						// エラーメッセージの追加
+				if (bean.getId().equals(id)) {
+					// 在庫数を確認
+					if (bean.getOrderNum().equals(bean.getStock())) {
+						// 在庫を上回った場合、エラーメッセージを追加
 						model.addAttribute("itemNameListLessThan", bean.getName());
 						return "client/basket/list";
 					} else {
+						// 在庫がある場合
 						// orderNumをインクリメントし、リダイレクト
 						bean.setOrderNum(bean.getOrderNum() + 1);
 					}
@@ -119,24 +121,24 @@ public class ClientBasketController {
 		// セッションのリストを取得
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
 
-		// 同じ商品を探す
+		// 対象の商品を探す
 		for (BasketBean basketBean : basketBeans) {
-			// 同じ商品の場合
-			if (id == basketBean.getId()) {
-				// orderNumをデクリメントし、リダイレクト
-				if (basketBean.getOrderNum() == 1) {
-					// basketBeansから削除
-					basketBeans.remove(basketBean);
-					// 買い物かごが空なら、セッションから買い物かご情報を削除
-					if (basketBeans.size() == 0) {
-						session.removeAttribute("basketBeans");
-					}
-				} else {
-					basketBean.setOrderNum(basketBean.getOrderNum() - 1);
-				}
-				return "redirect:/client/basket/list";
+			// 対象の商品の情報を取得
+			if (basketBean.getId().equals(id)) {
+				// 対象の買い物かごの商品数をデクリメント
+				basketBean.setOrderNum(basketBean.getOrderNum() - 1);
+				break;
 			}
 		}
+
+		// 買い物かごの中でorderNumが0になった商品を削除
+		basketBeans.removeIf(basketBean -> basketBean.getOrderNum() <= 0);
+
+		// 買い物かごが空なら、セッションから買い物かご情報を削除
+		if (basketBeans.size() == 0) {
+			session.removeAttribute("basketBeans");
+		}
+
 		return "redirect:/client/basket/list";
 	}
 
