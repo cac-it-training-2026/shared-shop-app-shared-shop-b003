@@ -58,6 +58,7 @@ public class ClientItemShowController {
 	 * つまりトップ画面での優先順位は
 	 * 売れ筋順→なければ新着順と表示
 	 */
+
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 
@@ -91,48 +92,27 @@ public class ClientItemShowController {
 	/**
 	 * 商品一覧表示
 	 * @param sortType 並び順
-	 * @param categoryId カテゴリーID
 	 * @param model Viewとの値受渡し
 	 * @return "client/item/list" 商品一覧画面
 	
 	 */
 
-	// required = false→カテゴリ検索しないURL（/client/item/list/1）でも動くようにするため
-	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showItemSort(@PathVariable Integer sortType, @RequestParam(required = false) Integer categoryId,
-			Model model) {
+	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET,
+			RequestMethod.POST }, params = "!categoryId")
+	public String showItemSort(@PathVariable Integer sortType, Model model) {
 
 		List<Item> itemList;
 
-		// 外側if→どの商品を表示するか、内側if→どう並べるか
-		// カテゴリ検索あり
-		if (categoryId != null && categoryId != 0) {
+		// 新着順
+		if (sortType.equals(1)) {
 
-			// カテゴリ検索あり + 新着順
-			if (sortType.equals(1)) {
+			itemList = itemRepository
+					.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 
-				// Constant.NOT_DELETED→削除されていない商品だけを取得
-				itemList = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(categoryId,
-						Constant.NOT_DELETED);
-
-				// カテゴリ検索あり + 売れ筋順
-			} else {
-
-				itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
-			}
-
+			// 売れ筋順
 		} else {
 
-			// カテゴリ検索なし（全件）
-			if (sortType.equals(1)) {
-
-				// 全件 + 新着順
-				itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
-			} else {
-
-				// 全件 + 売れ筋順
-				itemList = itemRepository.findPopularItems();
-			}
+			itemList = itemRepository.findPopularItems();
 		}
 
 		// Entity → Bean
@@ -140,12 +120,46 @@ public class ClientItemShowController {
 
 		// Viewへ渡す
 		model.addAttribute("items", itemBeanList);
-
-		// 並び順
 		model.addAttribute("sortType", sortType);
-
-		//カテゴリー検索
 		model.addAttribute("categories", categoryRepository.findAll());
+
+		return "client/item/list";
+	}
+
+	/**
+	 * 商品一覧表示（カテゴリ別）
+	 * 
+	 * @param sortType 並び順
+	 * @param categoryId　カテゴリID
+	 * @param model Viewとの値受渡し
+	 * @return client/item/list 商品一覧画面
+	 */
+
+	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.GET, params = "categoryId")
+	public String showItemSortById(@PathVariable Integer sortType, @RequestParam Integer categoryId, Model model) {
+
+		List<Item> itemList;
+
+		// 新着順
+		if (sortType.equals(1)) {
+
+			itemList = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(categoryId,
+					Constant.NOT_DELETED);
+
+			// 売れ筋順
+		} else {
+
+			itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
+		}
+
+		// Entity → Bean
+		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
+
+		// Viewへ渡す
+		model.addAttribute("items", itemBeanList);
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("categories", categoryRepository.findAll());
+		model.addAttribute("categoryId", categoryId); // ★重要（画面保持）
 
 		return "client/item/list";
 	}
@@ -157,6 +171,7 @@ public class ClientItemShowController {
 	 * @param model   Viewとの値受渡し
 	 * @return "client/item/detail" 詳細画面 表示
 	 */
+
 	@RequestMapping(path = "/client/item/detail/{id}")
 	public String showItem(@PathVariable int id, Model model) {
 
