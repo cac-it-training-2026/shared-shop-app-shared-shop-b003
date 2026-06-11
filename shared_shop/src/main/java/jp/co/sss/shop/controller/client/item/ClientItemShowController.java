@@ -118,8 +118,6 @@ public class ClientItemShowController {
 				// カテゴリ検索あり + 売れ筋順
 			} else {
 
-				/*TODO 現在は全件表示を行っている
-				 * これを売れ筋（注文回数が多い順）に改修する*/
 				itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
 			}
 
