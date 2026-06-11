@@ -106,7 +106,7 @@ public class ClientItemShowController {
 
 		// 外側if→どの商品を表示するか、内側if→どう並べるか
 		// カテゴリ検索あり
-		if (categoryId != null) {
+		if (categoryId != null && categoryId != 0) {
 
 			// カテゴリ検索あり + 新着順
 			if (sortType.equals(1)) {
@@ -121,11 +121,12 @@ public class ClientItemShowController {
 				itemList = itemRepository.findPopularItemsByCategoryId(categoryId);
 			}
 
-			// カテゴリ検索なし
 		} else {
 
-			// 全件 + 新着順
+			// カテゴリ検索なし（全件）
 			if (sortType.equals(1)) {
+
+				// 全件 + 新着順
 				itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 			} else {
 
