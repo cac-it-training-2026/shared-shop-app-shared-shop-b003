@@ -94,7 +94,11 @@ public class ClientOrderRegistController {
 	}
 
 	/**
-	 * 支払い方法受取後、注文確認画面表示
+	 * 支払方法選択後、注文確認画面を表示する。
+	 * お届け先情報および支払方法を取得し、
+	 * 買い物かご内商品の最新在庫数を確認する。
+	 * 在庫不足・在庫切れ商品を判定し、
+	 * 注文確認画面に表示する情報を作成する。
 	 * 
 	 * @param payMethod 選択された支払方法
 	 * @param sessionセッション情報
@@ -116,14 +120,33 @@ public class ClientOrderRegistController {
 		// 買い物かごの商品リスト取り出し
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
 
-		// 注文確認画面に表示する商品リストを作る準備
+		// 注文確認画面に表示する商品リスト
 		List<OrderItemBean> orderItemBeans = new ArrayList<>();
+
+		// 在庫不足・在庫切れの商品名リスト
+		List<String> itemNameListLessThan = new ArrayList<>();
+		List<String> itemNameListZero = new ArrayList<>();
+
 		int total = 0;
 
-		// 買い物かごの商品を１件ずつDBから商品情報を取得
 		for (BasketBean basketBean : basketBeans) {
 
 			Item item = itemRepository.getReferenceById(basketBean.getId());
+
+			// 在庫0の場合は注文対象から外す
+			if (item.getStock() == 0) {
+				itemNameListZero.add(item.getName());
+				continue;
+			}
+
+			int orderNum = basketBean.getOrderNum();
+
+			// 注文数が在庫数を超えている場合
+			if (orderNum > item.getStock()) {
+				itemNameListLessThan.add(item.getName());
+				orderNum = item.getStock();
+				basketBean.setOrderNum(orderNum);
+			}
 
 			OrderItemBean orderItemBean = new OrderItemBean();
 
@@ -131,9 +154,9 @@ public class ClientOrderRegistController {
 			orderItemBean.setName(item.getName());
 			orderItemBean.setPrice(item.getPrice());
 			orderItemBean.setImage(item.getImage());
-			orderItemBean.setOrderNum(basketBean.getOrderNum());
+			orderItemBean.setOrderNum(orderNum);
 
-			int subtotal = item.getPrice() * basketBean.getOrderNum();
+			int subtotal = item.getPrice() * orderNum;
 			orderItemBean.setSubtotal(subtotal);
 
 			total += subtotal;
@@ -141,20 +164,39 @@ public class ClientOrderRegistController {
 			orderItemBeans.add(orderItemBean);
 		}
 
-		// orderForm→お届け先・支払い方法
-		// orderItemBeans→商品名・画像・単価・数量・小計
-		// total→合計金額
+		// 在庫不足・在庫切れメッセージ用
+		if (!itemNameListLessThan.isEmpty()) {
+			model.addAttribute("itemNameListLessThan", itemNameListLessThan);
+		}
+
+		if (!itemNameListZero.isEmpty()) {
+			model.addAttribute("itemNameListZero", itemNameListZero);
+		}
+
 		model.addAttribute("orderForm", orderForm);
-		model.addAttribute("orderItemBeans", orderItemBeans);
 		model.addAttribute("total", total);
+
+		// 全商品が在庫切れの場合のメッセージ渡し
+		if (orderItemBeans.isEmpty()) {
+			model.addAttribute("orderItemBeans", null);
+		} else {
+			model.addAttribute("orderItemBeans", orderItemBeans);
+		}
+
+		// 在庫不足で注文数を変更した場合に備えてセッションも更新
+		session.setAttribute("basketBeans", basketBeans);
+		session.setAttribute("orderForm", orderForm);
 
 		return "client/order/check";
 	}
 
 	/**
-	 * 注文完了画面表示
-	 * セッションから、注文情報、買い物かご情報、ログイン会員情報を取得
-	 * データベースへ登録
+	 * 注文確定処理を行う。
+	 * セッションからお届け先情報、支払方法、
+	 * 買い物かご情報およびログイン会員情報を取得し、
+	 * 注文情報と注文商品情報をデータベースへ登録する。
+	 * また、商品の在庫数を更新し、
+	 * 注文完了後にセッション情報を削除する。
 	 * @param session セッション情報
 	 * @return 注文完了画面
 	 */
@@ -183,30 +225,39 @@ public class ClientOrderRegistController {
 		// 会員設定
 		User user = new User();
 		user.setId(userBean.getId());
-
 		order.setUser(user);
 
-		// ordersテーブル保存
+		// ordersテーブルをDBへ保存
 		orderRepository.save(order);
 
-		// 注文商品を一つずつ保存
 		for (BasketBean basketBean : basketBeans) {
 
-			Item item = itemRepository.getReferenceById(
-					basketBean.getId());
+			Item item = itemRepository.getReferenceById(basketBean.getId());
+
+			// 在庫0の商品は登録しない
+			if (item.getStock() == 0) {
+				continue;
+			}
+
+			int orderNum = basketBean.getOrderNum();
+
+			// 在庫数を超えていたら在庫数に補正
+			if (orderNum > item.getStock()) {
+				orderNum = item.getStock();
+			}
 
 			OrderItem orderItem = new OrderItem();
 
 			orderItem.setOrder(order);
 			orderItem.setItem(item);
-			orderItem.setQuantity(
-					basketBean.getOrderNum());
-
-			// 注文時の価格を保存
-			orderItem.setPrice(
-					item.getPrice());
+			orderItem.setQuantity(orderNum);
+			orderItem.setPrice(item.getPrice());
 
 			orderItemRepository.save(orderItem);
+
+			// 在庫数を減らす
+			item.setStock(item.getStock() - orderNum);
+			itemRepository.save(item);
 		}
 
 		// 買い物かご削除
