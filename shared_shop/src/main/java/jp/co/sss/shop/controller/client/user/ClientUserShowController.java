@@ -54,7 +54,7 @@ public class ClientUserShowController {
 		// 対象会員が存在しない場合
 		if (user == null) {
 
-			return "redirect:/syserror";
+			return "redirect:/login";
 
 		}
 

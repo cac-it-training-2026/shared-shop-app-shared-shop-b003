@@ -58,6 +58,7 @@ public class ClientUserUpdateController {
 			// セッションからログイン中の会員情報を取得
 			UserBean loginUser = (UserBean) session.getAttribute("user");
 
+			//セッション切れの時はloginページに遷移
 			if (loginUser == null) {
 				return "redirect:/login";
 			}
@@ -99,8 +100,9 @@ public class ClientUserUpdateController {
 		// セッションから入力フォーム取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
 
+		//セッション切れの時はloginページに遷移
 		if (userForm == null) {
-			return "redirect:/syserror";
+			return "redirect:/login";
 		}
 
 		// 画面表示用に設定
@@ -163,8 +165,8 @@ public class ClientUserUpdateController {
 
 		if (userForm == null) {
 
-			// セッション情報がない場合、エラー
-			return "redirect:/syserror";
+			// セッション情報がない場合、loginページに遷移
+			return "redirect:/login";
 
 		}
 
@@ -189,8 +191,8 @@ public class ClientUserUpdateController {
 
 		if (userForm == null) {
 
-			// セッション情報がない場合、エラー
-			return "redirect:/syserror";
+			// セッション情報がない場合、loginページに遷移
+			return "redirect:/login";
 
 		}
 
@@ -243,7 +245,6 @@ public class ClientUserUpdateController {
 	public String updateCompleteFinish() {
 
 		return "client/user/update_complete";
-
 	}
 
 }
