@@ -39,35 +39,56 @@ public class ClientUserRegistController {
 
 	/**
 	    * ① 初期表示処理
-	    * 入力画面へリダイレクトする
-	    * 
+	    * 入力フォームを新規生成し、セッションへ格納する。
+	    * その後、入力画面へリダイレクトする。
 	    * @return 入力画面へのリダイレクトURL
 	    */
 
 	@RequestMapping(path = "/input/init", method = RequestMethod.GET)
 	public String init() {
+
+		// フォーム新規生成
+		UserForm form = new UserForm();// 追加
+
+		// セッションに保存
+		session.setAttribute("userForm", form);// 追加
+
 		// 入力画面へリダイレクト
 		return "redirect:/client/user/regist/input";
 	}
 
 	/**
-	 *  ②一覧画面からの新規登録ボタン入力処理
-	 *  一覧画面から遷移してきた際の入力値をセッションに保持する
+	 * ②一覧画面からの新規登録ボタン入力処理
+	 * 戻るボタンなどで空のフォームが送信された場合は、セッション情報を上書きしないよう制御する。
 	 *  
 	 *  @param form 入力された会員情報
 	 *  @return 入力画面へのURL（リダイレクト）
 	 */
 	@RequestMapping(path = "/input", method = RequestMethod.POST)
 	public String registSubmit(UserForm form) {
+
+		// セッションから取得
+		UserForm sessionForm = (UserForm) session.getAttribute("userForm");// 追加
+
+		// セッションに存在しない場合は新規生成
+		if (sessionForm == null) {
+			sessionForm = new UserForm();
+		}
+
+		// 入力がある場合のみ上書き（空データ対策）
+		if (form.getEmail() != null && !form.getEmail().isEmpty()) {
+			BeanUtils.copyProperties(form, sessionForm);
+		}
+
 		// 入力値をセッションに保持
-		session.setAttribute("userForm", form);
+		session.setAttribute("userForm", sessionForm);
 		// 入力画面へリダイレクト
 		return "redirect:/client/user/regist/input";
 	}
 
 	/**
 	 * ③入力画面の表示
-	 * 
+	 * セッションからフォーム情報とエラー情報を取得し、リクエストスコープへ設定する。
 	 * @param model 画面に値を渡すためのModel
 	 * @return 入力画面View名
 	 */
@@ -109,11 +130,25 @@ public class ClientUserRegistController {
 
 	@RequestMapping(path = "/check", method = RequestMethod.POST)
 	public String registCheck(@Valid UserForm form, BindingResult result) {
-		// 入力チェックエラーがある場合
+
+		// セッションから取得
+		UserForm sessionForm = (UserForm) session.getAttribute("userForm");
+
+		if (sessionForm == null) {
+			sessionForm = new UserForm();
+		}
+
+		// 入力内容をセッションに反映
+		if (form.getEmail() != null) {
+			BeanUtils.copyProperties(form, sessionForm);
+		}
+
+		// セッション保存
+		session.setAttribute("userForm", sessionForm);
+
+		// 入力エラー
 		if (result.hasErrors()) {
-			// エラー情報と入力値をセッションに保持
 			session.setAttribute("result", result);
-			session.setAttribute("userForm", form);
 
 			// 入力画面へ戻る
 			return "redirect:/client/user/regist/input";
@@ -121,24 +156,19 @@ public class ClientUserRegistController {
 		}
 
 		// メールアドレス重複チェック
-		User user = userRepository.findByEmail(form.getEmail());
+		User user = userRepository.findByEmail(sessionForm.getEmail());
 		if (user != null) {
 
 			// メールが重複した際のエラーメッセージを追加
 			result.rejectValue("email", "error.email.duplicate", "メールアドレスが既に登録されています");//error.email.duplicateの追加
 			// エラー情報と入力値をセッションに保持
 			session.setAttribute("result", result);
-			session.setAttribute("userForm", form);
 
-			// 入力画面へ戻る
 			return "redirect:/client/user/regist/input";
 		}
 
-		// 正常時、確認画面にセッション保存
-		session.setAttribute("userForm", form);
-		// 確認画面へ
+		// 入力画面へ戻る
 		return "redirect:/client/user/regist/check";
-
 	}
 
 	/**
@@ -159,6 +189,8 @@ public class ClientUserRegistController {
 
 	/**
 	 * ⑥ 登録処理（登録ボタン押した）
+	 * セッションのフォーム情報を元にDB登録を行う。
+	 * 登録後はログイン状態にし、セッションを更新する。
 	 * 
 	 * @return 完了画面URL（リダイレクト）
 	 */
