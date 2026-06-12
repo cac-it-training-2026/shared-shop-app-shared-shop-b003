@@ -343,7 +343,7 @@ public class ClientOrderRegistController {
 	 * @return 届け先入力画面
 	 */
 	@PostMapping("/client/order/payment/back")
-	public String paymantBack(Model model, HttpSession session) {
+	public String paymentBack(Model model, HttpSession session) {
 
 		// セッションに保存してある届け先情報を取得
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
