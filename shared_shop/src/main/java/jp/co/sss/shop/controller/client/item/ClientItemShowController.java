@@ -142,8 +142,12 @@ public class ClientItemShowController {
 		// 並び順
 		model.addAttribute("sortType", sortType);
 
-		//カテゴリー検索
+		// カテゴリー検索
 		model.addAttribute("categories", categoryRepository.findAll());
+
+		// カテゴリ検索の内容を画面遷移しても保持する
+
+		model.addAttribute("categoryId", categoryId);
 
 		return "client/item/list";
 	}
