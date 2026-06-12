@@ -69,7 +69,7 @@ public class ClientBasketController {
 					BeanUtils.copyProperties(item, basketBean, "orderNum");
 
 					// 在庫数を確認
-					if (item.getStock() <= 0) {
+					if (item.getStock() <= 0 || item.getDeleteFlag() == 1) {
 						// 在庫数が0の場合のエラーメッセージの追加
 						itemNameListZero.add(basketBean.getName());
 						// 注文数を0に
@@ -87,8 +87,8 @@ public class ClientBasketController {
 			model.addAttribute("itemNameListZero", itemNameListZero);
 			model.addAttribute("itemNameListLessThan", itemNameListLessThan);
 
-			// 在庫のない商品を買い物かごから削除
-			basketBeans.removeIf(basketBean -> basketBean.getStock() <= 0);
+			// 注文数が0の商品を買い物かごから削除
+			basketBeans.removeIf(basketBean -> basketBean.getOrderNum() <= 0);
 
 			// セッションの買い物かごの情報を更新
 			if (basketBeans.size() == 0) {
