@@ -136,7 +136,7 @@ public class ClientUserUpdateController {
 		// 入力フォーム情報をセッションに保持
 		session.setAttribute("userForm", form);
 
-		// 入力値にエラーがあった場合、入力画面に戻る
+		// 入力値にエラーがあった場合は入力画面に戻る
 		if (result.hasErrors()) {
 
 			session.setAttribute("result", result);

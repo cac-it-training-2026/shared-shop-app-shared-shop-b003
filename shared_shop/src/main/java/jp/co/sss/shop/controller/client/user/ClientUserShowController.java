@@ -58,7 +58,7 @@ public class ClientUserShowController {
 
 		}
 
-		// EntityからBeanへコピー
+		// EntityからBeanにコピー
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(user, userBean);
 
