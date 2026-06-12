@@ -193,6 +193,7 @@ public class ClientUserRegistController {
 	 * 登録後はログイン状態にし、セッションを更新する。
 	 * 
 	 * @return 完了画面URL（リダイレクト）
+	 * @return 異常時/syserror
 	 */
 	// 画面で入力されたデータをDBに保存し完了画面へ
 	@RequestMapping(path = "/complete", method = RequestMethod.POST)
@@ -200,30 +201,43 @@ public class ClientUserRegistController {
 		// セッションから入力されたフォーム情報を取得
 		UserForm form = (UserForm) session.getAttribute("userForm");
 
-		// Entityに値をセット
-		User user = new User();
-		user.setName(form.getName());
-		user.setEmail(form.getEmail());
-		user.setPassword(form.getPassword());
-		user.setPostalCode(form.getPostalCode());
-		user.setAddress(form.getAddress());
-		user.setPhoneNumber(form.getPhoneNumber());
-		user.setAuthority(form.getAuthority());
+		// セッション切れ対策
+		if (form == null) {
+			return "redirect:/syserror";
+		}
 
-		// DB登録
-		userRepository.save(user);
+		try {
+			// Entityに値をセット
+			User user = new User();
+			user.setName(form.getName());
+			user.setEmail(form.getEmail());
+			user.setPassword(form.getPassword());
+			user.setPostalCode(form.getPostalCode());
+			user.setAddress(form.getAddress());
+			user.setPhoneNumber(form.getPhoneNumber());
+			user.setAuthority(form.getAuthority());
 
-		// EntityをBeanに変換
-		UserBean userBean = new UserBean();
-		BeanUtils.copyProperties(user, userBean);
+			// DB登録
+			userRepository.save(user);
 
-		// セッションはUserBeanで統一
-		session.setAttribute("user", userBean);
+			// EntityをBeanに変換
+			UserBean userBean = new UserBean();
+			BeanUtils.copyProperties(user, userBean);
 
-		// セッション削除（二重送信防止）
-		session.removeAttribute("userForm");
-		// 完了画面へリダイレクト
-		return "redirect:/client/user/regist/complete";
+			// セッションはUserBeanで統一
+			session.setAttribute("user", userBean);
+
+			// セッション削除（二重送信防止）
+			session.removeAttribute("userForm");
+
+			// 完了画面へリダイレクト
+			return "redirect:/client/user/regist/complete";
+
+		} catch (Exception e) {
+			// 異常
+			return "redirect:/syserror";
+			// TODO: handle exception
+		}
 
 	}
 
