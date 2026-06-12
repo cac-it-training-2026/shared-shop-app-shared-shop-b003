@@ -133,7 +133,7 @@ public class ClientUserRegistController {
 
 		// セッションから取得
 		UserForm sessionForm = (UserForm) session.getAttribute("userForm");
-
+		// セッションにフォームがなかったら作成
 		if (sessionForm == null) {
 			sessionForm = new UserForm();
 		}
