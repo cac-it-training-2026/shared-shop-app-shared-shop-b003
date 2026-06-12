@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.OrderItemBean;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.OrderItemRepository;
@@ -64,7 +66,13 @@ public class ClientOrderShowController {
 	 * @return 注文詳細画面
 	 */
 	@GetMapping("/client/order/detail/{id}")
-	public String showOrderDetail(Model model, @PathVariable int id) {
+	public String showOrderDetail(Model model, @PathVariable int id, HttpSession session) {
+
+		// ログインチェック
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		if (userBean == null) {
+			return "redirect:/login";
+		}
 
 		// IDから注文情報を取得
 		Order order = orderRepository.getReferenceById(id);
