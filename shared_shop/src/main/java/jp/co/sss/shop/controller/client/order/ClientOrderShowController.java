@@ -52,7 +52,6 @@ public class ClientOrderShowController {
 
 		// ordersテーブルから注文情報を全件取得
 		List<Order> orders = orderRepository.findAll();
-
 		model.addAttribute("orders", orders);
 
 		return "client/order/list";
