@@ -166,6 +166,7 @@ public class ClientBasketController {
 	 * 買い物かご内の対象商品の数を減らす。
 	 * @param id 減らしたい商品のID
 	 * @return "redirect:/client/basket/list" 削除後のリストを表示
+	 * @return "redirect:/login" 未ログイン時にログイン画面へ	
 	 */
 	@RequestMapping(path = "/client/basket/delete", method = RequestMethod.POST)
 	public String deleteBasket(Integer id) {
@@ -205,6 +206,7 @@ public class ClientBasketController {
 	/**
 	 * 買い物かごを空にする
 	 * @return "redirect:/client/basket/list" 削除後のページを表示
+	 * @return "redirect:/login" 未ログイン時にログイン画面へ
 	 */
 	@RequestMapping(path = "/client/basket/allDelete", method = RequestMethod.POST)
 	public String allDeleteBasket() {
