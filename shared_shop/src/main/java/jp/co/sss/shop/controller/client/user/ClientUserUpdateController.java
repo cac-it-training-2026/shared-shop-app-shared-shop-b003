@@ -231,7 +231,7 @@ public class ClientUserUpdateController {
 		session.removeAttribute("userForm");
 
 		// 変更完了画面　表示処理
-		return "client/user/update/complete";
+		return "redirect:/client/user/update/complete";
 
 	}
 
