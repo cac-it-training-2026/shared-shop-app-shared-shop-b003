@@ -23,6 +23,7 @@ import jp.co.sss.shop.form.OrderForm;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
+import jp.co.sss.shop.repository.UserRepository;
 
 /**
  * お届け先入力から注文完了までのコントローラー
@@ -49,15 +50,33 @@ public class ClientOrderRegistController {
 	OrderItemRepository orderItemRepository;
 
 	/**
+	 * ユーザー情報リポジトリ
+	 */
+	@Autowired
+	UserRepository userRepository;
+
+	/**
 	 * お届け先入力画面表示
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return お届け先入力画面
 	 */
 	@PostMapping("/client/order/address/input")
-	public String addressInput(Model model) {
+	public String addressInput(Model model, HttpSession session) {
 
-		// address_inputのth:object="${orderForm}"で使うために空のOrderFormを送る
-		model.addAttribute("orderForm", new OrderForm());
+		OrderForm orderForm = new OrderForm();
+
+		UserBean userBean = (UserBean) session.getAttribute("user");
+
+		if (userBean != null) {
+			User user = userRepository.getReferenceById(userBean.getId());
+
+			orderForm.setPostalCode(user.getPostalCode());
+			orderForm.setAddress(user.getAddress());
+			orderForm.setName(user.getName());
+			orderForm.setPhoneNumber(user.getPhoneNumber());
+		}
+
+		model.addAttribute("orderForm", orderForm);
 
 		return "client/order/address_input";
 	}
@@ -211,6 +230,11 @@ public class ClientOrderRegistController {
 
 		// 商品ID,注文数取得
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
+
+		//ページ更新時にトップ画面へ
+		if (orderForm == null || basketBeans == null) {
+			return "redirect:/";
+		}
 
 		// ログイン会員情報取得
 		UserBean userBean = (UserBean) session.getAttribute("user");
