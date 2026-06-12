@@ -219,6 +219,7 @@ public class ClientOrderRegistController {
 	 * 問題ない場合注文情報と注文商品情報をデータベースへ登録する。
 	 * また、商品の在庫数を更新し、
 	 * 注文完了後にセッション情報を削除する。
+	 * ページ更新時はトップページへ遷移する。
 	 * @param session セッション情報
 	 * @return 注文完了画面
 	 */
