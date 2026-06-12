@@ -231,8 +231,7 @@ public class ClientUserUpdateController {
 		session.removeAttribute("userForm");
 
 		// 変更完了画面　表示処理
-		//二重送信防止のためリダイレクトを行う
-		return "redirect:/client/user/update/complete";
+		return "client/user/update/complete";
 
 	}
 
