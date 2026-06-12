@@ -48,7 +48,12 @@ public class ClientOrderShowController {
 
 	//普通に開くとき→GET、詳細画面から戻るとき→POST
 	@RequestMapping(path = "/client/order/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showOrderList(Model model) {
+	public String showOrderList(Model model, HttpSession session) {
+
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		if (userBean == null) {
+			return "redirect:/login";
+		}
 
 		// ordersテーブルから注文情報を全件取得
 		List<Order> orders = orderRepository.findAll();
