@@ -48,7 +48,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			FROM OrderItem oi
 			WHERE oi.item.deleteFlag = 0
 			GROUP BY oi.item
-			ORDER BY SUM(oi.quantity) DESC
+			ORDER BY SUM(oi.quantity) DESC, oi.item.insertDate DESC
 			""")
 	List<Item> findPopularItems();
 
@@ -61,7 +61,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			WHERE oi.item.category.id = :categoryId
 			AND oi.item.deleteFlag = 0
 			GROUP BY oi.item
-			ORDER BY SUM(oi.quantity) DESC
+			ORDER BY SUM(oi.quantity) DESC, oi.item.insertDate DESC
 			""")
 	List<Item> findPopularItemsByCategoryId(
 			@Param("categoryId") Integer categoryId);
