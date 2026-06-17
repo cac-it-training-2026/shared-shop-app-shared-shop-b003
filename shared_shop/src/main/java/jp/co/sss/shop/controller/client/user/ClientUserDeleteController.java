@@ -122,11 +122,11 @@ public class ClientUserDeleteController {
 		System.out.println(session.getAttribute("user.name"));
 
 		// セッションに保存されている情報全部削除
-		session.removeAttribute("userForm");
-		session.removeAttribute("basketBeans");
-		session.removeAttribute("user");
+		//		session.removeAttribute("userForm");
+		//		session.removeAttribute("basketBeans");
+		//		session.removeAttribute("user");
 
-		// session.invalidate();
+		session.invalidate();
 
 		// 削除完了画面　表示処理
 		return "redirect:/client/user/delete/complete";
