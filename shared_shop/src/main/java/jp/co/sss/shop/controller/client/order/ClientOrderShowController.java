@@ -55,8 +55,7 @@ public class ClientOrderShowController {
 			return "redirect:/login";
 		}
 
-		// ordersテーブルから注文情報を全件取得
-		List<Order> orders = orderRepository.findAll();
+		List<Order> orders = orderRepository.findByUserId(userBean.getId());
 		model.addAttribute("orders", orders);
 
 		return "client/order/list";
