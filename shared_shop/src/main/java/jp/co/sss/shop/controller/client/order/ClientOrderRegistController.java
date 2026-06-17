@@ -153,7 +153,7 @@ public class ClientOrderRegistController {
 			Item item = itemRepository.getReferenceById(basketBean.getId());
 
 			// 在庫0の場合は注文対象から外す
-			if (item.getStock() == 0) {
+			if (item.getStock() == 0 || item.getDeleteFlag() == 1) {
 				itemNameListZero.add(item.getName());
 				continue;
 			}
@@ -260,7 +260,7 @@ public class ClientOrderRegistController {
 			Item item = itemRepository.getReferenceById(basketBean.getId());
 
 			// 在庫0の商品は注文対象から外す
-			if (item.getStock() == 0) {
+			if (item.getStock() == 0 || item.getDeleteFlag() == 1) {
 				itemNameListZero.add(item.getName());
 				continue;
 			}
