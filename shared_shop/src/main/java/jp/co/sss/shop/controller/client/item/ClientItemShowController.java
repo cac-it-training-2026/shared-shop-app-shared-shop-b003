@@ -28,6 +28,7 @@ import jp.co.sss.shop.util.Constant;
 public class ClientItemShowController {
 	/**
 	 * 商品情報
+	 * DBから商品を取得するクラスを使えるようにする
 	 */
 	@Autowired
 	ItemRepository itemRepository;
@@ -38,6 +39,9 @@ public class ClientItemShowController {
 	@Autowired
 	BeanTools beanTools;
 
+	/**
+	 * カテゴリ一覧を取得する
+	 */
 	@Autowired
 	CategoryRepository categoryRepository;
 
@@ -64,7 +68,7 @@ public class ClientItemShowController {
 		// 初期値：売れ筋順
 		Integer sortType = 2;
 
-		// 売れ筋順取得
+		// 売れ筋順取得（@Queryメソッドの呼び出し）
 		List<Item> itemList = itemRepository.findPopularItems();
 
 		// 売れ筋商品がない場合
@@ -73,14 +77,14 @@ public class ClientItemShowController {
 			// 新着順へ変更
 			sortType = 1;
 
-			// 新着順をDBから取得
+			// 削除されていない商品を新着順でDBから取得
 			itemList = itemRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED);
 		}
 
-		// エンティティ内の検索結果をJavaBeansにコピー
+		// エンティティ内の検索結果をJavaBeansにコピー（画面用に変換）
 		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
 
-		// 商品情報をViewへ渡す
+		// 商品情報をView（画面）へ渡す（商品一覧、並び順、カテゴリ一覧）
 		model.addAttribute("items", itemBeanList);
 		model.addAttribute("sortType", sortType);
 		model.addAttribute("categories", categoryRepository.findAll());
@@ -96,6 +100,7 @@ public class ClientItemShowController {
 	
 	 */
 
+	//sortType→URLから取る（1or2）、categoryId→リクエストパラメータ（?categoryId=1）
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public String showItemSort(@PathVariable Integer sortType, Integer categoryId, Model model) {
@@ -146,7 +151,6 @@ public class ClientItemShowController {
 		model.addAttribute("categories", categoryRepository.findAll());
 
 		// カテゴリ検索の内容を画面遷移しても保持する
-
 		model.addAttribute("categoryId", categoryId);
 
 		return "client/item/list";

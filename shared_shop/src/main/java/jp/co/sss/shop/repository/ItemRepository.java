@@ -21,6 +21,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	/**
 	 * 商品一覧を新着順で取得
+	 * メソッド名だけでSQL生成（JPA）
 	 */
 	/**
 	 * @author Emi shioda
@@ -37,11 +38,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	/**
 	 * 売れ筋順
-	 * 注文商品テーブル（OrderItem）から
-	 * ・商品ごとに集計
-	 * ・quantity毎に集計
-	 * ・多い順
-	 * に並べる
+	 * 注文商品テーブル（OrderItem）から削除されていない商品（deleteFlag=0）
+	 * ・商品ごとにまとめる
+	 * ・注文数（quantity）が多い順
+	 * ・同じ習新着順
+	 * を取り出し並べる
 	 */
 	@Query("""
 			SELECT oi.item
@@ -63,6 +64,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 			GROUP BY oi.item
 			ORDER BY SUM(oi.quantity) DESC, oi.item.insertDate DESC
 			""")
+
+	//@Param("categoryId")→引数と紐づけ
 	List<Item> findPopularItemsByCategoryId(
 			@Param("categoryId") Integer categoryId);
 
