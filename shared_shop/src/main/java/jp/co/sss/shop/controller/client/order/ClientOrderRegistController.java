@@ -120,7 +120,7 @@ public class ClientOrderRegistController {
 	 * 注文確認画面に表示する情報を作成する。
 	 * 
 	 * @param payMethod 選択された支払方法
-	 * @param sessionセッション情報
+	 * @param session セッション情報
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return 注文確認画面
 	 */
