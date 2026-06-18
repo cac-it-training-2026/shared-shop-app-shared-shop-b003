@@ -38,7 +38,6 @@ public class ClientUserDeleteController {
 	/**
 	 * 会員情報削除確認処理
 	 * 
-	 * @param id 削除対象ID
 	 * @return "delete_check" 削除確認画面 表示
 	 *
 	 */
