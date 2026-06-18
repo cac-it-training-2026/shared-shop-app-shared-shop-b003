@@ -21,7 +21,7 @@ import jp.co.sss.shop.repository.OrderRepository;
 
 /**
  * 注文一覧表示のコントローラー
- * @autor hayato takahashi
+ * @author hayato takahashi
  */
 @Controller
 
