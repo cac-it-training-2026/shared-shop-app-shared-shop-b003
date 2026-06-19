@@ -48,12 +48,12 @@ public class GachaService {
 			return null;
 		}
 
-		// 抽選ロジック (10%の確率で当選)
+		// 抽選ロジック (50%の確率で当選)
 		int roll = random.nextInt(100);
 		Coupon wonCoupon = null;
 		String outcome = "lose";
 
-		if (roll < 10) { // 10% 当選
+		if (roll < 50) { // 50% 当選
 			outcome = "win";
 			wonCoupon = createCouponForUser(userId);
 		}
