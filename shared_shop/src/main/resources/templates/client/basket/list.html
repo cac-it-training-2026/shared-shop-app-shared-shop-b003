@@ -51,6 +51,27 @@
 				<td th:if="${item.stock >= 1 and 5 >= item.stock }" th:text="${item.stock}"></td>
 			</tr>
 		</table>
+
+		<div class="coupon_area" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+			<h3>クーポン利用</h3>
+			<p th:if="${couponError != null}" style="color: red;" th:text="${couponError}"></p>
+			<form th:action="@{/client/basket/applyCoupon}" method="post">
+				クーポンコード: <input type="text" name="code" th:value="${session.coupon != null ? session.coupon.code : ''}" />
+				<input type="submit" value="適用" />
+			</form>
+			<div th:if="${session.coupon != null}" style="margin-top: 10px;">
+				<p>適用中のクーポン: <span th:text="${session.coupon.code}"></span></p>
+				<p>割引額: <span th:text="${discount}"></span>円</p>
+			</div>
+		</div>
+
+		<div class="total_area" style="margin-top: 20px; text-align: right;">
+			<p>合計金額: <span th:text="${total}"></span>円</p>
+			<div th:if="${session.coupon != null}">
+				<p>割引適用後合計: <span style="font-size: 1.5em; color: red;" th:text="${discountedTotal}"></span>円</p>
+			</div>
+		</div>
+
 		<div class="user_info_form_area shopping_button">
 			<!--/* 注文手続きフォーム */-->
 			<form th:action="@{/client/order/address/input}" method="post">

@@ -80,6 +80,19 @@ public class Order {
 	private List<OrderItem> orderItemsList;
 
 	/**
+	 * クーポン情報
+	 */
+	@ManyToOne
+	@JoinColumn(name = "coupon_id", referencedColumnName = "id")
+	private Coupon coupon;
+
+	/**
+	 * 割引額
+	 */
+	@Column
+	private Integer discount;
+
+	/**
 	 * 注文IDの取得
 	 * @return 注文ID
 	 */
@@ -221,6 +234,38 @@ public class Order {
 	 */
 	public void setOrderItemsList(List<OrderItem> orderItemsList) {
 		this.orderItemsList = orderItemsList;
+	}
+
+	/**
+	 * クーポンの取得
+	 * @return クーポン
+	 */
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	/**
+	 * クーポンのセット
+	 * @param coupon クーポン
+	 */
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	/**
+	 * 割引額の取得
+	 * @return 割引額
+	 */
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	/**
+	 * 割引額のセット
+	 * @param discount 割引額
+	 */
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
 	}
 
 	/**
