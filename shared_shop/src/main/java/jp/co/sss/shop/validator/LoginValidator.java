@@ -1,12 +1,13 @@
 package jp.co.sss.shop.validator;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import jp.co.sss.shop.annotation.LoginCheck;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
@@ -43,30 +44,19 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 
 		User user = userRepository.findByEmailAndDeleteFlag(emailProp, Constant.NOT_DELETED);
 
+		if (user != null && user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+			// ロック中の場合は認証失敗とする
+			return false;
+		}
+
 		if (user != null && passwordProp.equals(user.getPassword())) {
 			UserBean userBean = new UserBean();
 
 			userBean.setId(user.getId());
 			userBean.setName(user.getName());
 			userBean.setAuthority(user.getAuthority());
-
-			if (user.getThemeId() == null) {
-				userBean.setThemeId(1);
-			} else {
-				userBean.setThemeId(user.getThemeId());
-			}
-
-			if (user.getPurchaseCount() == null) {
-				userBean.setPurchaseCount(0);
-			} else {
-				userBean.setPurchaseCount(user.getPurchaseCount());
-			}
-
-			if (user.getTotalPurchaseAmount() == null) {
-				userBean.setTotalPurchaseAmount(0);
-			} else {
-				userBean.setTotalPurchaseAmount(user.getTotalPurchaseAmount());
-			}
+			userBean.setRole(user.getRole());
+			userBean.setGachaCount(user.getGachaCount());
 
 			// セッションスコープにログインしたユーザの情報を登録
 			session.setAttribute("user", userBean);

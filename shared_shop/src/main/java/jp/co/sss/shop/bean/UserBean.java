@@ -40,19 +40,14 @@ public class UserBean {
 	private Integer authority;
 
 	/**
-	 * テーマID
+	 * 権限（ロール）
 	 */
-	private Integer themeId;
+	private String role;
 
 	/**
-	 * 購入回数
+	 * ガチャチケット所持数
 	 */
-	private Integer purchaseCount;
-
-	/**
-	 * 累計購入金額
-	 */
-	private Integer totalPurchaseAmount;
+	private Integer gachaCount;
 
 	/**
 	 * 会員IDの取得
@@ -183,45 +178,35 @@ public class UserBean {
 	}
 
 	/**
-	 * @return themeId
+	 * 権限（ロール）の取得
+	 * @return 権限（ロール）
 	 */
-	public Integer getThemeId() {
-		return themeId;
+	public String getRole() {
+		return role;
 	}
 
 	/**
-	 * @param themeId セットする themeId
+	 * 権限（ロール）のセット
+	 * @param role 権限（ロール）
 	 */
-	public void setThemeId(Integer themeId) {
-		this.themeId = themeId;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	/**
-	 * @return purchaseCount
+	 * ガチャチケット所持数の取得
+	 * @return ガチャチケット所持数
 	 */
-	public Integer getPurchaseCount() {
-		return purchaseCount;
+	public Integer getGachaCount() {
+		return gachaCount;
 	}
 
 	/**
-	 * @param purchaseCount セットする purchaseCount
+	 * ガチャチケット所持数のセット
+	 * @param gachaCount ガチャチケット所持数
 	 */
-	public void setPurchaseCount(Integer purchaseCount) {
-		this.purchaseCount = purchaseCount;
-	}
-
-	/**
-	 * @return totalPurchaseAmount
-	 */
-	public Integer getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
-	}
-
-	/**
-	 * @param totalPurchaseAmount セットする totalPurchaseAmount
-	 */
-	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
+	public void setGachaCount(Integer gachaCount) {
+		this.gachaCount = gachaCount;
 	}
 
 }

@@ -82,22 +82,28 @@ public class User {
 	private Date insertDate;
 
 	/**
-	 * テーマID
+	 * 権限（ロール） "ADMIN", "USER"
 	 */
 	@Column
-	private Integer themeId;
+	private String role;
 
 	/**
-	 * 購入回数
+	 * ログイン失敗回数
 	 */
 	@Column
-	private Integer purchaseCount;
+	private Integer failedLoginCount = 0;
 
 	/**
-	 * 累計購入金額
+	 * ロック期限
 	 */
 	@Column
-	private Integer totalPurchaseAmount;
+	private java.sql.Timestamp lockedUntil;
+
+	/**
+	 * ガチャチケット所持数
+	 */
+	@Column
+	private Integer gachaCount = 0;
 
 	/**
 	 * 会員IDの取得
@@ -260,44 +266,66 @@ public class User {
 	}
 
 	/**
-	 * @return themeId
+	 * 権限（ロール）の取得
+	 * @return 権限（ロール）
 	 */
-	public Integer getThemeId() {
-		return themeId;
+	public String getRole() {
+		return role;
 	}
 
 	/**
-	 * @param themeId セットする themeId
+	 * 権限（ロール）のセット
+	 * @param role 権限（ロール）
 	 */
-	public void setThemeId(Integer themeId) {
-		this.themeId = themeId;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	/**
-	 * @return purchaseCount
+	 * ログイン失敗回数の取得
+	 * @return ログイン失敗回数
 	 */
-	public Integer getPurchaseCount() {
-		return purchaseCount;
+	public Integer getFailedLoginCount() {
+		return failedLoginCount;
 	}
 
 	/**
-	 * @param purchaseCount セットする purchaseCount
+	 * ログイン失敗回数のセット
+	 * @param failedLoginCount ログイン失敗回数
 	 */
-	public void setPurchaseCount(Integer purchaseCount) {
-		this.purchaseCount = purchaseCount;
+	public void setFailedLoginCount(Integer failedLoginCount) {
+		this.failedLoginCount = failedLoginCount;
 	}
 
 	/**
-	 * @return totalPurchaseAmount
+	 * ロック期限の取得
+	 * @return ロック期限
 	 */
-	public Integer getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
+	public java.sql.Timestamp getLockedUntil() {
+		return lockedUntil;
 	}
 
 	/**
-	 * @param totalPurchaseAmount セットする totalPurchaseAmount
+	 * ロック期限のセット
+	 * @param lockedUntil ロック期限
 	 */
-	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
+	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
+		this.lockedUntil = lockedUntil;
+	}
+
+	/**
+	 * ガチャチケット所持数の取得
+	 * @return ガチャチケット所持数
+	 */
+	public Integer getGachaCount() {
+		return gachaCount;
+	}
+
+	/**
+	 * ガチャチケット所持数のセット
+	 * @param gachaCount ガチャチケット所持数
+	 */
+	public void setGachaCount(Integer gachaCount) {
+		this.gachaCount = gachaCount;
 	}
 }

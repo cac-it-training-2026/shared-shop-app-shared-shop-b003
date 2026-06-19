@@ -54,4 +54,10 @@ public class Constant {
 	/** 権限の値(一般会員) */
 	public static final int AUTH_CLIENT = 2;
 
+	/** ロール名(管理者) */
+	public static final String ROLE_ADMIN = "ADMIN";
+
+	/** ロール名(一般ユーザー) */
+	public static final String ROLE_USER = "USER";
+
 }
