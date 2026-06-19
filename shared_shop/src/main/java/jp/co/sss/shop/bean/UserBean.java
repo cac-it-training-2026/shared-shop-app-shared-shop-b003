@@ -40,6 +40,31 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * テーマID
+	 */
+	private Integer themeId;
+
+	/**
+	 * 購入回数
+	 */
+	private Integer purchaseCount;
+
+	/**
+	 * 累計購入金額
+	 */
+	private Integer totalPurchaseAmount;
+
+	/**
+	 * ログイン失敗回数
+	 */
+	private Integer failedLoginCount;
+
+	/**
+	 * ロック解除日時
+	 */
+	private java.sql.Timestamp lockedUntil;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -167,4 +192,73 @@ public class UserBean {
 		this.authority = authority;
 	}
 
+	/**
+	 * @return themeId
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * @param themeId セットする themeId
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
+	}
+
+	/**
+	 * @return purchaseCount
+	 */
+	public Integer getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	/**
+	 * @param purchaseCount セットする purchaseCount
+	 */
+	public void setPurchaseCount(Integer purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+
+	/**
+	 * @return totalPurchaseAmount
+	 */
+	public Integer getTotalPurchaseAmount() {
+		return totalPurchaseAmount;
+	}
+
+	/**
+	 * @param totalPurchaseAmount セットする totalPurchaseAmount
+	 */
+	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
+	}
+
+	/**
+	 * @return failedLoginCount
+	 */
+	public Integer getFailedLoginCount() {
+		return failedLoginCount;
+	}
+
+	/**
+	 * @param failedLoginCount セットする failedLoginCount
+	 */
+	public void setFailedLoginCount(Integer failedLoginCount) {
+		this.failedLoginCount = failedLoginCount;
+	}
+
+	/**
+	 * @return lockedUntil
+	 */
+	public java.sql.Timestamp getLockedUntil() {
+		return lockedUntil;
+	}
+
+	/**
+	 * @param lockedUntil セットする lockedUntil
+	 */
+	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
+		this.lockedUntil = lockedUntil;
+	}
 }
