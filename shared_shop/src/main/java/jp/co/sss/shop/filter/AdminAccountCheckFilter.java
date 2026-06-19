@@ -25,22 +25,14 @@ public class AdminAccountCheckFilter extends HttpFilter {
 
 		// リクエストURLを取得
 		String requestURL = request.getRequestURI();
-		if (!URLCheck.istURLForAdmin(requestURL)) {
+		if (URLCheck.isURLForAdmin(requestURL)) {
 			// セッション情報を取得
 			HttpSession session = request.getSession();
+			UserBean user = (UserBean) session.getAttribute("user");
 
-			if (session.getAttribute("user") != null) {
-				UserBean user = (UserBean) session.getAttribute("user");
-
-				if (user.getAuthority() == Constant.AUTH_ADMIN) {
-					// セッション情報を削除
-					session.invalidate();
-
-					// ログイン画面にリダイレクト
-					response.sendRedirect(request.getContextPath() + "/login");
-				} else {
-					chain.doFilter(request, response);
-				}
+			if (user == null || !"ADMIN".equals(user.getRole())) {
+				// 管理者でない場合、403エラー画面またはログイン画面へ
+				response.sendRedirect(request.getContextPath() + "/login");
 			} else {
 				chain.doFilter(request, response);
 			}

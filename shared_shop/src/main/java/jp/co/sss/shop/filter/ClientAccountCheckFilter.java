@@ -24,31 +24,9 @@ public class ClientAccountCheckFilter extends HttpFilter {
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		// リクエストURLを取得
-		String requestURL = request.getRequestURI();
-		
-		if (!URLCheck.isURLForClient(requestURL,request.getContextPath())) {
-			// セッション情報を取得
-			HttpSession session = request.getSession();
-
-			if (session.getAttribute("user") != null) {
-				UserBean user = (UserBean) session.getAttribute("user");
-
-				if (user.getAuthority() == Constant.AUTH_CLIENT) {
-					// セッション情報を削除
-					session.invalidate();
-
-					// ログイン画面にリダイレクト
-					response.sendRedirect(request.getContextPath() + "/login");
-				} else {
-					chain.doFilter(request, response);
-				}
-			} else {
-				chain.doFilter(request, response);
-			}
-		} else {
-			chain.doFilter(request, response);
-		}
+		// 一般会員用URLのチェックが必要な場合はここに追加するが、
+		// 現状は全ユーザー(ADMIN, USER)が一般画面を見れる想定
+		chain.doFilter(request, response);
 
 	}
 

@@ -24,32 +24,8 @@ public class SystemAdminAccountCheckFilter extends HttpFilter {
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		// リクエストURLを取得
-		String requestURL = request.getRequestURI();
-
-		if (!URLCheck.isURLForSystemAdmin(requestURL)) {
-			// セッション情報を取得
-			HttpSession session = request.getSession();
-
-			if (session.getAttribute("user") != null) {
-				UserBean user = (UserBean) session.getAttribute("user");
-
-				if (user.getAuthority() == Constant.AUTH_SYSTEM) {
-					// セッション情報を削除
-					session.invalidate();
-
-
-					// ログイン画面にリダイレクト
-					response.sendRedirect(request.getContextPath() + "/login");
-				} else {
-					chain.doFilter(request, response);
-				}
-			} else {
-				chain.doFilter(request, response);
-			}
-		} else {
-			chain.doFilter(request, response);
-		}
+		// ADMINロールのチェックに集約されるため、個別のチェックは不要
+		chain.doFilter(request, response);
 	}
 
 

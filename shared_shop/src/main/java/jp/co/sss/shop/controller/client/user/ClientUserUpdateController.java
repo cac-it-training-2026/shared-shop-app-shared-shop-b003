@@ -217,6 +217,9 @@ public class ClientUserUpdateController {
 		user.setDeleteFlag(deleteFlag);
 		user.setInsertDate(insertDate);
 
+		// ロールを更新（一般ユーザーは常に"USER"）
+		user.setRole(Constant.ROLE_USER);
+
 		// DBを更新
 		userRepository.save(user);
 
