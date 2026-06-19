@@ -72,8 +72,8 @@ public class LoginController {
 			//セッションスコープから権限を取り出す
 			Integer authority = ((UserBean) session.getAttribute("user")).getAuthority();
 			if (authority.intValue() == Constant.AUTH_CLIENT) {
-				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
-				returnStr = "redirect:/";
+				// 一般会員ログインした場合、ガチャ画面表示処理にリダイレクト
+				returnStr = "redirect:/client/gacha";
 			} else {
 
 				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
