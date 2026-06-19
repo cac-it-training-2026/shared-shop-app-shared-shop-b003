@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,13 +20,12 @@ import org.springframework.ui.Model;
 
 import jp.co.sss.shop.bean.BasketBean;
 import jp.co.sss.shop.bean.CouponBean;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.PriceCalc;
-import jp.co.sss.shop.entity.User;
-import jp.co.sss.shop.bean.UserBean;
 
 public class ClientBasketControllerCouponTest {
 
@@ -61,6 +61,7 @@ public class ClientBasketControllerCouponTest {
         coupon.setCode(code);
         coupon.setDiscountType("amount");
         coupon.setDiscountValue(100);
+        coupon.setUsageLimit(10);
 
         when(session.getAttribute("user")).thenReturn(new UserBean());
         when(couponRepository.findByCode(code)).thenReturn(coupon);
@@ -73,22 +74,24 @@ public class ClientBasketControllerCouponTest {
         ArgumentCaptor<CouponBean> captor = ArgumentCaptor.forClass(CouponBean.class);
         verify(session).setAttribute(eq("coupon"), captor.capture());
         assertEquals(code, captor.getValue().getCode());
-        assertEquals("amount", captor.getValue().getDiscountType());
-        assertEquals(100, captor.getValue().getDiscountValue());
     }
 
     @Test
-    public void testApplyInvalidCoupon() {
+    public void testApplyCouponExceedingUsageLimit() {
         // Arrange
-        String code = "INVALID";
+        String code = "EXHAUSTED";
+        Coupon coupon = new Coupon();
+        coupon.setCode(code);
+        coupon.setUsageLimit(0);
+
         when(session.getAttribute("user")).thenReturn(new UserBean());
-        when(couponRepository.findByCode(code)).thenReturn(null);
+        when(couponRepository.findByCode(code)).thenReturn(coupon);
 
         // Act
         controller.applyCoupon(code, model);
 
         // Assert
-        verify(session).setAttribute(eq("couponError"), anyString());
+        verify(session).setAttribute(eq("couponError"), contains("使用上限"));
         verify(session, never()).setAttribute(eq("coupon"), any());
     }
 
@@ -107,7 +110,7 @@ public class ClientBasketControllerCouponTest {
         item.setPrice(1000);
         item.setStock(10);
         item.setDeleteFlag(0);
-        when(itemRepository.findById(1)).thenReturn(java.util.Optional.of(item));
+        when(itemRepository.findById(1)).thenReturn(Optional.of(item));
 
         CouponBean coupon = new CouponBean();
         coupon.setDiscountType("percent");

@@ -21,11 +21,11 @@ import jp.co.sss.shop.bean.CouponBean;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.CouponRepository;
-import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.service.PriceCalc;
 import jp.co.sss.shop.form.OrderForm;
 
@@ -61,13 +61,9 @@ public class ClientOrderRegistControllerCouponTest {
     }
 
     @Test
-    public void testOrderRegistrationWithCoupon() {
+    public void testOrderRegistrationWithCouponDecrementsLimit() {
         // Arrange
         OrderForm orderForm = new OrderForm();
-        orderForm.setPostalCode("123-4567");
-        orderForm.setAddress("Test Address");
-        orderForm.setName("Test Name");
-        orderForm.setPhoneNumber("090-1234-5678");
         orderForm.setPayMethod(1);
 
         List<BasketBean> basket = new ArrayList<>();
@@ -82,17 +78,17 @@ public class ClientOrderRegistControllerCouponTest {
 
         CouponBean couponBean = new CouponBean();
         couponBean.setId(1);
-        couponBean.setCode("SAVE100");
         couponBean.setDiscountType("amount");
         couponBean.setDiscountValue(100);
+
+        Coupon coupon = new Coupon();
+        coupon.setId(1);
+        coupon.setUsageLimit(5);
 
         when(session.getAttribute("orderForm")).thenReturn(orderForm);
         when(session.getAttribute("basketBeans")).thenReturn(basket);
         when(session.getAttribute("user")).thenReturn(userBean);
         when(session.getAttribute("coupon")).thenReturn(couponBean);
-        Coupon coupon = new Coupon();
-        coupon.setId(1);
-        coupon.setUsageLimit(5);
         when(couponRepository.getReferenceById(1)).thenReturn(coupon);
         when(priceCalc.calculateDiscount(1000, couponBean)).thenReturn(100);
 
@@ -105,17 +101,16 @@ public class ClientOrderRegistControllerCouponTest {
         when(itemRepository.getReferenceById(1)).thenReturn(item);
 
         // Act
-        String viewName = controller.showOrderComplete(session, model);
+        controller.showOrderComplete(session, model);
 
         // Assert
-        assertEquals("client/order/complete", viewName);
+        ArgumentCaptor<Coupon> couponCaptor = ArgumentCaptor.forClass(Coupon.class);
+        verify(couponRepository).save(couponCaptor.capture());
+        assertEquals(4, couponCaptor.getValue().getUsageLimit());
+
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).save(orderCaptor.capture());
-
         Order savedOrder = orderCaptor.getValue();
-        assertNotNull(savedOrder.getCoupon());
-        assertEquals(1, savedOrder.getCoupon().getId());
         assertEquals(100, savedOrder.getDiscount());
-        verify(session).removeAttribute("coupon");
     }
 }

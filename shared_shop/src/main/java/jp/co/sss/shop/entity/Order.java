@@ -284,4 +284,16 @@ public class Order {
 		return total;
 	}
 
+	/**
+	 * 割引適用後の注文合計金額の取得
+	 * @return 割引適用後の注文合計金額
+	 */
+	public int getDiscountedTotal() {
+		int total = getTotal();
+		if (discount != null) {
+			total -= discount;
+		}
+		return Math.max(0, total);
+	}
+
 }
