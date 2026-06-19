@@ -51,6 +51,37 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 			userBean.setName(user.getName());
 			userBean.setAuthority(user.getAuthority());
 
+			Integer themeId = user.getThemeId() != null ? user.getThemeId() : 0;
+			Integer purchaseCount = user.getPurchaseCount() != null ? user.getPurchaseCount() : 0;
+			Integer totalPurchaseAmount = user.getTotalPurchaseAmount() != null ? user.getTotalPurchaseAmount() : 0;
+
+			userBean.setThemeId(themeId);
+			userBean.setPurchaseCount(purchaseCount);
+			userBean.setTotalPurchaseAmount(totalPurchaseAmount);
+
+			String themeClass = "theme-normal";
+			switch (themeId) {
+			case 1:
+				themeClass = "theme-sakura";
+				break;
+			case 2:
+				themeClass = "theme-ocean";
+				break;
+			case 3:
+				themeClass = "theme-game";
+				break;
+			case 4:
+				themeClass = "theme-space";
+				break;
+			case 5:
+				themeClass = "theme-gold";
+				break;
+			case 6:
+				themeClass = "theme-p3tech";
+				break;
+			}
+			userBean.setThemeClass(themeClass);
+
 			// セッションスコープにログインしたユーザの情報を登録
 			session.setAttribute("user", userBean);
 			isValidFlg = true;

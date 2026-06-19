@@ -43,6 +43,9 @@
 			<form th:action="@{/client/user/update/input}" method="post">
 				<input type="submit" value="変更" />
 			</form>
+			<form th:action="@{/client/theme/list}" method="get">
+				<input type="submit" value="着せ替え設定" />
+			</form>
 			<form th:action="@{/client/user/delete/check}" method="post">
 				<input type="submit" value="退会" class="delete" />
 			</form>

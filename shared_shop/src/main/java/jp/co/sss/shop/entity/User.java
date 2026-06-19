@@ -70,6 +70,24 @@ public class User {
 	private Integer authority;
 
 	/**
+	 * テーマID
+	 */
+	@Column
+	private Integer themeId;
+
+	/**
+	 * 購入回数
+	 */
+	@Column
+	private Integer purchaseCount;
+
+	/**
+	 * 累計購入金額
+	 */
+	@Column
+	private Integer totalPurchaseAmount;
+
+	/**
 	 * 削除フラグ 0:未削除、1:削除済み
 	 */
 	@Column(insertable = false)
@@ -207,6 +225,54 @@ public class User {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * テーマIDの取得
+	 * @return テーマID
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId テーマID
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
+	}
+
+	/**
+	 * 購入回数の取得
+	 * @return 購入回数
+	 */
+	public Integer getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	/**
+	 * 購入回数のセット
+	 * @param purchaseCount 購入回数
+	 */
+	public void setPurchaseCount(Integer purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+
+	/**
+	 * 累計購入金額の取得
+	 * @return 累計購入金額
+	 */
+	public Integer getTotalPurchaseAmount() {
+		return totalPurchaseAmount;
+	}
+
+	/**
+	 * 累計購入金額のセット
+	 * @param totalPurchaseAmount 累計購入金額
+	 */
+	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
 	}
 
 	/**
