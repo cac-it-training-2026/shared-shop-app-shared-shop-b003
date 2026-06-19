@@ -27,6 +27,7 @@ public class ClientAccountCheckFilter extends HttpFilter {
 		// リクエストURLを取得
 		String requestURL = request.getRequestURI();
 		
+		// 一般会員向けURLでない場合（管理者向けなど）にチェックを行う
 		if (!URLCheck.isURLForClient(requestURL,request.getContextPath())) {
 			// セッション情報を取得
 			HttpSession session = request.getSession();
@@ -34,7 +35,8 @@ public class ClientAccountCheckFilter extends HttpFilter {
 			if (session.getAttribute("user") != null) {
 				UserBean user = (UserBean) session.getAttribute("user");
 
-				if (user.getAuthority() == Constant.AUTH_CLIENT) {
+				// 一般会員が一般会員向けでないURLにアクセスした場合に弾く
+				if (user.getAuthority() == Constant.AUTH_CLIENT || "USER".equals(user.getRole())) {
 					// セッション情報を削除
 					session.invalidate();
 

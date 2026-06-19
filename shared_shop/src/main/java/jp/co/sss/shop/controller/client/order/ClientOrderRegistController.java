@@ -392,6 +392,44 @@ public class ClientOrderRegistController {
 	 * @param session セッション情報
 	 * @return 届け先入力画面
 	 */
+	/**
+	 * クーポン適用処理
+	 */
+	@PostMapping("/client/order/apply-coupon")
+	public String applyCoupon(@RequestParam("couponCode") String couponCode, HttpSession session) {
+		session.removeAttribute("couponError");
+		Coupon coupon = couponRepository.findByCode(couponCode);
+		if (coupon == null) {
+			session.setAttribute("couponError", "無効なクーポンコードです。");
+		} else {
+			// 有効期限のチェックなどのバリデーションは一旦省略もしくは現在時刻と比較
+			java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
+			if (coupon.getValidUntil() != null && coupon.getValidUntil().before(now)) {
+				session.setAttribute("couponError", "このクーポンは有効期限切れです。");
+			} else if (coupon.getValidFrom() != null && coupon.getValidFrom().after(now)) {
+				session.setAttribute("couponError", "このクーポンはまだ利用できません。");
+			} else {
+				session.setAttribute("appliedCoupon", coupon);
+			}
+		}
+
+		// 支払い方法にダミーの値を渡してcheckへリダイレクト
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+		return "redirect:/client/order/check?payMethod=" + (orderForm != null && orderForm.getPayMethod() != null ? orderForm.getPayMethod() : 1);
+	}
+
+	/**
+	 * クーポン解除処理
+	 */
+	@PostMapping("/client/order/remove-coupon")
+	public String removeCoupon(HttpSession session) {
+		session.removeAttribute("appliedCoupon");
+		session.removeAttribute("couponError");
+
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+		return "redirect:/client/order/check?payMethod=" + (orderForm != null && orderForm.getPayMethod() != null ? orderForm.getPayMethod() : 1);
+	}
+
 	@PostMapping("/client/order/payment/back")
 	public String paymentBack(Model model, HttpSession session) {
 

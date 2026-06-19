@@ -25,6 +25,8 @@ public class AdminAccountCheckFilter extends HttpFilter {
 
 		// リクエストURLを取得
 		String requestURL = request.getRequestURI();
+		// 管理者向けURLにアクセスした場合にチェックを行う
+		// isURLForAdminが「チェック対象であるか（＝非管理者向けURL等）」の挙動である元仕様に合わせ、! で判定します。
 		if (!URLCheck.istURLForAdmin(requestURL)) {
 			// セッション情報を取得
 			HttpSession session = request.getSession();
@@ -32,9 +34,9 @@ public class AdminAccountCheckFilter extends HttpFilter {
 			if (session.getAttribute("user") != null) {
 				UserBean user = (UserBean) session.getAttribute("user");
 
-				// 運用管理者権限のチェック (authority もしくは role によるチェック)
-				if (user.getAuthority() != Constant.AUTH_ADMIN && !"ADMIN".equals(user.getRole())) {
-					// アクセス権がない場合はセッション情報を削除してログイン画面にリダイレクト
+				// もしアクセスしたのが運用管理者でない場合（権限チェック）
+				if (user.getAuthority() == Constant.AUTH_ADMIN || "ADMIN".equals(user.getRole())) {
+					// 運用管理者が運用管理者向けでない画面(client向け等)にアクセスした場合は弾く（元々の仕様）
 					session.invalidate();
 					response.sendRedirect(request.getContextPath() + "/login");
 				} else {

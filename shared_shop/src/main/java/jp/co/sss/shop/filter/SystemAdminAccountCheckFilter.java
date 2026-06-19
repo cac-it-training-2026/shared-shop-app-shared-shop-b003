@@ -27,6 +27,7 @@ public class SystemAdminAccountCheckFilter extends HttpFilter {
 		// リクエストURLを取得
 		String requestURL = request.getRequestURI();
 
+		// URLがシステム管理者向けのものではない場合
 		if (!URLCheck.isURLForSystemAdmin(requestURL)) {
 			// セッション情報を取得
 			HttpSession session = request.getSession();
@@ -34,9 +35,9 @@ public class SystemAdminAccountCheckFilter extends HttpFilter {
 			if (session.getAttribute("user") != null) {
 				UserBean user = (UserBean) session.getAttribute("user");
 
-				// システム管理者権限のチェック
-				if (user.getAuthority() != Constant.AUTH_SYSTEM && !"SYSTEM_ADMIN".equals(user.getRole())) {
-					// アクセス権がない場合はセッション情報を削除してログイン画面にリダイレクト
+				// ユーザーがシステム管理者の場合（システム管理者がシステム管理者向けでないページにアクセスした場合に弾く元仕様）
+				if (user.getAuthority() == Constant.AUTH_SYSTEM || "SYSTEM_ADMIN".equals(user.getRole())) {
+					// セッション情報を削除
 					session.invalidate();
 					response.sendRedirect(request.getContextPath() + "/login");
 				} else {
