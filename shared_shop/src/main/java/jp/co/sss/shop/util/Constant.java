@@ -60,4 +60,10 @@ public class Constant {
 	/** ロール名(一般ユーザー) */
 	public static final String ROLE_USER = "USER";
 
+	/** テーマCSSクラス名リスト */
+	public static final String[] THEME_CLASSES = {
+		"theme-normal", "theme-sakura", "theme-ocean", "theme-game",
+		"theme-space", "theme-gold", "theme-p3tech"
+	};
+
 }

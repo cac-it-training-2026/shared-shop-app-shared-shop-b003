@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+    <title>所持クーポン | シェアードショップ</title>
+    <meta charset="UTF-8" />
+</head>
+<body class="user coupon_list">
+    <h2 class="title">所持クーポン一覧</h2>
+
+    <div th:if="${#lists.isEmpty(userCoupons)}">
+        <p>現在利用可能なクーポンはありません。</p>
+    </div>
+
+    <div class="item_list" th:unless="${#lists.isEmpty(userCoupons)}">
+        <table class="list_table">
+            <thead>
+                <tr>
+                    <th>クーポンコード</th>
+                    <th>内容</th>
+                    <th>有効期限</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="userCoupon : ${userCoupons}">
+                    <td th:text="${userCoupon.coupon.code}"></td>
+                    <td>
+                        <span th:text="${userCoupon.coupon.discountValue}"></span>
+                        <span th:text="${userCoupon.coupon.discountType == 'percent' ? '%' : '円'}"></span> 割引
+                    </td>
+                    <td th:text="${#dates.format(userCoupon.coupon.validUntil, 'yyyy/MM/dd HH:mm')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="back_link">
+        <a th:href="@{/}" th:text="#{msg.back.to.top}"></a>
+    </div>
+</body>
+</html>

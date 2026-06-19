@@ -58,6 +58,14 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 			userBean.setRole(user.getRole());
 			userBean.setGachaCount(user.getGachaCount());
 
+			// テーマ設定
+			int themeId = (user.getThemeId() == null) ? 0 : user.getThemeId();
+			if (themeId >= 0 && themeId < Constant.THEME_CLASSES.length) {
+				userBean.setThemeClass(Constant.THEME_CLASSES[themeId]);
+			} else {
+				userBean.setThemeClass(Constant.THEME_CLASSES[0]);
+			}
+
 			// セッションスコープにログインしたユーザの情報を登録
 			session.setAttribute("user", userBean);
 			isValidFlg = true;

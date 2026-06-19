@@ -106,6 +106,24 @@ public class User {
 	private Integer gachaCount = 0;
 
 	/**
+	 * 現在のテーマID
+	 */
+	@Column
+	private Integer themeId = 0;
+
+	/**
+	 * 累計購入回数
+	 */
+	@Column
+	private Integer purchaseCount = 0;
+
+	/**
+	 * 累計購入金額
+	 */
+	@Column
+	private Integer totalPurchaseAmount = 0;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -327,5 +345,53 @@ public class User {
 	 */
 	public void setGachaCount(Integer gachaCount) {
 		this.gachaCount = gachaCount;
+	}
+
+	/**
+	 * テーマIDの取得
+	 * @return themeId
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId themeId
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
+	}
+
+	/**
+	 * 購入回数の取得
+	 * @return purchaseCount
+	 */
+	public Integer getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	/**
+	 * 購入回数のセット
+	 * @param purchaseCount purchaseCount
+	 */
+	public void setPurchaseCount(Integer purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+
+	/**
+	 * 累計購入金額の取得
+	 * @return totalPurchaseAmount
+	 */
+	public Integer getTotalPurchaseAmount() {
+		return totalPurchaseAmount;
+	}
+
+	/**
+	 * 累計購入金額のセット
+	 * @param totalPurchaseAmount totalPurchaseAmount
+	 */
+	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
 	}
 }

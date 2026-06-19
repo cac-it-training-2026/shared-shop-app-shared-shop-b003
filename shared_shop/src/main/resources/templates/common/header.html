@@ -10,6 +10,8 @@
 		<a th:href="@{/client/gacha}" class="gacha_link" th:if="${session.user.gachaCount > 0}">
 			ガチャ(<span th:text="${session.user.gachaCount}"></span>)
 		</a>
+		<a th:href="@{/client/coupon/list}" class="coupon_link">クーポン</a> |
+		<a th:href="@{/client/theme/list}" class="theme_link">着せ替え</a> |
 		<a th:href="@{/client/user/detail}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}" th:text="#{logout}"></a>
 	</div>
 	<div th:if="${session.user != null and session.user.role == 'ADMIN'}" class="user_info">

@@ -3,6 +3,9 @@ ALTER TABLE users ADD role VARCHAR2(10) DEFAULT 'USER';
 ALTER TABLE users ADD failed_login_count NUMBER(10) DEFAULT 0;
 ALTER TABLE users ADD locked_until TIMESTAMP;
 ALTER TABLE users ADD gacha_count NUMBER(10) DEFAULT 0;
+ALTER TABLE users ADD theme_id NUMBER(10) DEFAULT 0;
+ALTER TABLE users ADD purchase_count NUMBER(10) DEFAULT 0;
+ALTER TABLE users ADD total_purchase_amount NUMBER(10) DEFAULT 0;
 
 -- Issue #7: Coupon table
 CREATE TABLE coupons (
@@ -31,6 +34,16 @@ CREATE TABLE gacha_logs (
 );
 
 CREATE SEQUENCE seq_gacha_logs START WITH 1 INCREMENT BY 1;
+
+-- Issue #10: User Coupon table
+CREATE TABLE user_coupons (
+    id NUMBER(10) PRIMARY KEY,
+    user_id NUMBER(10) NOT NULL,
+    coupon_id NUMBER(10) NOT NULL,
+    used_flag NUMBER(1) DEFAULT 0 NOT NULL
+);
+
+CREATE SEQUENCE seq_user_coupons START WITH 1 INCREMENT BY 1;
 
 -- Sample Coupons
 INSERT INTO coupons (id, code, discount_type, discount_value, valid_from, valid_until, created_by)

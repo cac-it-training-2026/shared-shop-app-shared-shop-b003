@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.GachaLog;
 import jp.co.sss.shop.entity.User;
+import jp.co.sss.shop.entity.UserCoupon;
 import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.GachaLogRepository;
+import jp.co.sss.shop.repository.UserCouponRepository;
 import jp.co.sss.shop.repository.UserRepository;
 
 @Service
@@ -26,6 +28,9 @@ public class GachaService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserCouponRepository userCouponRepository;
 
     private final Random random = new Random();
 
@@ -58,6 +63,14 @@ public class GachaService {
                 log.setOutcome("WIN");
                 log.setCouponId(wonCoupon.getId());
                 gachaLogRepository.save(log);
+
+                // ユーザーにクーポンを紐付ける
+                UserCoupon userCoupon = new UserCoupon();
+                userCoupon.setUser(user);
+                userCoupon.setCoupon(wonCoupon);
+                userCoupon.setUsedFlag(0);
+                userCouponRepository.save(userCoupon);
+
                 return new GachaResult(true, wonCoupon);
             }
         }
