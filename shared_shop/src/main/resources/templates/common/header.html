@@ -6,15 +6,10 @@
 <body>
 <div th:fragment="layout-header" class="container">
 	<h1 th:class="site_title" th:text="#{shop.title}"></h1>
-	<div th:if="${session.user != null and session.user.role == 'USER'}" class="user_info">
-		<a th:href="@{/client/gacha}" class="gacha_link" th:if="${session.user.gachaCount > 0}">
-			ガチャ(<span th:text="${session.user.gachaCount}"></span>)
-		</a>
-		<a th:href="@{/client/coupon/list}" class="coupon_link">クーポン</a> |
-		<a th:href="@{/client/theme/list}" class="theme_link">着せ替え</a> |
+	<div th:if="${session.user != null and session.user.authority == 2}" class="user_info">
 		<a th:href="@{/client/user/detail}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}" th:text="#{logout}"></a>
 	</div>
-	<div th:if="${session.user != null and session.user.role == 'ADMIN'}" class="user_info">
+	<div th:if="${session.user != null and (session.user.authority == 0 or session.user.authority == 1)}" class="user_info">
 		<a th:href="@{/admin/user/detail/{id}(id=${session.user.id})}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}" th:text="#{logout}"></a>
 	</div>
 	<div th:if="${session.user == null}" class="user_info">

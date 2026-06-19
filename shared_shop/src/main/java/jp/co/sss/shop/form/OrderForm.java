@@ -57,11 +57,6 @@ public class OrderForm implements Serializable {
 	private Integer payMethod;
 
 	/**
-	 * 使用するユーザークーポンID
-	 */
-	private Integer userCouponId;
-
-	/**
 	 * 注文するユーザIDの取得
 	 * @return 注文するユーザID
 	 */
@@ -157,20 +152,5 @@ public class OrderForm implements Serializable {
 		this.payMethod = payMethod;
 	}
 
-	/**
-	 * 使用するユーザークーポンIDの取得
-	 * @return userCouponId
-	 */
-	public Integer getUserCouponId() {
-		return userCouponId;
-	}
-
-	/**
-	 * 使用するユーザークーポンIDのセット
-	 * @param userCouponId userCouponId
-	 */
-	public void setUserCouponId(Integer userCouponId) {
-		this.userCouponId = userCouponId;
-	}
 
 }

@@ -205,13 +205,6 @@ public class AdminUserUpdateController {
 		user.setDeleteFlag(deleteFlag);
 		user.setInsertDate(insertDate);
 
-		// ロールを更新
-		if (user.getAuthority() == Constant.AUTH_CLIENT) {
-			user.setRole(Constant.ROLE_USER);
-		} else {
-			user.setRole(Constant.ROLE_ADMIN);
-		}
-
 		// 情報を保存
 		userRepository.save(user);
 

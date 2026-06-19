@@ -14,7 +14,6 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
-import jp.co.sss.shop.util.Constant;
 
 /**
  * 会員登録画面の処理を行うコントローラクラス
@@ -217,9 +216,6 @@ public class ClientUserRegistController {
 			user.setAddress(form.getAddress());
 			user.setPhoneNumber(form.getPhoneNumber());
 			user.setAuthority(form.getAuthority());
-
-			// デフォルトロールを"USER"に設定
-			user.setRole(Constant.ROLE_USER);
 
 			// DB登録
 			userRepository.save(user);

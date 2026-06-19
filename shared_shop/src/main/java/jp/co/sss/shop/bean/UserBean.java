@@ -40,21 +40,6 @@ public class UserBean {
 	private Integer authority;
 
 	/**
-	 * 権限（ロール）
-	 */
-	private String role;
-
-	/**
-	 * ガチャチケット所持数
-	 */
-	private Integer gachaCount;
-
-	/**
-	 * テーマCSSクラス名
-	 */
-	private String themeClass;
-
-	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -180,54 +165,6 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
-	}
-
-	/**
-	 * 権限（ロール）の取得
-	 * @return 権限（ロール）
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
-	 * 権限（ロール）のセット
-	 * @param role 権限（ロール）
-	 */
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	/**
-	 * ガチャチケット所持数の取得
-	 * @return ガチャチケット所持数
-	 */
-	public Integer getGachaCount() {
-		return gachaCount;
-	}
-
-	/**
-	 * ガチャチケット所持数のセット
-	 * @param gachaCount ガチャチケット所持数
-	 */
-	public void setGachaCount(Integer gachaCount) {
-		this.gachaCount = gachaCount;
-	}
-
-	/**
-	 * テーマCSSクラス名の取得
-	 * @return themeClass
-	 */
-	public String getThemeClass() {
-		return themeClass;
-	}
-
-	/**
-	 * テーマCSSクラス名のセット
-	 * @param themeClass themeClass
-	 */
-	public void setThemeClass(String themeClass) {
-		this.themeClass = themeClass;
 	}
 
 }

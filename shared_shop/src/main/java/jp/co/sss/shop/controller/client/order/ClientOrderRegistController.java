@@ -20,11 +20,9 @@ import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
-import jp.co.sss.shop.entity.UserCoupon;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
-import jp.co.sss.shop.repository.UserCouponRepository;
 import jp.co.sss.shop.repository.UserRepository;
 
 /**
@@ -56,12 +54,6 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
-
-	/**
-	 * ユーザークーポン情報リポジトリ
-	 */
-	@Autowired
-	UserCouponRepository userCouponRepository;
 
 	/**
 	 * お届け先入力画面表示
@@ -117,11 +109,6 @@ public class ClientOrderRegistController {
 
 		model.addAttribute("payMethod", orderForm.getPayMethod());
 
-		// 利用可能なクーポン一覧を取得
-		UserBean loginUser = (UserBean) session.getAttribute("user");
-		List<UserCoupon> userCoupons = userCouponRepository.findByUserIdAndUsedFlag(loginUser.getId(), 0);
-		model.addAttribute("userCoupons", userCoupons);
-
 		return "client/order/payment_input";
 	}
 
@@ -140,16 +127,14 @@ public class ClientOrderRegistController {
 	@PostMapping("/client/order/check")
 	public String check(
 			@RequestParam Integer payMethod,
-			Integer userCouponId,
 			HttpSession session,
 			Model model) {
 
 		// お届け先入力画面で保存したorderForm取り出し
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
 
-		// 住所情報だけのorderFormに支払い方法(payMethod)およびクーポンID追加
+		// 住所情報だけのorderFormに支払い方法(payMethod)追加
 		orderForm.setPayMethod(payMethod);
-		orderForm.setUserCouponId(userCouponId);
 
 		// 買い物かごの商品リスト取り出し
 		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
@@ -208,25 +193,7 @@ public class ClientOrderRegistController {
 		}
 
 		model.addAttribute("orderForm", orderForm);
-
-		// クーポン適用
-		int discount = 0;
-		if (userCouponId != null) {
-			UserCoupon userCoupon = userCouponRepository.findById(userCouponId).orElse(null);
-			if (userCoupon != null && userCoupon.getUsedFlag() == 0) {
-				if ("percent".equals(userCoupon.getCoupon().getDiscountType())) {
-					discount = (int) (total * (userCoupon.getCoupon().getDiscountValue() / 100.0));
-				} else {
-					discount = userCoupon.getCoupon().getDiscountValue();
-				}
-				model.addAttribute("appliedCoupon", userCoupon.getCoupon());
-			}
-		}
-
-		int finalTotal = Math.max(0, total - discount);
 		model.addAttribute("total", total);
-		model.addAttribute("discount", discount);
-		model.addAttribute("finalTotal", finalTotal);
 
 		// 全商品が在庫切れの場合のメッセージ渡し
 		if (orderItemBeans.isEmpty()) {
@@ -368,29 +335,6 @@ public class ClientOrderRegistController {
 		order.setUser(user);
 
 		orderRepository.save(order);
-
-		// クーポンを使用済みに更新
-		if (orderForm.getUserCouponId() != null) {
-			UserCoupon userCoupon = userCouponRepository.findById(orderForm.getUserCouponId()).orElse(null);
-			if (userCoupon != null) {
-				userCoupon.setUsedFlag(1);
-				userCouponRepository.save(userCoupon);
-			}
-		}
-
-		// 注文完了時にガチャチケットを付与(1枚)
-		User orderUser = userRepository.getReferenceById(userBean.getId());
-		orderUser.setGachaCount((orderUser.getGachaCount() == null ? 0 : orderUser.getGachaCount()) + 1);
-
-		// 購入実績の更新
-		orderUser.setPurchaseCount((orderUser.getPurchaseCount() == null ? 0 : orderUser.getPurchaseCount()) + 1);
-		orderUser.setTotalPurchaseAmount((orderUser.getTotalPurchaseAmount() == null ? 0 : orderUser.getTotalPurchaseAmount()) + total);
-
-		userRepository.save(orderUser);
-
-		// セッションの更新
-		userBean.setGachaCount(orderUser.getGachaCount());
-		session.setAttribute("user", userBean);
 
 		for (BasketBean basketBean : orderableBasketBeans) {
 

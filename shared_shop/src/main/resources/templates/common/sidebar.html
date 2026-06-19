@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 </head>
 <body>
-<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.role == 'USER'} ? ${'search'} : ${'admin_menu'}" >
+<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.authority == 2} ? ${'search'} : ${'admin_menu'}" >
 	<!--/* 検索メニュー(非会員、一般会員用) */-->
-	<div  class="search_area" th:if="${session.user == null or session.user.role == 'USER'}">
+	<div  class="search_area" th:if="${session.user == null or session.user.authority == 2}">
 		<h2 th:class="title" th:text="#{category.select.title}"></h2>
 		<div class="form">
 			<!-- 商品一覧画面以外で表示 -->
@@ -29,20 +29,20 @@
 	</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
-	<div th:if="${session.user != null and session.user.role == 'ADMIN'}">
+	<div th:if="${session.user != null and session.user.authority != 2}">
 
 		<h2 th:class="title" th:text="#{admin.menu}"></h2>
 		<ul class="menu">
 			<li>
 				<a th:href="@{/admin/user/list}" th:class="display_list" th:text="#{admin.menu.user.list}"></a>
 			</li>
-			<li>
+			<li th:if="${session.user.authority == 1}">
 				<a th:href="@{/admin/order/list}" th:class="display_list" th:text="#{admin.menu.order.list}"></a>
 			</li>
-			<li>
+			<li th:if="${session.user.authority == 1}">
 				<a th:href="@{/admin/item/list}" th:class="display_list" th:text="#{admin.menu.item.list}"></a>
 			</li>
-			<li>
+			<li th:if="${session.user.authority == 1}">
 				<a th:href="@{/admin/category/list}" th:class="display_list" th:text="#{admin.menu.category.list}"></a>
 			</li>
 		</ul>
