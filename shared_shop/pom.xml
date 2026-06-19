@@ -54,12 +54,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- MockMvc configuration -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test-autoconfigure</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<!-- JPA を使用するための設定 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
