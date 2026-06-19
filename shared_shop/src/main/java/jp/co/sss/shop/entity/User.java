@@ -82,22 +82,22 @@ public class User {
 	private Date insertDate;
 
 	/**
-	 * 権限（ロール） "ADMIN", "USER"
+	 * テーマID
 	 */
 	@Column
-	private String role;
+	private Integer themeId;
 
 	/**
-	 * ログイン失敗回数
+	 * 購入回数
 	 */
 	@Column
-	private Integer failedLoginCount = 0;
+	private Integer purchaseCount;
 
 	/**
-	 * ロック期限
+	 * 累計購入金額
 	 */
 	@Column
-	private java.sql.Timestamp lockedUntil;
+	private Integer totalPurchaseAmount;
 
 	/**
 	 * 会員IDの取得
@@ -260,50 +260,44 @@ public class User {
 	}
 
 	/**
-	 * 権限（ロール）の取得
-	 * @return 権限（ロール）
+	 * @return themeId
 	 */
-	public String getRole() {
-		return role;
+	public Integer getThemeId() {
+		return themeId;
 	}
 
 	/**
-	 * 権限（ロール）のセット
-	 * @param role 権限（ロール）
+	 * @param themeId セットする themeId
 	 */
-	public void setRole(String role) {
-		this.role = role;
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
 	}
 
 	/**
-	 * ログイン失敗回数の取得
-	 * @return ログイン失敗回数
+	 * @return purchaseCount
 	 */
-	public Integer getFailedLoginCount() {
-		return failedLoginCount;
+	public Integer getPurchaseCount() {
+		return purchaseCount;
 	}
 
 	/**
-	 * ログイン失敗回数のセット
-	 * @param failedLoginCount ログイン失敗回数
+	 * @param purchaseCount セットする purchaseCount
 	 */
-	public void setFailedLoginCount(Integer failedLoginCount) {
-		this.failedLoginCount = failedLoginCount;
+	public void setPurchaseCount(Integer purchaseCount) {
+		this.purchaseCount = purchaseCount;
 	}
 
 	/**
-	 * ロック期限の取得
-	 * @return ロック期限
+	 * @return totalPurchaseAmount
 	 */
-	public java.sql.Timestamp getLockedUntil() {
-		return lockedUntil;
+	public Integer getTotalPurchaseAmount() {
+		return totalPurchaseAmount;
 	}
 
 	/**
-	 * ロック期限のセット
-	 * @param lockedUntil ロック期限
+	 * @param totalPurchaseAmount セットする totalPurchaseAmount
 	 */
-	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
-		this.lockedUntil = lockedUntil;
+	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
 	}
 }

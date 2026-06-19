@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
-import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.LoginForm;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
@@ -55,57 +54,45 @@ public class LoginController {
 	 *
 	 * @param form ログインフォーム
 	 * @param result 入力チェック結果
-	 * @return
-			一般会員の場合 "redirect:/" トップ画面表示処理
-			運用管理者、システム管理者の場合 "redirect:/adminmenu"管理者メニュー表示処理
+	 * @return 一般会員の場合 "redirect:/" トップ画面表示処理、
+	 *         運用管理者、システム管理者の場合 "redirect:/adminmenu" 管理者メニュー表示処理
 	 */
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public String doLogin(@Valid @ModelAttribute LoginForm form, BindingResult result) {
 
+		String returnStr = "login";
 		if (result.hasErrors()) {
-			// 失敗時に、入力したメールアドレスに基づいてロック処理を行う必要がある
-			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
-			if (user != null) {
-				// ロック状態の確認
-				if (user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
-					result.reject("error.login.locked", "アカウントがロックされています。15分後にもう一度お試しください。");
-					return "login";
-				}
-
-				// 失敗回数をインクリメント
-				Integer currentCount = user.getFailedLoginCount();
-				int count = (currentCount == null ? 0 : currentCount) + 1;
-				user.setFailedLoginCount(count);
-				if (count >= 5) {
-					// 15分間ロック
-					user.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
-					result.reject("error.login.locked", "ログイン失敗が5回に達したため、アカウントをロックしました。15分後にお試しください。");
-				}
-				userRepository.save(user);
-			}
-
+			// 入力値に誤りがあった場合
 			// セッション情報を無効にして、ログイン画面再表示
 			session.invalidate();
-			return "login";
+			returnStr = "login";
 
 		} else {
-			// 成功時
+			// セッションスコープからログインユーザー情報を取得
 			UserBean userBean = (UserBean) session.getAttribute("user");
-			User user = userRepository.getReferenceById(userBean.getId());
 
-			// 失敗回数とロック期限をリセット
-			user.setFailedLoginCount(0);
-			user.setLockedUntil(null);
-			userRepository.save(user);
+			// テーマIDが未設定の場合は通常テーマにする
+			Integer themeId = userBean.getThemeId();
+			if (themeId == null) {
+				themeId = 1;
+				userBean.setThemeId(themeId);
+			}
 
-			if (Constant.ROLE_USER.equals(userBean.getRole())) {
+			// 選択中テーマをセッションへ保存
+			session.setAttribute("themeClass", getThemeClass(themeId));
+
+			// セッションスコープから権限を取り出す
+			Integer authority = userBean.getAuthority();
+
+			if (authority.intValue() == Constant.AUTH_CLIENT) {
 				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
-				return "redirect:/";
+				returnStr = "redirect:/";
 			} else {
 				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
-				return "redirect:/admin/menu";
+				returnStr = "redirect:/admin/menu";
 			}
 		}
+		return returnStr;
 	}
 
 	/**
@@ -120,4 +107,33 @@ public class LoginController {
 		return "admin/admin_menu";
 	}
 
+	/**
+	 * テーマIDに対応するCSSクラス名を取得する
+	 *
+	 * @param themeId テーマID
+	 * @return CSSクラス名
+	 */
+	private String getThemeClass(Integer themeId) {
+
+		if (themeId == null) {
+			return "theme-normal";
+		}
+
+		switch (themeId) {
+		case 2:
+			return "theme-sakura";
+		case 3:
+			return "theme-ocean";
+		case 4:
+			return "theme-game";
+		case 5:
+			return "theme-space";
+		case 6:
+			return "theme-gold";
+		case 7:
+			return "theme-p3tech";
+		default:
+			return "theme-normal";
+		}
+	}
 }

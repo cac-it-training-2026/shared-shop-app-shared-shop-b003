@@ -354,6 +354,28 @@ public class ClientOrderRegistController {
 			itemRepository.save(item);
 		}
 
+		// 購入回数・累計購入金額を更新
+		User loginUser = userRepository.getReferenceById(userBean.getId());
+
+		Integer purchaseCount = loginUser.getPurchaseCount();
+		if (purchaseCount == null) {
+			purchaseCount = 0;
+		}
+		loginUser.setPurchaseCount(purchaseCount + 1);
+
+		Integer totalPurchaseAmount = loginUser.getTotalPurchaseAmount();
+		if (totalPurchaseAmount == null) {
+			totalPurchaseAmount = 0;
+		}
+		loginUser.setTotalPurchaseAmount(totalPurchaseAmount + total);
+
+		userRepository.save(loginUser);
+
+		// セッション内のユーザー情報も更新
+		userBean.setPurchaseCount(loginUser.getPurchaseCount());
+		userBean.setTotalPurchaseAmount(loginUser.getTotalPurchaseAmount());
+		session.setAttribute("user", userBean);
+
 		session.removeAttribute("basketBeans");
 		session.removeAttribute("orderForm");
 

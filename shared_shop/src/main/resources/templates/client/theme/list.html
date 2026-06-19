@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>着せ替え設定 | シェアードショップ</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user theme_list">
+	<h2 class="title">着せ替え設定</h2>
+
+	<p>購入回数や累計購入金額に応じて、選べるテーマが増えます。</p>
+
+	<div class="theme_status">
+		<p>現在の購入回数：<span th:text="${purchaseCount}"></span>回</p>
+		<p>累計購入金額：<span th:text="${totalPurchaseAmount}"></span>円</p>
+	</div>
+
+	<div class="theme_area">
+
+		<div class="theme_card normal">
+			<h3>通常テーマ</h3>
+			<p>最初から利用できます。</p>
+			<p th:if="${themeId == 1}" class="selected_theme">選択中</p>
+			<form th:if="${themeId != 1}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="1" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+		</div>
+
+		<div class="theme_card sakura">
+			<h3>さくらテーマ</h3>
+			<p>やさしいピンク系のテーマです。</p>
+			<p>解放条件：購入回数1回以上</p>
+			<p th:if="${themeId == 2}" class="selected_theme">選択中</p>
+			<form th:if="${purchaseCount >= 1 and themeId != 2}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="2" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${purchaseCount >= 1}">未解放</p>
+		</div>
+
+		<div class="theme_card ocean">
+			<h3>海テーマ</h3>
+			<p>爽やかなブルー系のテーマです。</p>
+			<p>解放条件：購入回数3回以上</p>
+			<p th:if="${themeId == 3}" class="selected_theme">選択中</p>
+			<form th:if="${purchaseCount >= 3 and themeId != 3}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="3" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${purchaseCount >= 3}">未解放</p>
+		</div>
+
+		<div class="theme_card game">
+			<h3>ゲームテーマ</h3>
+			<p>RPG風の楽しいテーマです。</p>
+			<p>解放条件：購入回数5回以上</p>
+			<p th:if="${themeId == 4}" class="selected_theme">選択中</p>
+			<form th:if="${purchaseCount >= 5 and themeId != 4}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="4" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${purchaseCount >= 5}">未解放</p>
+		</div>
+
+		<div class="theme_card space">
+			<h3>宇宙テーマ</h3>
+			<p>幻想的な紫系のテーマです。</p>
+			<p>解放条件：累計購入金額10000円以上</p>
+			<p th:if="${themeId == 5}" class="selected_theme">選択中</p>
+			<form th:if="${totalPurchaseAmount >= 10000 and themeId != 5}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="5" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${totalPurchaseAmount >= 10000}">未解放</p>
+		</div>
+
+		<div class="theme_card gold">
+			<h3>ゴールドテーマ</h3>
+			<p>高級感のあるテーマです。</p>
+			<p>解放条件：購入回数10回以上</p>
+			<p th:if="${themeId == 6}" class="selected_theme">選択中</p>
+			<form th:if="${purchaseCount >= 10 and themeId != 6}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="6" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${purchaseCount >= 10}">未解放</p>
+		</div>
+
+		<div class="theme_card p3tech">
+			<h3>P3techテーマ</h3>
+			<p>Power・Passion・Pleasantをイメージした限定テーマです。</p>
+			<p>解放条件：購入回数20回以上</p>
+			<p th:if="${themeId == 7}" class="selected_theme">選択中</p>
+			<form th:if="${purchaseCount >= 20 and themeId != 7}" th:action="@{/client/theme/select}" method="post">
+				<input type="hidden" name="themeId" value="7" />
+				<input type="submit" value="このテーマにする" />
+			</form>
+			<p th:unless="${purchaseCount >= 20}">未解放</p>
+		</div>
+
+	</div>
+
+	<form th:action="@{/client/user/detail}" method="get">
+		<input type="submit" value="戻る" class="back_button" />
+	</form>
+</body>
+
+</html>

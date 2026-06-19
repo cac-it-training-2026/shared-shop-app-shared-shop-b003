@@ -40,9 +40,19 @@ public class UserBean {
 	private Integer authority;
 
 	/**
-	 * 権限（ロール）
+	 * テーマID
 	 */
-	private String role;
+	private Integer themeId;
+
+	/**
+	 * 購入回数
+	 */
+	private Integer purchaseCount;
+
+	/**
+	 * 累計購入金額
+	 */
+	private Integer totalPurchaseAmount;
 
 	/**
 	 * 会員IDの取得
@@ -173,19 +183,45 @@ public class UserBean {
 	}
 
 	/**
-	 * 権限（ロール）の取得
-	 * @return 権限（ロール）
+	 * @return themeId
 	 */
-	public String getRole() {
-		return role;
+	public Integer getThemeId() {
+		return themeId;
 	}
 
 	/**
-	 * 権限（ロール）のセット
-	 * @param role 権限（ロール）
+	 * @param themeId セットする themeId
 	 */
-	public void setRole(String role) {
-		this.role = role;
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
+	}
+
+	/**
+	 * @return purchaseCount
+	 */
+	public Integer getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	/**
+	 * @param purchaseCount セットする purchaseCount
+	 */
+	public void setPurchaseCount(Integer purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+
+	/**
+	 * @return totalPurchaseAmount
+	 */
+	public Integer getTotalPurchaseAmount() {
+		return totalPurchaseAmount;
+	}
+
+	/**
+	 * @param totalPurchaseAmount セットする totalPurchaseAmount
+	 */
+	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
 	}
 
 }
