@@ -1,7 +1,9 @@
 package jp.co.sss.shop.controller.client.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,12 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	CategoryRepository categoryRepository;
+
+	/**
+	 * セッション
+	 */
+	@Autowired
+	HttpSession session;
 
 	/**
 	 * トップ画面 表示処理
@@ -175,6 +183,31 @@ public class ClientItemShowController {
 
 		// Itemエンティティの各フィールドの値をItemBeanにコピー
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
+
+		// 最近見た商品のリストをセッションから取得
+		List<ItemBean> recentlyViewedItems = (List<ItemBean>) session.getAttribute("recentlyViewedItems");
+		if (recentlyViewedItems == null) {
+			recentlyViewedItems = new ArrayList<>();
+		}
+
+		// 重複チェック：既にある場合は削除して先頭に追加し直す
+		for (int i = 0; i < recentlyViewedItems.size(); i++) {
+			if (recentlyViewedItems.get(i).getId().equals(itemBean.getId())) {
+				recentlyViewedItems.remove(i);
+				break;
+			}
+		}
+
+		// 先頭に追加
+		recentlyViewedItems.add(0, itemBean);
+
+		// 最大5件に制限
+		if (recentlyViewedItems.size() > 5) {
+			recentlyViewedItems = new ArrayList<>(recentlyViewedItems.subList(0, 5));
+		}
+
+		// セッションに保存
+		session.setAttribute("recentlyViewedItems", new ArrayList<>(recentlyViewedItems));
 
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
