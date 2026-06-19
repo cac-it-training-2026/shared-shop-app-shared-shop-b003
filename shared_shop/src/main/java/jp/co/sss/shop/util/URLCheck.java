@@ -27,41 +27,14 @@ public class URLCheck {
 	}
 
 	/**
-	 * システム管理者 リクエストURLがアクセス可能かを判定
-	 * 
-	 * @param requestURL リクエストURL
-	 * @return true：アクセス可能、false：アクセス不可
-	 */
-	public static boolean isURLForSystemAdmin(String requestURL) {
-		boolean isCheckURLOK = false;
-		if (isURLForStaticFile(requestURL)
-				|| requestURL.endsWith("/login")
-				|| requestURL.indexOf("admin/menu") != -1
-				|| requestURL.indexOf("/admin/admin_menu") != -1
-				|| requestURL.indexOf("admin/user") != -1
-				|| requestURL.endsWith("/logout")) {
-			// URLのリクエスト先がフィルタ実行対象である場合
-			isCheckURLOK = true;
-		} else {
-			// URLのリクエスト先がフィルタ実行対象ではない場合
-			isCheckURLOK = false;
-		}
-		return isCheckURLOK;
-	}
-
-	/**
-	 * 運用管理者 リクエストURLがチェック対象であるかを判定
+	 * 管理者(システム/運用) リクエストURLがチェック対象であるかを判定
 	 * 
 	 * @param requestURL リクエストURL
 	 * @return true：チェック対象、false：チェック対象外
 	 */
-	public static boolean istURLForAdmin(String requestURL) {
+	public static boolean isURLForAdmin(String requestURL) {
 		boolean isCheckURLOK = false;
-		if (isURLForStaticFile(requestURL)
-				|| isURLForSystemAdmin(requestURL)
-				|| requestURL.indexOf("admin/category") != -1
-				|| requestURL.indexOf("admin/item") != -1
-				|| requestURL.indexOf("admin/order") != -1) {
+		if (requestURL.indexOf("/admin/") != -1) {
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;
 		} else {
@@ -69,7 +42,6 @@ public class URLCheck {
 			isCheckURLOK = false;
 		}
 		return isCheckURLOK;
-
 	}
 
 	/**

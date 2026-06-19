@@ -16,6 +16,7 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
+import jp.co.sss.shop.util.Constant;
 
 /**
  * 会員管理 登録機能(運用管理者、システム管理者)のコントローラクラス
@@ -173,6 +174,13 @@ public class AdminUserRegistController {
 
 		// 入力フォーム情報をエンティティに設定
 		BeanUtils.copyProperties(userForm, user);
+
+		// ロールを設定
+		if (user.getAuthority() == Constant.AUTH_CLIENT) {
+			user.setRole(Constant.ROLE_USER);
+		} else {
+			user.setRole(Constant.ROLE_ADMIN);
+		}
 
 		// DB登録
 		userRepository.save(user);

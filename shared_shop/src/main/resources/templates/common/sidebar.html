@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 </head>
 <body>
-<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.authority == 2} ? ${'search'} : ${'admin_menu'}" >
+<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.role == 'USER'} ? ${'search'} : ${'admin_menu'}" >
 	<!--/* 検索メニュー(非会員、一般会員用) */-->
-	<div  class="search_area" th:if="${session.user == null or session.user.authority == 2}">
+	<div  class="search_area" th:if="${session.user == null or session.user.role == 'USER'}">
 		<h2 th:class="title" th:text="#{category.select.title}"></h2>
 		<div class="form">
 			<!-- 商品一覧画面以外で表示 -->
@@ -28,31 +28,21 @@
 		</div>
 	</div>
 
-	<!--/* 最近見た商品(非会員、一般会員用) */-->
-	<div class="search_area" th:if="${(session.user == null or session.user.authority == 2) and session.recentlyViewedItems != null}">
-		<h2 th:class="title">最近見た商品</h2>
-		<ul class="recently_viewed">
-			<li th:each="recentItem : ${session.recentlyViewedItems}">
-				<a th:href="@{/client/item/detail/}+${recentItem.id}" th:text="${recentItem.name}"></a>
-			</li>
-		</ul>
-	</div>
-
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
-	<div th:if="${session.user != null and session.user.authority != 2}">
+	<div th:if="${session.user != null and session.user.role == 'ADMIN'}">
 
 		<h2 th:class="title" th:text="#{admin.menu}"></h2>
 		<ul class="menu">
 			<li>
 				<a th:href="@{/admin/user/list}" th:class="display_list" th:text="#{admin.menu.user.list}"></a>
 			</li>
-			<li th:if="${session.user.authority == 1}">
+			<li>
 				<a th:href="@{/admin/order/list}" th:class="display_list" th:text="#{admin.menu.order.list}"></a>
 			</li>
-			<li th:if="${session.user.authority == 1}">
+			<li>
 				<a th:href="@{/admin/item/list}" th:class="display_list" th:text="#{admin.menu.item.list}"></a>
 			</li>
-			<li th:if="${session.user.authority == 1}">
+			<li>
 				<a th:href="@{/admin/category/list}" th:class="display_list" th:text="#{admin.menu.category.list}"></a>
 			</li>
 		</ul>
