@@ -41,7 +41,7 @@ public class ClientUserDeleteController {
 	 * @return "delete_check" 削除確認画面 表示
 	 *
 	 */
-	@RequestMapping(path = "/client/user/delete/check")
+	@RequestMapping(path = "/client/user/delete/check", method = RequestMethod.POST)
 	public String userDeleteCheck() {
 
 		// 削除対象の会員情報をセッションスコープから取得
@@ -70,7 +70,7 @@ public class ClientUserDeleteController {
 	 * @return "client/user/delete_check" 確認画面 表示
 	 */
 	@RequestMapping(path = "/client/user/delete/check", method = RequestMethod.GET)
-	public String userUpdateInput(Model model) {
+	public String userDeleteCheckView(Model model) {
 
 		// セッションから入力フォーム取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
@@ -117,8 +117,6 @@ public class ClientUserDeleteController {
 
 		// 会員情報を保存
 		userRepository.save(user);
-
-		System.out.println(session.getAttribute("user.name"));
 
 		// セッションに保存されている情報全部削除
 		//		session.removeAttribute("userForm");
