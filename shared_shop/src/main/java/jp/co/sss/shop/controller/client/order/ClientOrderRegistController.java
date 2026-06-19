@@ -20,6 +20,7 @@ import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
+import jp.co.sss.shop.service.GachaService;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
@@ -54,6 +55,12 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
+
+	/**
+	 * ガチャサービス
+	 */
+	@Autowired
+	GachaService gachaService;
 
 	/**
 	 * お届け先入力画面表示
@@ -353,6 +360,11 @@ public class ClientOrderRegistController {
 			item.setStock(item.getStock() - basketBean.getOrderNum());
 			itemRepository.save(item);
 		}
+
+		// ガチャ実行権限をセッションに設定 (注文完了イベント)
+		session.setAttribute("canPlayGacha", true);
+		session.setAttribute("gachaEventType", "order");
+		session.setAttribute("gachaSourceOrderId", order.getId());
 
 		session.removeAttribute("basketBeans");
 		session.removeAttribute("orderForm");
