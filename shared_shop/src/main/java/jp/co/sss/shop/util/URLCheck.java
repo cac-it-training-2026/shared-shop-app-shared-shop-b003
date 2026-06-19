@@ -128,6 +128,9 @@ public class URLCheck {
 						|| requestURL.indexOf("/client/user/detail") != -1
 						|| requestURL.indexOf("/client/user/regist") != -1
 						|| requestURL.indexOf("/client/user/update") != -1
+						|| requestURL.indexOf("/client/coupon") != -1
+						|| requestURL.indexOf("/client/gacha") != -1
+						|| requestURL.indexOf("/client/theme") != -1
 						|| requestURL.indexOf("/client/user/delete") != -1)) {
 
 			// URLのリクエスト先がフィルタ実行対象である場合
