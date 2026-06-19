@@ -70,6 +70,24 @@ public class User {
 	private Integer authority;
 
 	/**
+	 * ロール (ADMIN, USERなど)
+	 */
+	@Column
+	private String role;
+
+	/**
+	 * ログイン失敗回数
+	 */
+	@Column(name = "failed_login_count")
+	private Integer failedLoginCount;
+
+	/**
+	 * アカウントロック解除日時
+	 */
+	@Column(name = "locked_until")
+	private java.sql.Timestamp lockedUntil;
+
+	/**
 	 * 削除フラグ 0:未削除、1:削除済み
 	 */
 	@Column(insertable = false)
@@ -207,6 +225,54 @@ public class User {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * ロールの取得
+	 * @return ロール
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * ロールのセット
+	 * @param role ロール
+	 */
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	/**
+	 * ログイン失敗回数の取得
+	 * @return ログイン失敗回数
+	 */
+	public Integer getFailedLoginCount() {
+		return failedLoginCount;
+	}
+
+	/**
+	 * ログイン失敗回数のセット
+	 * @param failedLoginCount ログイン失敗回数
+	 */
+	public void setFailedLoginCount(Integer failedLoginCount) {
+		this.failedLoginCount = failedLoginCount;
+	}
+
+	/**
+	 * アカウントロック解除日時の取得
+	 * @return アカウントロック解除日時
+	 */
+	public java.sql.Timestamp getLockedUntil() {
+		return lockedUntil;
+	}
+
+	/**
+	 * アカウントロック解除日時のセット
+	 * @param lockedUntil アカウントロック解除日時
+	 */
+	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
+		this.lockedUntil = lockedUntil;
 	}
 
 	/**

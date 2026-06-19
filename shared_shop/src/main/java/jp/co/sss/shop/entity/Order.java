@@ -61,6 +61,12 @@ public class Order {
 	private Integer payMethod;
 
 	/**
+	 * 割引額
+	 */
+	@Column
+	private Integer discountAmount;
+
+	/**
 	 * 注文日付
 	 */
 	@Column(insertable = false)
@@ -176,6 +182,22 @@ public class Order {
 	}
 
 	/**
+	 * 割引額の取得
+	 * @return 割引額
+	 */
+	public Integer getDiscountAmount() {
+		return discountAmount;
+	}
+
+	/**
+	 * 割引額のセット
+	 * @param discountAmount 割引額
+	 */
+	public void setDiscountAmount(Integer discountAmount) {
+		this.discountAmount = discountAmount;
+	}
+
+	/**
 	 * 登録日付の取得
 	 * @return 登録日付
 	 */
@@ -224,8 +246,8 @@ public class Order {
 	}
 
 	/**
-	 * 注文合計金額の取得
-	 * @return 注文合計金額
+	 * 注文合計金額の取得 (明細の合計額のみ)
+	 * @return 注文明細の合計金額
 	 */
 	public int getTotal() {
 		int total = 0;
@@ -237,6 +259,18 @@ public class Order {
 		}
 
 		return total;
+	}
+
+	/**
+	 * 割引適用後の合計金額を取得
+	 * @return 割引適用後金額
+	 */
+	public int getDiscountedTotal() {
+		int subtotal = getTotal();
+		if (discountAmount != null) {
+			return Math.max(0, subtotal - discountAmount);
+		}
+		return subtotal;
 	}
 
 }

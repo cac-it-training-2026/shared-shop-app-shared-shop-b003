@@ -51,8 +51,38 @@
 			<td class="total">[[#{data.total}]]</td>
 			<td class="total" th:text="${total}"></td>
 		</tr>
+		<tr th:if="${session.appliedCoupon != null}">
+			<td colspan="3"></td>
+			<td class="total" style="color:red;">クーポン割引 (<span th:text="${session.appliedCoupon.code}"></span>)</td>
+			<td class="total" style="color:red;">
+				<span th:if="${session.appliedCoupon.discountType == 'amount'}" th:text="'-' + ${session.appliedCoupon.discountValue}"></span>
+				<span th:if="${session.appliedCoupon.discountType == 'percent'}" th:text="'-' + ${total * session.appliedCoupon.discountValue / 100}"></span>
+			</td>
+		</tr>
+		<tr th:if="${session.appliedCoupon != null}">
+			<td colspan="3"></td>
+			<td class="total">割引後合計</td>
+			<td class="total">
+				<span th:if="${session.appliedCoupon.discountType == 'amount'}" th:text="${total - session.appliedCoupon.discountValue >= 0 ? total - session.appliedCoupon.discountValue : 0}"></span>
+				<span th:if="${session.appliedCoupon.discountType == 'percent'}" th:text="${total - (total * session.appliedCoupon.discountValue / 100)}"></span>
+			</td>
+		</tr>
 	</table>
 	<div class="user_info_form_area">
+		<div th:if="${session.appliedCoupon == null}" style="margin-bottom: 20px;">
+			<form th:action="@{/client/order/apply-coupon}" method="post">
+				<label for="couponCode">クーポンコード:</label>
+				<input type="text" name="couponCode" id="couponCode" />
+				<input type="submit" value="適用" class="send_button" style="width:auto; display:inline-block; margin-left:10px;"/>
+			</form>
+			<p th:if="${session.couponError != null}" th:text="${session.couponError}" style="color:red;"></p>
+		</div>
+		<div th:if="${session.appliedCoupon != null}" style="margin-bottom: 20px;">
+			<p>適用中のクーポン: <span th:text="${session.appliedCoupon.code}"></span></p>
+			<form th:action="@{/client/order/remove-coupon}" method="post">
+				<input type="submit" value="解除" class="back_button" style="width:auto; display:inline-block;"/>
+			</form>
+		</div>
 		<table class="detail_table address">
 			<caption class="table_caption">[[#{data.address}]]</caption>
 			<tr>

@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.LinkedList;
+import jakarta.servlet.http.HttpSession;
+
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.Review;
 import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.repository.ReviewRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 
@@ -45,6 +50,12 @@ public class ClientItemShowController {
 	@Autowired
 	CategoryRepository categoryRepository;
 
+	@Autowired
+	ReviewRepository reviewRepository;
+
+	@Autowired
+	HttpSession session;
+
 	/**
 	 * トップ画面 表示処理
 	 *
@@ -64,6 +75,14 @@ public class ClientItemShowController {
 
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
+
+		// ガチャ結果表示用のセッションクリア（すでに表示済みの場合は消す）
+		if (model.containsAttribute("gachaResultDisplayed")) {
+			session.removeAttribute("gachaResult");
+		}
+		if (session.getAttribute("gachaResult") != null) {
+			model.addAttribute("gachaResultDisplayed", true);
+		}
 
 		// 初期値：売れ筋順
 		Integer sortType = 2;
@@ -176,8 +195,29 @@ public class ClientItemShowController {
 		// Itemエンティティの各フィールドの値をItemBeanにコピー
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 
+		// 最近見た商品リストをセッションに保持する処理
+		@SuppressWarnings("unchecked")
+		LinkedList<ItemBean> recentlyViewed = (LinkedList<ItemBean>) session.getAttribute("recentlyViewedItems");
+		if (recentlyViewed == null) {
+			recentlyViewed = new LinkedList<>();
+		}
+
+		// 重複を削除 (すでにリスト内にある場合は削除して先頭に追加する)
+		recentlyViewed.removeIf(viewedItem -> viewedItem.getId().equals(itemBean.getId()));
+		recentlyViewed.addFirst(itemBean);
+
+		// 最大5件に制限
+		if (recentlyViewed.size() > 5) {
+			recentlyViewed.removeLast();
+		}
+		session.setAttribute("recentlyViewedItems", recentlyViewed);
+
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
+
+		// 商品レビューを取得してViewへ渡す
+		List<Review> reviewList = reviewRepository.findByProductIdOrderByCreatedTimeDesc(id);
+		model.addAttribute("reviews", reviewList);
 
 		return "client/item/detail";
 	}

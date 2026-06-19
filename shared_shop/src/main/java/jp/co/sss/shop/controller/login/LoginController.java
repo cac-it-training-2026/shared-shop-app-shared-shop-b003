@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
+import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.LoginForm;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
@@ -62,13 +63,38 @@ public class LoginController {
 	public String doLogin(@Valid @ModelAttribute LoginForm form, BindingResult result) {
 
 		String returnStr = "login";
+
+		// 失敗カウント等の処理
+		User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
+
 		if (result.hasErrors()) {
-			// 入力値に誤りがあった場合
+			// 入力値に誤りがあった場合 (バリデータで失敗)
+			if (user != null) {
+				// ロックされていない場合のみ失敗カウントをアップ
+				java.sql.Timestamp now = new java.sql.Timestamp(System.currentTimeMillis());
+				if (user.getLockedUntil() == null || user.getLockedUntil().before(now)) {
+					int currentFailed = user.getFailedLoginCount() == null ? 0 : user.getFailedLoginCount();
+					currentFailed++;
+					if (currentFailed >= 5) {
+						java.sql.Timestamp lockUntil = new java.sql.Timestamp(System.currentTimeMillis() + (15 * 60 * 1000));
+						user.setLockedUntil(lockUntil);
+					}
+					user.setFailedLoginCount(currentFailed);
+					userRepository.save(user);
+				}
+			}
 			// セッション情報を無効にして、ログイン画面再表示
 			session.invalidate();
 			returnStr = "login";
 
 		} else {
+			// ログイン成功時：失敗カウントとロック日時をリセット
+			if (user != null) {
+				user.setFailedLoginCount(0);
+				user.setLockedUntil(null);
+				userRepository.save(user);
+			}
+
 			//セッションスコープから権限を取り出す
 			Integer authority = ((UserBean) session.getAttribute("user")).getAuthority();
 			if (authority.intValue() == Constant.AUTH_CLIENT) {

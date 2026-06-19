@@ -40,6 +40,11 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * ロール (ADMIN, USERなど)
+	 */
+	private String role;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -165,6 +170,22 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * ロールの取得
+	 * @return ロール
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * ロールのセット
+	 * @param role ロール
+	 */
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

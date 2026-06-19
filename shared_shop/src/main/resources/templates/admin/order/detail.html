@@ -66,6 +66,16 @@
 				<td class="total">[[#{data.total}]]</td>
 				<td th:text="${total}"></td>
 			</tr>
+			<tr th:if="${order.discountAmount != null && order.discountAmount > 0}">
+				<td colspan="2"></td>
+				<td class="total" style="color:red;">割引額</td>
+				<td style="color:red;" th:text="'-' + ${order.discountAmount}"></td>
+			</tr>
+			<tr th:if="${order.discountAmount != null && order.discountAmount > 0}">
+				<td colspan="2"></td>
+				<td class="total">割引後合計</td>
+				<td th:text="${total - order.discountAmount}"></td>
+			</tr>
 		</table>
 		<form th:action="@{/admin/order/list}" method="post" class="detail_button_area">
 			<input type="submit" value="戻る" class="back_button" />

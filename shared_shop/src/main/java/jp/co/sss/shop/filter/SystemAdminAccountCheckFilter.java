@@ -34,12 +34,10 @@ public class SystemAdminAccountCheckFilter extends HttpFilter {
 			if (session.getAttribute("user") != null) {
 				UserBean user = (UserBean) session.getAttribute("user");
 
-				if (user.getAuthority() == Constant.AUTH_SYSTEM) {
-					// セッション情報を削除
+				// システム管理者権限のチェック
+				if (user.getAuthority() != Constant.AUTH_SYSTEM && !"SYSTEM_ADMIN".equals(user.getRole())) {
+					// アクセス権がない場合はセッション情報を削除してログイン画面にリダイレクト
 					session.invalidate();
-
-
-					// ログイン画面にリダイレクト
 					response.sendRedirect(request.getContextPath() + "/login");
 				} else {
 					chain.doFilter(request, response);

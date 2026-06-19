@@ -20,6 +20,8 @@ import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
+import jp.co.sss.shop.entity.Coupon;
+import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
@@ -54,6 +56,9 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	CouponRepository couponRepository;
 
 	/**
 	 * お届け先入力画面表示
@@ -333,6 +338,26 @@ public class ClientOrderRegistController {
 		User user = new User();
 		user.setId(userBean.getId());
 		order.setUser(user);
+
+		// クーポンの適用計算および割引額の保存
+		Coupon appliedCoupon = (Coupon) session.getAttribute("appliedCoupon");
+		if (appliedCoupon != null) {
+			int discount = 0;
+			if ("amount".equals(appliedCoupon.getDiscountType())) {
+				discount = appliedCoupon.getDiscountValue();
+			} else if ("percent".equals(appliedCoupon.getDiscountType())) {
+				discount = total * appliedCoupon.getDiscountValue() / 100;
+			}
+
+			// 割引額が合計を超えないよう調整
+			if (discount > total) {
+				discount = total;
+			}
+
+			order.setDiscountAmount(discount);
+		} else {
+			order.setDiscountAmount(0);
+		}
 
 		orderRepository.save(order);
 

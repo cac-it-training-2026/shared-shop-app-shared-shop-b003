@@ -6,6 +6,22 @@
 <meta charset="UTF-8" />
 </head>
 <body class="user index">
+
+	<!-- ガチャ機能エリア (ログインユーザーのみ) -->
+	<div th:if="${session.user != null}" style="border: 2px solid #ff9900; background-color: #fffaf0; padding: 15px; margin-bottom: 20px; border-radius: 5px; text-align: center;">
+		<h3 style="margin-top: 0; color: #ff6600;">ログインボーナスガチャ</h3>
+		<p style="font-size: 0.9em; margin-bottom: 10px;">1日1回（デモ用）ガチャを回して割引クーポンをGETしよう！</p>
+
+		<form th:action="@{/client/gacha/play}" method="post">
+			<input type="submit" value="ガチャを回す！" class="send_button" style="background-color: #ff9900; width: auto; padding: 10px 20px; font-weight: bold;" />
+		</form>
+
+		<div th:if="${session.gachaResult != null}" style="margin-top: 15px; padding: 10px; background-color: #ffe4e1; color: #d2691e; border: 1px dashed #d2691e;">
+			<strong>ガチャ結果: </strong> <span th:text="${session.gachaResult}"></span>
+			<!-- 結果表示後、セッションから削除するための簡単なスクリプト (今回はリロード時に消える想定でバックエンド処理追加推奨) -->
+		</div>
+	</div>
+
 	<div>
 		<h2 class="title">
 				<span th:if="${sortType==1}" th:text="#{sort.latest.title}"></span>
