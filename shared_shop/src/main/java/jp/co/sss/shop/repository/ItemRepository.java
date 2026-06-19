@@ -1,7 +1,5 @@
 package jp.co.sss.shop.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,56 +16,6 @@ import jp.co.sss.shop.entity.Item;
  */
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-
-	/**
-	 * 商品一覧を新着順で取得
-	 * メソッド名だけでSQL生成（JPA）
-	 */
-	/**
-	 * @author Emi shioda
-	 * @param deleteFlag 削除フラグ
-	 */
-	List<Item> findByDeleteFlagOrderByInsertDateDesc(
-			Integer deleteFlag);
-
-	/**
-	* カテゴリ別新着順
-	*/
-	List<Item> findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(
-			Integer categoryId, Integer deleteFlag);
-
-	/**
-	 * 売れ筋順
-	 * 注文商品テーブル（OrderItem）から削除されていない商品（deleteFlag=0）
-	 * ・商品ごとにまとめる
-	 * ・注文数（quantity）が多い順
-	 * ・同じ習新着順
-	 * を取り出し並べる
-	 */
-	@Query("""
-			SELECT oi.item
-			FROM OrderItem oi
-			WHERE oi.item.deleteFlag = 0
-			GROUP BY oi.item
-			ORDER BY SUM(oi.quantity) DESC, oi.item.insertDate DESC
-			""")
-	List<Item> findPopularItems();
-
-	/**
-	 * カテゴリ別売れ筋順
-	 */
-	@Query("""
-			SELECT oi.item
-			FROM OrderItem oi
-			WHERE oi.item.category.id = :categoryId
-			AND oi.item.deleteFlag = 0
-			GROUP BY oi.item
-			ORDER BY SUM(oi.quantity) DESC, oi.item.insertDate DESC
-			""")
-
-	//@Param("categoryId")→引数と紐づけ
-	List<Item> findPopularItemsByCategoryId(
-			@Param("categoryId") Integer categoryId);
 
 	/**
 	 * 商品情報を登録日付順に取得 管理者機能で利用

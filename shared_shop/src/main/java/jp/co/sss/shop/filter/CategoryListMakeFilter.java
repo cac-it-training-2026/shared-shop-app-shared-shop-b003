@@ -3,15 +3,16 @@ package jp.co.sss.shop.filter;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import jp.co.sss.shop.bean.CategoryBean;
 import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.repository.CategoryRepository;
@@ -38,7 +39,6 @@ public class CategoryListMakeFilter extends HttpFilter {
 	 */
 	@Autowired
 	BeanTools beanTools;
-
 	/**
 	 * フィルタの初期化時にこのフィルタ内のAutowiredを実行する
 	 *
@@ -70,5 +70,6 @@ public class CategoryListMakeFilter extends HttpFilter {
 		}
 		chain.doFilter(request, response);
 	}
+
 
 }

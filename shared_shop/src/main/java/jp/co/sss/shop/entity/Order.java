@@ -223,20 +223,4 @@ public class Order {
 		this.orderItemsList = orderItemsList;
 	}
 
-	/**
-	 * 注文合計金額の取得
-	 * @return 注文合計金額
-	 */
-	public int getTotal() {
-		int total = 0;
-
-		if (orderItemsList != null) {
-			for (OrderItem orderItem : orderItemsList) {
-				total += orderItem.getPrice() * orderItem.getQuantity();
-			}
-		}
-
-		return total;
-	}
-
 }
