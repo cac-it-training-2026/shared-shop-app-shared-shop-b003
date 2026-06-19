@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.form.LoginForm;
 import jp.co.sss.shop.repository.UserRepository;
-import jp.co.sss.shop.service.GachaService;
 import jp.co.sss.shop.util.Constant;
 
 /**
@@ -34,12 +33,6 @@ public class LoginController {
 	 */
 	@Autowired
 	HttpSession session;
-
-	/**
-	 * ガチャサービス
-	 */
-	@Autowired
-	GachaService gachaService;
 
 	/**
 	 * ログイン処理
