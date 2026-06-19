@@ -2,6 +2,7 @@ package jp.co.sss.shop.controller.client.item;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.ItemBean;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.Review;
 import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.repository.OrderItemRepository;
+import jp.co.sss.shop.repository.ReviewRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 
@@ -44,6 +49,24 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	CategoryRepository categoryRepository;
+
+	/**
+	 * レビュー情報
+	 */
+	@Autowired
+	ReviewRepository reviewRepository;
+
+	/**
+	 * 注文商品情報
+	 */
+	@Autowired
+	OrderItemRepository orderItemRepository;
+
+	/**
+	 * セッション
+	 */
+	@Autowired
+	HttpSession session;
 
 	/**
 	 * トップ画面 表示処理
@@ -176,8 +199,20 @@ public class ClientItemShowController {
 		// Itemエンティティの各フィールドの値をItemBeanにコピー
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 
+		// レビュー情報を取得
+		List<Review> reviewList = reviewRepository.findByProductIdAndApprovedOrderByCreatedAtDesc(id, 1);
+
+		// 購入済みかチェック
+		boolean hasPurchased = false;
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		if (userBean != null) {
+			hasPurchased = orderItemRepository.existsByUserIdAndItemId(userBean.getId(), id);
+		}
+
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
+		model.addAttribute("reviews", reviewList);
+		model.addAttribute("hasPurchased", hasPurchased);
 
 		return "client/item/detail";
 	}

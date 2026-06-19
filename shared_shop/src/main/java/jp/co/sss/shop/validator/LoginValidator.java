@@ -44,18 +44,12 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 
 		User user = userRepository.findByEmailAndDeleteFlag(emailProp, Constant.NOT_DELETED);
 
-		if (user != null && user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
-			// ロック中の場合は認証失敗とする
-			return false;
-		}
-
 		if (user != null && passwordProp.equals(user.getPassword())) {
 			UserBean userBean = new UserBean();
 
 			userBean.setId(user.getId());
 			userBean.setName(user.getName());
 			userBean.setAuthority(user.getAuthority());
-			userBean.setRole(user.getRole());
 
 			// セッションスコープにログインしたユーザの情報を登録
 			session.setAttribute("user", userBean);

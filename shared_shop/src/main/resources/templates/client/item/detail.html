@@ -41,6 +41,52 @@
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
 		</div>
+
+		<hr />
+
+		<div class="review_area">
+			<h3>カスタマーレビュー</h3>
+			<div th:if="${#lists.isEmpty(reviews)}">
+				<p>この商品へのレビューはまだありません。</p>
+			</div>
+			<div th:each="review : ${reviews}" class="review_item">
+				<div class="review_header">
+					<span th:text="${review.user.name}">ユーザー名</span>
+					<span th:text="${#dates.format(review.createdAt, 'yyyy/MM/dd HH:mm')}">2026/01/01</span>
+					<span>評価: [[${review.rating}]] / 5</span>
+				</div>
+				<div class="review_body">
+					<p th:text="${review.body}">レビュー本文</p>
+				</div>
+			</div>
+
+			<hr th:if="${hasPurchased}" />
+
+			<div class="review_form_area" th:if="${hasPurchased}">
+				<h4>レビューを投稿する</h4>
+				<form th:action="@{/client/review/regist}" method="post">
+					<input type="hidden" name="productId" th:value="*{id}" />
+					<div>
+						<label>評価：</label>
+						<select name="rating">
+							<option value="5">5（非常に良い）</option>
+							<option value="4">4（良い）</option>
+							<option value="3">3（普通）</option>
+							<option value="2">2（悪い）</option>
+							<option value="1">1（非常に悪い）</option>
+						</select>
+					</div>
+					<div>
+						<label>コメント：</label><br />
+						<textarea name="body" rows="4" cols="50" required maxlength="1000"></textarea>
+					</div>
+					<input type="submit" value="レビューを送信" class="send_button" />
+				</form>
+			</div>
+			<div th:if="${session.user != null and !hasPurchased}">
+				<p>※この商品を購入した方のみレビューを投稿できます。</p>
+			</div>
+		</div>
 	</div>
 
 </body>
