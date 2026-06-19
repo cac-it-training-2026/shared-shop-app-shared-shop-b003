@@ -54,6 +54,9 @@
 				<input type="submit" value="削除" class="delete" disabled th:if="${userBean.id==session.user.id}" />
 				<input type="submit" value="削除" class="delete" th:unless="${userBean.id==session.user.id}" />
 			</form>
+			<form th:action="@{/admin/user/unlock/{id}(id=*{id})}" method="post" th:if="${userBean.lockedUntil != null && userBean.lockedUntil.after(new java.util.Date())}">
+				<input type="submit" value="ロック解除" />
+			</form>
 		</div>
 	</div>
 </body>
