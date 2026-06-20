@@ -6,10 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}" />
-<link rel="stylesheet" type="text/css" th:href="@{/css/theme.css}" />
 <title  th:replace="${title}"></title>
 </head>
-<body class="user" th:classappend="${session.user != null ? session.user.themeClass : 'theme-normal'}">
+<body class="user">
 	<!--/* ヘッダー */-->
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>

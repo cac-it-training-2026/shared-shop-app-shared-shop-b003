@@ -1,6 +1,7 @@
 package jp.co.sss.shop.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -70,24 +71,6 @@ public class User {
 	private Integer authority;
 
 	/**
-	 * テーマID
-	 */
-	@Column
-	private Integer themeId;
-
-	/**
-	 * 購入回数
-	 */
-	@Column
-	private Integer purchaseCount;
-
-	/**
-	 * 累計購入金額
-	 */
-	@Column
-	private Integer totalPurchaseAmount;
-
-	/**
 	 * 削除フラグ 0:未削除、1:削除済み
 	 */
 	@Column(insertable = false)
@@ -98,6 +81,12 @@ public class User {
 	 */
 	@Column(insertable = false)
 	private Date insertDate;
+
+	/**
+	 * 商品レビュー情報
+	 */
+	@jakarta.persistence.OneToMany(mappedBy = "user")
+	private List<Review> reviewList;
 
 	/**
 	 * 会員IDの取得
@@ -228,54 +217,6 @@ public class User {
 	}
 
 	/**
-	 * テーマIDの取得
-	 * @return テーマID
-	 */
-	public Integer getThemeId() {
-		return themeId;
-	}
-
-	/**
-	 * テーマIDのセット
-	 * @param themeId テーマID
-	 */
-	public void setThemeId(Integer themeId) {
-		this.themeId = themeId;
-	}
-
-	/**
-	 * 購入回数の取得
-	 * @return 購入回数
-	 */
-	public Integer getPurchaseCount() {
-		return purchaseCount;
-	}
-
-	/**
-	 * 購入回数のセット
-	 * @param purchaseCount 購入回数
-	 */
-	public void setPurchaseCount(Integer purchaseCount) {
-		this.purchaseCount = purchaseCount;
-	}
-
-	/**
-	 * 累計購入金額の取得
-	 * @return 累計購入金額
-	 */
-	public Integer getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
-	}
-
-	/**
-	 * 累計購入金額のセット
-	 * @param totalPurchaseAmount 累計購入金額
-	 */
-	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
-	}
-
-	/**
 	 * 削除フラグの取得
 	 * @return 削除フラグ
 	 */
@@ -305,5 +246,19 @@ public class User {
 	 */
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
+	}
+
+	/**
+	 * 会員IDに紐づくレビューエンティティのリストを取得
+	 */
+	public List<Review> getReviewList() {
+		return reviewList;
+	}
+
+	/**
+	 * 会員IDに紐づくレビューエンティティのリストをセット
+	 */
+	public void setReviewList(List<Review> reviewList) {
+		this.reviewList = reviewList;
 	}
 }

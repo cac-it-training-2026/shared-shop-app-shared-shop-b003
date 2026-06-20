@@ -40,26 +40,6 @@ public class UserBean {
 	private Integer authority;
 
 	/**
-	 * テーマID
-	 */
-	private Integer themeId;
-
-	/**
-	 * 購入回数
-	 */
-	private Integer purchaseCount;
-
-	/**
-	 * 累計購入金額
-	 */
-	private Integer totalPurchaseAmount;
-
-	/**
-	 * テーマクラス名
-	 */
-	private String themeClass;
-
-	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -185,70 +165,6 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
-	}
-
-	/**
-	 * テーマIDの取得
-	 * @return テーマID
-	 */
-	public Integer getThemeId() {
-		return themeId;
-	}
-
-	/**
-	 * テーマIDのセット
-	 * @param themeId テーマID
-	 */
-	public void setThemeId(Integer themeId) {
-		this.themeId = themeId;
-	}
-
-	/**
-	 * 購入回数の取得
-	 * @return 購入回数
-	 */
-	public Integer getPurchaseCount() {
-		return purchaseCount;
-	}
-
-	/**
-	 * 購入回数のセット
-	 * @param purchaseCount 購入回数
-	 */
-	public void setPurchaseCount(Integer purchaseCount) {
-		this.purchaseCount = purchaseCount;
-	}
-
-	/**
-	 * 累計購入金額の取得
-	 * @return 累計購入金額
-	 */
-	public Integer getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
-	}
-
-	/**
-	 * 累計購入金額のセット
-	 * @param totalPurchaseAmount 累計購入金額
-	 */
-	public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
-	}
-
-	/**
-	 * テーマクラス名の取得
-	 * @return テーマクラス名
-	 */
-	public String getThemeClass() {
-		return themeClass;
-	}
-
-	/**
-	 * テーマクラス名のセット
-	 * @param themeClass テーマクラス名
-	 */
-	public void setThemeClass(String themeClass) {
-		this.themeClass = themeClass;
 	}
 
 }
