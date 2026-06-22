@@ -2,36 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body})}">
 <head>
-<title th:text="#{theme} + #{title.input}"></title>
+<title th:text="#{theme} + #{title.list}"></title>
 </head>
 <body>
-	<h2 class="title" th:text="#{theme} + #{title.input}"></h2>
-	<div class="user_info_form_area">
-		<p th:text="#{msg.update.input}"></p>
-		<form th:action="@{/client/theme/update}" method="post">
-			<ul class="input_list">
-				<li>
-					<label>
-						<input type="radio" name="themeId" value="0" th:checked="${themeId == null or themeId == 0}" />
-						<span class="radio_label" th:text="#{theme.blue}"></span>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" name="themeId" value="1" th:checked="${themeId == 1}" />
-						<span class="radio_label" th:text="#{theme.green}"></span>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input type="radio" name="themeId" value="2" th:checked="${themeId == 2}" />
-						<span class="radio_label" th:text="#{theme.red}"></span>
-					</label>
-				</li>
-			</ul>
-			<input type="submit" th:value="#{title.update.complete}" class="send_button" />
-		</form>
-		<div class="back_to_top_link">
+	<h2 class="title" th:text="#{theme} + #{title.list}"></h2>
+	<div class="main_content">
+		<p class="description" th:text="#{msg.update.input}"></p>
+
+		<div class="theme-card-container">
+			<div th:each="theme : ${themes}"
+				 th:class="${'theme-card ' + (theme.unlocked ? '' : 'locked ') + (theme.id == currentThemeId ? 'selected' : '')}"
+				 th:onclick="${theme.unlocked ? 'document.getElementById(''form-' + theme.id + ''').submit()' : ''}">
+
+				<div class="theme-card-title" th:text="#{${theme.nameKey}}"></div>
+				<div class="theme-preview" th:classappend="${'preview-' + theme.id}"></div>
+				<div class="theme-card-desc">
+					<span th:text="#{categoryForm.description} + ': '"></span>
+					<span th:text="#{${theme.descKey}}"></span>
+				</div>
+
+				<div class="theme-status">
+					<span th:if="${theme.id == currentThemeId}" class="status-selected" th:text="#{theme.selected}"></span>
+					<span th:if="${theme.id != currentThemeId and theme.unlocked}" class="status-unlocked" th:text="#{theme.unlocked}"></span>
+					<span th:if="${!theme.unlocked}" class="status-locked" th:text="#{theme.locked}"></span>
+				</div>
+
+				<form th:if="${theme.unlocked}" th:id="${'form-' + theme.id}" th:action="@{/client/theme/update}" method="post" style="display:none;">
+					<input type="hidden" name="themeId" th:value="${theme.id}" />
+				</form>
+			</div>
+		</div>
+
+		<div class="back_to_top_link" style="text-align: center; margin-top: 40px;">
 			<a th:href="@{/}" th:text="#{msg.back.to.top}"></a>
 		</div>
 	</div>
