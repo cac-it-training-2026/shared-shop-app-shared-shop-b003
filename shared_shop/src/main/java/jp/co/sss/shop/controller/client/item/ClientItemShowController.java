@@ -76,12 +76,12 @@ public class ClientItemShowController {
 	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 
-		// ガチャ結果表示用のセッションクリア（すでに表示済みの場合は消す）
-		if (model.containsAttribute("gachaResultDisplayed")) {
+		// ガチャ結果表示（セッションに結果があればモデルに移してセッションから削除）
+		String gachaResult = (String) session.getAttribute("gachaResult");
+		if (gachaResult != null) {
+			model.addAttribute("gachaMessage", gachaResult);
+			// 1回表示したら消す
 			session.removeAttribute("gachaResult");
-		}
-		if (session.getAttribute("gachaResult") != null) {
-			model.addAttribute("gachaResultDisplayed", true);
 		}
 
 		// 初期値：売れ筋順

@@ -83,8 +83,9 @@ public class LoginController {
 					userRepository.save(user);
 				}
 			}
-			// セッション情報を無効にして、ログイン画面再表示
-			session.invalidate();
+			// ログイン失敗時はセッションを破棄するとログイン時に表示するエラー情報が消えてしまう等の問題があるため、
+			// エラー時はセッションの invalidate を行わずに（あるいは必要な情報だけ残して）画面に戻すのが標準的です。
+			// session.invalidate(); はコメントアウトまたは削除します。
 			returnStr = "login";
 
 		} else {

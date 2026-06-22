@@ -16,9 +16,10 @@
 			<input type="submit" value="ガチャを回す！" class="send_button" style="background-color: #ff9900; width: auto; padding: 10px 20px; font-weight: bold;" />
 		</form>
 
-		<div th:if="${session.gachaResult != null}" style="margin-top: 15px; padding: 10px; background-color: #ffe4e1; color: #d2691e; border: 1px dashed #d2691e;">
-			<strong>ガチャ結果: </strong> <span th:text="${session.gachaResult}"></span>
-			<!-- 結果表示後、セッションから削除するための簡単なスクリプト (今回はリロード時に消える想定でバックエンド処理追加推奨) -->
+		<!-- セッションではなくフラグを利用し、結果はセッションに残る直前の値として再取得する前提とするか、今回はシンプルに Controller側で消さずにリダイレクトの仕様にする等の選択肢がありますが、Controllerで取得直後に消しているため、ここでは単純に消された瞬間に表示されないので、セッションからの読み取りを修正します -->
+		<!-- Thymeleafが描画する時点では session.removeAttribute が走った後であるため、FlashAttribute 等を使うのが安全ですが、現状の仕様に合わせるため controller側で model.addAttribute("gachaMessage", session.getAttribute("gachaResult")) のように渡すことにします -->
+		<div th:if="${gachaMessage != null}" style="margin-top: 15px; padding: 10px; background-color: #ffe4e1; color: #d2691e; border: 1px dashed #d2691e;">
+			<strong>ガチャ結果: </strong> <span th:text="${gachaMessage}"></span>
 		</div>
 	</div>
 
