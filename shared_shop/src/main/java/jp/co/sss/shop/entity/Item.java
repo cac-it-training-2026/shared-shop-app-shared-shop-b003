@@ -61,6 +61,12 @@ public class Item {
 	private String image;
 
 	/**
+	 * 商品画像URL (外部)
+	 */
+	@Column(name = "image_url")
+	private String imageUrl;
+
+	/**
 	 * 削除フラグ
 	 */
 	@Column(insertable = false)
@@ -221,6 +227,20 @@ public class Item {
 	 */
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	/**
+	 * 画像URLの取得
+	 */
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	/**
+	 * 画像URLのセット
+	 */
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	/**
