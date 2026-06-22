@@ -2,6 +2,7 @@ package jp.co.sss.shop.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,89 +26,103 @@ public class PlannerService {
 	@Autowired
 	ItemRepository itemRepository;
 
-	/**
-	 * 用途キーワードとカテゴリ名のマッピング
-	 */
 	private static final Map<String, List<String>> KEYWORD_TO_CATEGORIES = new HashMap<>();
 
 	static {
 		KEYWORD_TO_CATEGORIES.put("ゲーム", Arrays.asList("PC", "マウス", "キーボード", "モニター"));
-		KEYWORD_TO_CATEGORIES.put("プログラミング", Arrays.asList("PC", "キーボード", "モニター"));
-		KEYWORD_TO_CATEGORIES.put("動画編集", Arrays.asList("PC", "モニター"));
-		KEYWORD_TO_CATEGORIES.put("在宅ワーク", Arrays.asList("PC", "マウス", "キーボード", "モニター"));
-		KEYWORD_TO_CATEGORIES.put("配信", Arrays.asList("PC", "マイク", "Webカメラ"));
+		KEYWORD_TO_CATEGORIES.put("プログラミング", Arrays.asList("PC", "キーボード", "書籍"));
+		KEYWORD_TO_CATEGORIES.put("動画編集", Arrays.asList("PC", "モニター", "ストレージ"));
+		KEYWORD_TO_CATEGORIES.put("在宅ワーク", Arrays.asList("PC", "オフィスチェア", "デスクライト"));
+		KEYWORD_TO_CATEGORIES.put("自炊", Arrays.asList("調理器具", "調味料", "食料品"));
+		KEYWORD_TO_CATEGORIES.put("パーティー", Arrays.asList("菓子", "飲料", "惣菜"));
+		KEYWORD_TO_CATEGORIES.put("ダイエット", Arrays.asList("健康食品", "飲料"));
+		KEYWORD_TO_CATEGORIES.put("読書", Arrays.asList("書籍", "雑貨"));
+		KEYWORD_TO_CATEGORIES.put("勉強", Arrays.asList("書籍", "文房具"));
 	}
 
-	public List<List<Item>> suggestItemSets(String purpose, int budget) {
-		// 1. キーワード解析
+	public Map<String, List<Item>> suggestPlannedSets(String purpose, int budget) {
 		List<String> targetCategoryNames = new ArrayList<>();
 		for (String keyword : KEYWORD_TO_CATEGORIES.keySet()) {
-			if (purpose.contains(keyword)) {
+			if (purpose != null && purpose.contains(keyword)) {
 				targetCategoryNames.addAll(KEYWORD_TO_CATEGORIES.get(keyword));
 			}
 		}
 
-		// 重複削除
+		if (targetCategoryNames.isEmpty()) {
+			targetCategoryNames.addAll(Arrays.asList("食料品", "雑貨"));
+		}
+
 		targetCategoryNames = targetCategoryNames.stream().distinct().collect(Collectors.toList());
 
-		if (targetCategoryNames.isEmpty()) {
-			return new ArrayList<>();
-		}
-
-		// 2. カテゴリIDの取得
 		List<Category> allCategories = categoryRepository.findAll();
-		final List<String> finalTargetCategoryNames = targetCategoryNames;
-		List<Integer> targetCategoryIds = allCategories.stream()
-				.filter(c -> finalTargetCategoryNames.contains(c.getName()))
-				.map(Category::getId)
+		final List<String> finalNames = targetCategoryNames;
+		List<Category> targetCategories = allCategories.stream()
+				.filter(c -> finalNames.contains(c.getName()))
 				.collect(Collectors.toList());
 
-		if (targetCategoryIds.isEmpty()) {
-			return new ArrayList<>();
-		}
+		if (targetCategories.isEmpty()) return new HashMap<>();
 
-		// 3. 各カテゴリから商品候補を取得 (在庫あり、未削除)
 		Map<Integer, List<Item>> categoryItems = new HashMap<>();
-		for (Integer catId : targetCategoryIds) {
-			List<Item> items = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(catId, Constant.NOT_DELETED)
-					.stream().filter(i -> i.getStock() > 0).collect(Collectors.toList());
+		for (Category cat : targetCategories) {
+			List<Item> items = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(cat.getId(), Constant.NOT_DELETED)
+					.stream()
+					.filter(i -> i.getStock() > 0)
+					.sorted(Comparator.comparing(Item::getPrice))
+					.collect(Collectors.toList());
 			if (!items.isEmpty()) {
-				categoryItems.put(catId, items);
+				categoryItems.put(cat.getId(), items);
 			}
 		}
 
-		// 4. 組合せ生成（簡易的な貪欲法）
-		List<List<Item>> suggestions = new ArrayList<>();
+		Map<String, List<Item>> plans = new HashMap<>();
 
-		// パターン1: 安い順セット
-		List<Item> cheapSet = new ArrayList<>();
-		int cheapTotal = 0;
-		for (Integer catId : targetCategoryIds) {
-			if (categoryItems.containsKey(catId)) {
-				Item cheapest = categoryItems.get(catId).stream()
-						.min((a, b) -> a.getPrice().compareTo(b.getPrice())).get();
-				cheapSet.add(cheapest);
-				cheapTotal += cheapest.getPrice();
+		// 1. コスパ重視プラン (各カテゴリ最安)
+		List<Item> costSet = new ArrayList<>();
+		int costTotal = 0;
+		for (Integer catId : categoryItems.keySet()) {
+			Item item = categoryItems.get(catId).get(0);
+			costSet.add(item);
+			costTotal += item.getPrice();
+		}
+		if (costTotal <= budget && !costSet.isEmpty()) plans.put("コスパ重視プラン", costSet);
+
+		// 2. バランスプラン (各カテゴリ中間層)
+		List<Item> balanceSet = new ArrayList<>();
+		int balanceTotal = 0;
+		for (Integer catId : categoryItems.keySet()) {
+			List<Item> items = categoryItems.get(catId);
+			Item item = items.get(items.size() / 2);
+			balanceSet.add(item);
+			balanceTotal += item.getPrice();
+		}
+		if (balanceTotal <= budget && !balanceSet.isEmpty()) plans.put("バランスプラン", balanceSet);
+
+		// 3. ハイエンドプラン (予算内最高値)
+		List<Item> highSet = new ArrayList<>();
+		int highTotal = 0;
+		for (Integer catId : categoryItems.keySet()) {
+			List<Item> items = categoryItems.get(catId);
+			Item expensive = items.get(items.size() - 1);
+			highSet.add(expensive);
+			highTotal += expensive.getPrice();
+		}
+
+		if (highTotal > budget && !highSet.isEmpty()) {
+			for (int i = 0; i < highSet.size(); i++) {
+				Item current = highSet.get(i);
+				List<Item> options = categoryItems.get(current.getCategory().getId());
+				for (int j = options.size() - 2; j >= 0; j--) {
+					highTotal -= current.getPrice();
+					current = options.get(j);
+					highTotal += current.getPrice();
+					highSet.set(i, current);
+					if (highTotal <= budget) break;
+				}
+				if (highTotal <= budget) break;
 			}
 		}
-		if (!cheapSet.isEmpty() && cheapTotal <= budget) {
-			suggestions.add(cheapSet);
-		}
+		if (highTotal <= budget && !highSet.isEmpty()) plans.put("ハイエンドプラン", highSet);
 
-		// パターン2: 新着順セット
-		List<Item> latestSet = new ArrayList<>();
-		int latestTotal = 0;
-		for (Integer catId : targetCategoryIds) {
-			if (categoryItems.containsKey(catId)) {
-				Item latest = categoryItems.get(catId).get(0);
-				latestSet.add(latest);
-				latestTotal += latest.getPrice();
-			}
-		}
-		if (!latestSet.isEmpty() && latestTotal <= budget && latestTotal != cheapTotal) {
-			suggestions.add(latestSet);
-		}
-
-		return suggestions;
+		return plans;
 	}
 }

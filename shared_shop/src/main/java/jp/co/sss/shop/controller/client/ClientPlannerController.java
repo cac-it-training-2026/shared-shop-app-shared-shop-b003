@@ -1,6 +1,7 @@
 package jp.co.sss.shop.controller.client;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +26,10 @@ public class ClientPlannerController {
 	@RequestMapping(path = "/client/planner/results", method = RequestMethod.POST)
 	public String showResults(String purpose, Integer budget, Model model) {
 		if (budget == null) budget = 0;
-		List<List<Item>> itemSets = plannerService.suggestItemSets(purpose, budget);
+		Map<String, List<Item>> plans = plannerService.suggestPlannedSets(purpose, budget);
 		model.addAttribute("purpose", purpose);
 		model.addAttribute("budget", budget);
-		model.addAttribute("itemSets", itemSets);
+		model.addAttribute("plans", plans);
 		return "client/planner_results";
 	}
 }
