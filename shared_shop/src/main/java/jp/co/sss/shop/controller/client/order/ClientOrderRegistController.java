@@ -18,11 +18,13 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.entity.PointHistory;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
+import jp.co.sss.shop.repository.PointHistoryRepository;
 import jp.co.sss.shop.repository.UserRepository;
 
 /**
@@ -54,6 +56,12 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
+
+	/**
+	 * ポイント履歴情報リポジトリ
+	 */
+	@Autowired
+	PointHistoryRepository pointHistoryRepository;
 
 	/**
 	 * お届け先入力画面表示
@@ -195,6 +203,11 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderForm", orderForm);
 		model.addAttribute("total", total);
 
+		// 会員の最新情報を取得（最新ポイント取得のため）
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		User user = userRepository.getReferenceById(userBean.getId());
+		model.addAttribute("currentPoint", user.getCurrentPoint());
+
 		// 全商品が在庫切れの場合のメッセージ渡し
 		if (orderItemBeans.isEmpty()) {
 			model.addAttribute("orderItemBeans", null);
@@ -224,7 +237,8 @@ public class ClientOrderRegistController {
 	 * @return 注文完了画面
 	 */
 	@PostMapping("/client/order/complete")
-	public String showOrderComplete(HttpSession session, Model model) {
+	public String showOrderComplete(@RequestParam(name = "usePoint", required = false) Integer usePoint,
+			HttpSession session, Model model) {
 
 		// セッションから取得（届け先、支払い方法）
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
@@ -292,8 +306,25 @@ public class ClientOrderRegistController {
 			orderableBasketBeans.add(basketBean);
 		}
 
-		// 在庫切れ・在庫不足の商品があった場合は、注文登録せず確認画面へ戻す
-		if (!itemNameListZero.isEmpty() || !itemNameListLessThan.isEmpty()) {
+		// ポイント関連のバリデーション
+		User user = userRepository.getReferenceById(userBean.getId());
+		int currentPoint = user.getCurrentPoint();
+
+		if (usePoint == null) {
+			usePoint = 0;
+		}
+
+		boolean pointError = false;
+		if (usePoint < 0) {
+			pointError = true;
+		} else if (usePoint > currentPoint) {
+			pointError = true;
+		} else if (usePoint > total) {
+			pointError = true;
+		}
+
+		// 在庫切れ・在庫不足の商品があった場合、またはポイントにエラーがあった場合は、注文登録せず確認画面へ戻す
+		if (!itemNameListZero.isEmpty() || !itemNameListLessThan.isEmpty() || pointError) {
 
 			if (!itemNameListZero.isEmpty()) {
 				model.addAttribute("itemNameListZero", itemNameListZero);
@@ -303,8 +334,13 @@ public class ClientOrderRegistController {
 				model.addAttribute("itemNameListLessThan", itemNameListLessThan);
 			}
 
+			if (pointError) {
+				model.addAttribute("pointError", true);
+			}
+
 			model.addAttribute("orderForm", orderForm);
 			model.addAttribute("total", total);
+			model.addAttribute("currentPoint", currentPoint);
 
 			// 注文可能商品が1件もない場合
 			if (orderItemBeans.isEmpty()) {
@@ -330,11 +366,26 @@ public class ClientOrderRegistController {
 		order.setPhoneNumber(orderForm.getPhoneNumber());
 		order.setPayMethod(orderForm.getPayMethod());
 
-		User user = new User();
-		user.setId(userBean.getId());
-		order.setUser(user);
+		User orderUser = new User();
+		orderUser.setId(userBean.getId());
+		order.setUser(orderUser);
 
 		orderRepository.save(order);
+
+		// ポイント利用減算処理
+		if (usePoint > 0) {
+			user.setCurrentPoint(user.getCurrentPoint() - usePoint);
+			userRepository.save(user);
+
+			// ポイント履歴登録（利用）
+			PointHistory useHistory = new PointHistory();
+			useHistory.setUser(user);
+			useHistory.setPoint(-usePoint);
+			useHistory.setBalance(user.getCurrentPoint());
+			useHistory.setType("USE");
+			useHistory.setDescription("ポイント利用");
+			pointHistoryRepository.save(useHistory);
+		}
 
 		for (BasketBean basketBean : orderableBasketBeans) {
 
@@ -353,6 +404,27 @@ public class ClientOrderRegistController {
 			item.setStock(item.getStock() - basketBean.getOrderNum());
 			itemRepository.save(item);
 		}
+
+		// ポイント付与加算処理
+		int paymentAmount = total - usePoint;
+		int earnPoint = paymentAmount / 100;
+		if (earnPoint > 0) {
+			user.setCurrentPoint(user.getCurrentPoint() + earnPoint);
+			userRepository.save(user);
+
+			// ポイント履歴登録（獲得）
+			PointHistory earnHistory = new PointHistory();
+			earnHistory.setUser(user);
+			earnHistory.setPoint(earnPoint);
+			earnHistory.setBalance(user.getCurrentPoint());
+			earnHistory.setType("EARN");
+			earnHistory.setDescription("商品購入");
+			pointHistoryRepository.save(earnHistory);
+		}
+
+		// セッションのユーザー情報を更新
+		org.springframework.beans.BeanUtils.copyProperties(user, userBean);
+		session.setAttribute("user", userBean);
 
 		session.removeAttribute("basketBeans");
 		session.removeAttribute("orderForm");

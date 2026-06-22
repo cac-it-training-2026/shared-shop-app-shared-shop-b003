@@ -40,6 +40,11 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * 現在のポイント
+	 */
+	private Integer currentPoint;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -165,6 +170,22 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * 現在のポイントの取得
+	 * @return 現在のポイント
+	 */
+	public Integer getCurrentPoint() {
+		return currentPoint;
+	}
+
+	/**
+	 * 現在のポイントのセット
+	 * @param currentPoint 現在のポイント
+	 */
+	public void setCurrentPoint(Integer currentPoint) {
+		this.currentPoint = currentPoint;
 	}
 
 }

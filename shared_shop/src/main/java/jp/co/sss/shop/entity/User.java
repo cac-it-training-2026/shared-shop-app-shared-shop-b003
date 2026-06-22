@@ -82,6 +82,12 @@ public class User {
 	private Date insertDate;
 
 	/**
+	 * 現在のポイント
+	 */
+	@Column
+	private Integer currentPoint = 0;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -239,5 +245,21 @@ public class User {
 	 */
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
+	}
+
+	/**
+	 * 現在のポイントの取得
+	 * @return 現在のポイント
+	 */
+	public Integer getCurrentPoint() {
+		return currentPoint;
+	}
+
+	/**
+	 * 現在のポイントのセット
+	 * @param currentPoint 現在のポイント
+	 */
+	public void setCurrentPoint(Integer currentPoint) {
+		this.currentPoint = currentPoint;
 	}
 }

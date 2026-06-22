@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
+import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.LoginForm;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
@@ -69,8 +70,14 @@ public class LoginController {
 			returnStr = "login";
 
 		} else {
+			// ログインユーザーの情報を最新に更新（ポイント情報など）
+			UserBean userBean = (UserBean) session.getAttribute("user");
+			User user = userRepository.getReferenceById(userBean.getId());
+			org.springframework.beans.BeanUtils.copyProperties(user, userBean);
+			session.setAttribute("user", userBean);
+
 			//セッションスコープから権限を取り出す
-			Integer authority = ((UserBean) session.getAttribute("user")).getAuthority();
+			Integer authority = userBean.getAuthority();
 			if (authority.intValue() == Constant.AUTH_CLIENT) {
 				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
 				returnStr = "redirect:/";
