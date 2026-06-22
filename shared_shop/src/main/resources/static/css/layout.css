@@ -84,6 +84,15 @@ header {
 	background: #ff8669;
 }
 
+/* Green Theme */
+.theme-1 header {
+	background: #2e7d32;
+}
+/* Red Theme */
+.theme-2 header {
+	background: #c62828;
+}
+
 /* スキルアップテクニック3
  * font-sizeの単位emは親要素に設定されたfont-sizeの相対指定となります。
  * 親要素のfont-sizeが16px設定だとしたら、1.8emでは1.8倍、即ち28.8pxの大きさとなります。
@@ -140,6 +149,16 @@ header {
 .navi_area {
 	background: #edf9fe;
 }
+
+/* Green Theme */
+.theme-1 .navi_area {
+	background: #e8f5e9;
+}
+/* Red Theme */
+.theme-2 .navi_area {
+	background: #ffebee;
+}
+
 .navi_menu {
 	width: 960px;
 	padding:12px 0;
@@ -165,6 +184,23 @@ header {
 	color: #fff;
 	text-shadow: 1px 1px 1px #12526d;
 	border-color : #3d98bf;
+}
+
+/* Green Theme */
+.theme-1 .navi_menu a {
+	border-color: #4caf50;
+}
+.theme-1 .navi_menu a:hover {
+	background: #43a047;
+	border-color: #43a047;
+}
+/* Red Theme */
+.theme-2 .navi_menu a {
+	border-color: #f44336;
+}
+.theme-2 .navi_menu a:hover {
+	background: #e53935;
+	border-color: #e53935;
 }
 .navi_menu li:first-of-type a{
 	border-radius: 6px 0px 0px 6px;
@@ -272,6 +308,17 @@ aside.admin_menu {
 	background: #ff6c49;
 }
 
+/* Green Theme */
+.theme-1.user .main .title,
+.theme-1.admin .main .title {
+	background: #43a047;
+}
+/* Red Theme */
+.theme-2.user .main .title,
+.theme-2.admin .main .title {
+	background: #e53935;
+}
+
 .container.content > .admin_menu{
 	display: flex;
 	width: 50%;
@@ -369,6 +416,15 @@ footer {
 
 .admin footer {
 	background: #ff8669;
+}
+
+/* Green Theme */
+.theme-1 footer {
+	background: #2e7d32;
+}
+/* Red Theme */
+.theme-2 footer {
+	background: #c62828;
 }
 
 small {

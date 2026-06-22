@@ -40,6 +40,11 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * テーマID
+	 */
+	private Integer themeId;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -165,6 +170,22 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * テーマIDの取得
+	 * @return テーマID
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId テーマID
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
 	}
 
 }

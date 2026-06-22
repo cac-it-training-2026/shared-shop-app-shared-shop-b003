@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}" />
 <title  th:replace="${title}"></title>
 </head>
-<body class="user">
+<body class="user" th:classappend="${(session.user != null and session.user.themeId != null) ? 'theme-' + session.user.themeId : ''}">
 	<!--/* ヘッダー */-->
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>
