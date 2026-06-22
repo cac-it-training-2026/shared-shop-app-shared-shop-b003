@@ -61,26 +61,48 @@ public class LoginController {
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public String doLogin(@Valid @ModelAttribute LoginForm form, BindingResult result) {
 
-		String returnStr = "login";
 		if (result.hasErrors()) {
-			// 入力値に誤りがあった場合
+			// 入力値に誤りがあった場合（認証失敗）
+			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
+			if (user != null) {
+				// すでにロックされているか確認
+				if (user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+					result.reject("error.login.locked", "アカウントがロックされています。15分後にお試しください。");
+				} else {
+					// 失敗回数をインクリメント
+					int count = (user.getFailedLoginCount() == null ? 0 : user.getFailedLoginCount()) + 1;
+					user.setFailedLoginCount(count);
+					if (count >= 5) {
+						// 15分ロック
+						user.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
+						result.reject("error.login.locked", "ログイン失敗が5回に達したため、アカウントを15分間ロックしました。");
+					}
+					userRepository.save(user);
+				}
+			}
+
 			// セッション情報を無効にして、ログイン画面再表示
 			session.invalidate();
-			returnStr = "login";
+			return "login";
 
 		} else {
-			//セッションスコープから権限を取り出す
-			Integer authority = ((UserBean) session.getAttribute("user")).getAuthority();
-			if (authority.intValue() == Constant.AUTH_CLIENT) {
-				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
-				returnStr = "redirect:/";
-			} else {
+			// 成功時
+			UserBean userBean = (UserBean) session.getAttribute("user");
+			User user = userRepository.getReferenceById(userBean.getId());
 
+			// 失敗回数とロック状態をリセット
+			user.setFailedLoginCount(0);
+			user.setLockedUntil(null);
+			userRepository.save(user);
+
+			if (user.getAuthority() == Constant.AUTH_CLIENT) {
+				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
+				return "redirect:/";
+			} else {
 				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
-				returnStr = "redirect:/admin/menu";
+				return "redirect:/admin/menu";
 			}
 		}
-		return returnStr;
 
 	}
 
