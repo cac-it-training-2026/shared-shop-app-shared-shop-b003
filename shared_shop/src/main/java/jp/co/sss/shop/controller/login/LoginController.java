@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
+import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.LoginForm;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
