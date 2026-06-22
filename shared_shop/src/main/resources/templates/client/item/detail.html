@@ -43,51 +43,6 @@
 		</div>
 	</div>
 
-	<!-- レビュー表示エリア -->
-	<div class="review_area" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px;">
-		<h3 class="title">カスタマーレビュー</h3>
-
-		<div th:if="${#lists.isEmpty(item.reviewList)}">
-			<p>まだレビューはありません。</p>
-		</div>
-
-		<div class="review_list" th:if="${not #lists.isEmpty(item.reviewList)}">
-			<div class="review_item" th:each="review : ${item.reviewList}" style="border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 10px;">
-				<div class="review_header">
-					<span class="rating" style="font-weight: bold; color: #f0ad4e;">評価：<span th:text="${review.rating}"></span> / 5</span>
-					<span class="user_name" style="margin-left: 15px;" th:text="${review.user.name}"></span>
-					<span class="date" style="margin-left: 15px; font-size: 0.9em; color: #666;" th:text="${review.insertDate}"></span>
-				</div>
-				<div class="review_comment">
-					<p th:text="${review.comment}"></p>
-				</div>
-			</div>
-		</div>
-
-		<!-- レビュー投稿フォーム (ログイン時のみ表示) -->
-		<div class="review_form_area" th:if="${session.user != null}" style="margin-top: 30px; background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
-			<h3 class="title">レビューを投稿する</h3>
-			<form th:action="@{/client/review/regist}" method="post">
-				<input type="hidden" name="itemId" th:value="${item.id}" />
-				<div class="input_item" style="margin-bottom: 10px;">
-					<label>評価：</label>
-					<select name="rating" required>
-						<option value="5">5（非常に良い）</option>
-						<option value="4">4（良い）</option>
-						<option value="3">3（普通）</option>
-						<option value="2">2（悪い）</option>
-						<option value="1">1（非常に悪い）</option>
-					</select>
-				</div>
-				<div class="input_item" style="margin-bottom: 10px;">
-					<label>コメント：</label><br/>
-					<textarea name="comment" rows="4" cols="50" required placeholder="商品の感想を入力してください" style="width: 100%; box-sizing: border-box;"></textarea>
-				</div>
-				<input type="submit" value="レビューを投稿する" class="send_button" />
-			</form>
-		</div>
-	</div>
-
 </body>
 
 </html>

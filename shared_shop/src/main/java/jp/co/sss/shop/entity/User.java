@@ -1,7 +1,6 @@
 package jp.co.sss.shop.entity;
 
 import java.sql.Date;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -81,12 +80,6 @@ public class User {
 	 */
 	@Column(insertable = false)
 	private Date insertDate;
-
-	/**
-	 * 商品レビュー情報
-	 */
-	@jakarta.persistence.OneToMany(mappedBy = "user")
-	private List<Review> reviewList;
 
 	/**
 	 * 会員IDの取得
@@ -246,19 +239,5 @@ public class User {
 	 */
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
-	}
-
-	/**
-	 * 会員IDに紐づくレビューエンティティのリストを取得
-	 */
-	public List<Review> getReviewList() {
-		return reviewList;
-	}
-
-	/**
-	 * 会員IDに紐づくレビューエンティティのリストをセット
-	 */
-	public void setReviewList(List<Review> reviewList) {
-		this.reviewList = reviewList;
 	}
 }
