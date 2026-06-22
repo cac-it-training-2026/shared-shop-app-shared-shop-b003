@@ -17,28 +17,18 @@ public class ClientPlannerController {
 	@Autowired
 	PlannerService plannerService;
 
-	/**
-	 * プランナー入力画面表示
-	 */
 	@RequestMapping(path = "/client/planner/input", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showInput() {
 		return "client/planner_input";
 	}
 
-	/**
-	 * プランナー提案結果表示
-	 */
 	@RequestMapping(path = "/client/planner/results", method = RequestMethod.POST)
 	public String showResults(String purpose, Integer budget, Model model) {
-
 		if (budget == null) budget = 0;
-
 		List<List<Item>> itemSets = plannerService.suggestItemSets(purpose, budget);
-
 		model.addAttribute("purpose", purpose);
 		model.addAttribute("budget", budget);
 		model.addAttribute("itemSets", itemSets);
-
 		return "client/planner_results";
 	}
 }

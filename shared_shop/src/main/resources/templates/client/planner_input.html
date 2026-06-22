@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
-
 <head>
 	<title>スマート購入プランナー | [[#{shop.title}]]</title>
 	<meta charset="UTF-8" />
 </head>
-
 <body class="user">
 	<h2 class="title">スマート購入プランナー</h2>
-
 	<div class="info_form_area">
 		<p>用途と予算を入力してください。あなたに最適な商品セットを提案します。</p>
 		<form th:action="@{/client/planner/results}" method="post">
@@ -39,5 +36,4 @@
 		</form>
 	</div>
 </body>
-
 </html>

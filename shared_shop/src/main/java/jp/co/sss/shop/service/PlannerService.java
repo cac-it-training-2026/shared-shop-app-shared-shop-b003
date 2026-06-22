@@ -51,7 +51,6 @@ public class PlannerService {
 		targetCategoryNames = targetCategoryNames.stream().distinct().collect(Collectors.toList());
 
 		if (targetCategoryNames.isEmpty()) {
-			// キーワードが見つからない場合は全カテゴリから適当に選ぶ（または空を返す）
 			return new ArrayList<>();
 		}
 
@@ -77,13 +76,6 @@ public class PlannerService {
 			}
 		}
 
-		// 全ての必須カテゴリで商品が見つかる必要があるとする
-		if (categoryItems.size() < targetCategoryIds.size()) {
-			// 一部のカテゴリで商品がない場合、見つかったものだけで構成するか、諦める
-			// 今回は諦める（セットにならないため）
-			// ただし、緩いマッチングにするなら修正
-		}
-
 		// 4. 組合せ生成（簡易的な貪欲法）
 		List<List<Item>> suggestions = new ArrayList<>();
 
@@ -98,21 +90,21 @@ public class PlannerService {
 				cheapTotal += cheapest.getPrice();
 			}
 		}
-		if (cheapTotal <= budget && !cheapSet.isEmpty()) {
+		if (!cheapSet.isEmpty() && cheapTotal <= budget) {
 			suggestions.add(cheapSet);
 		}
 
-		// パターン2: 人気（最新）順セット
+		// パターン2: 新着順セット
 		List<Item> latestSet = new ArrayList<>();
 		int latestTotal = 0;
 		for (Integer catId : targetCategoryIds) {
 			if (categoryItems.containsKey(catId)) {
-				Item latest = categoryItems.get(catId).get(0); // リポジトリで新着順に取得しているため
+				Item latest = categoryItems.get(catId).get(0);
 				latestSet.add(latest);
 				latestTotal += latest.getPrice();
 			}
 		}
-		if (latestTotal <= budget && !latestSet.isEmpty() && latestTotal != cheapTotal) {
+		if (!latestSet.isEmpty() && latestTotal <= budget && latestTotal != cheapTotal) {
 			suggestions.add(latestSet);
 		}
 
