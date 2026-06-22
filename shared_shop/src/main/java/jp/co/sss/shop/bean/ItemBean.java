@@ -48,6 +48,16 @@ public class ItemBean {
 	private String categoryName;
 
 	/**
+	 * セール価格
+	 */
+	private Integer salePrice;
+
+	/**
+	 * セール中フラグ
+	 */
+	private boolean onSale;
+
+	/**
 	 * 商品ID取得
 	 * @return 商品ID
 	 */
@@ -173,6 +183,38 @@ public class ItemBean {
 	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	/**
+	 * セール価格の取得
+	 * @return セール価格
+	 */
+	public Integer getSalePrice() {
+		return salePrice;
+	}
+
+	/**
+	 * セール価格のセット
+	 * @param salePrice セール価格
+	 */
+	public void setSalePrice(Integer salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	/**
+	 * セール中フラグの取得
+	 * @return セール中の場合true
+	 */
+	public boolean isOnSale() {
+		return onSale;
+	}
+
+	/**
+	 * セール中フラグのセット
+	 * @param onSale セール中の場合true
+	 */
+	public void setOnSale(boolean onSale) {
+		this.onSale = onSale;
 	}
 
 }

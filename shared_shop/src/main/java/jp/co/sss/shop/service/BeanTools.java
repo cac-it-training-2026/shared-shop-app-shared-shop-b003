@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.co.sss.shop.bean.BasketBean;
@@ -15,6 +16,7 @@ import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.entity.SaleSchedule;
 import jp.co.sss.shop.form.ItemForm;
 
 /**
@@ -24,6 +26,11 @@ import jp.co.sss.shop.form.ItemForm;
  */
 @Service
 public class BeanTools {
+	/**
+	 * セール情報
+	 */
+	@Autowired
+	SaleService saleService;
 	/**
 	 * ItemFormクラスの各フィールドの値をItemBeanクラスにコピー
 	 *
@@ -92,6 +99,16 @@ public class BeanTools {
 		bean.setCategoryId(entity.getCategory().getId());
 		bean.setCategoryName(entity.getCategory().getName());
 
+		// タイムセール情報の反映
+		SaleSchedule sale = saleService.getActiveSaleByCategory(bean.getCategoryId());
+		if (sale != null) {
+			bean.setOnSale(true);
+			bean.setSalePrice(saleService.calculateSalePrice(bean.getPrice(), sale.getDiscountRate()));
+		} else {
+			bean.setOnSale(false);
+			bean.setSalePrice(bean.getPrice());
+		}
+
 		return bean;
 	}
 
@@ -143,13 +160,7 @@ public class BeanTools {
 		List<ItemBean> beanList = new ArrayList<ItemBean>();
 
 		for (Item entity : entityList) {
-			ItemBean bean = new ItemBean();
-			BeanUtils.copyProperties(entity, bean);
-
-			if (entity.getCategory() != null) {
-				bean.setCategoryName(entity.getCategory().getName());
-			}
-
+			ItemBean bean = copyEntityToItemBean(entity);
 			beanList.add(bean);
 		}
 
@@ -184,6 +195,13 @@ public class BeanTools {
 		// オーダー商品情報の作成とリスト追加
 		OrderItemBean orderItemBean = new OrderItemBean();
 		BeanUtils.copyProperties(item, orderItemBean);
+
+		// タイムセール価格の適用
+		SaleSchedule sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
+		if (sale != null) {
+			orderItemBean.setPrice(saleService.calculateSalePrice(item.getPrice(), sale.getDiscountRate()));
+		}
+
 		orderItemBean.setOrderNum(basketBean.getOrderNum());
 		int subtotal = orderItemBean.getPrice() * orderItemBean.getOrderNum();
 		orderItemBean.setSubtotal(subtotal);

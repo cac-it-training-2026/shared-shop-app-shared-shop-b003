@@ -40,7 +40,17 @@
 
 				</td>
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
-				<td th:text="${item.price}"></td>
+				<td>
+					<th:block th:if="${item.onSale}">
+						<span th:text="#{data.item.price} + '：' + ${item.price} + #{data.unit.price}"></span><br/>
+						<span th:text="'↓'"></span><br/>
+						<span th:text="#{data.sale.price} + '：' + ${item.salePrice} + #{data.unit.price}"></span><br/>
+						<span th:text="#{msg.sale.ends_in} + ' ' + ${item.remainingTime}"></span>
+					</th:block>
+					<th:block th:unless="${item.onSale}">
+						<span th:text="${item.price}"></span>
+					</th:block>
+				</td>
 				<td th:text="${item.categoryName}"></td>
 			</tr>
 		</table>

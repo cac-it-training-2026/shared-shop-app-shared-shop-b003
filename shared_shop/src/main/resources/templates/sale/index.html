@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title th:text="#{title.sale.list} + ' | ' + #{shop.title}"> </title>
+<meta charset="UTF-8" />
+</head>
+<body class="user sale_list">
+    <h2 class="title" th:text="#{title.sale.list}"></h2>
+
+    <div th:if="${#lists.isEmpty(sales)}">
+        <p th:text="#{msg.sale.none}"></p>
+    </div>
+
+    <div th:if="!${#lists.isEmpty(sales)}">
+        <table class="list_table">
+            <tr>
+                <th th:text="#{category}"></th>
+                <th th:text="#{data.sale.discount_rate}"></th>
+                <th th:text="#{data.sale.period}"></th>
+                <th th:text="#{list.title.action}"></th>
+            </tr>
+            <tr th:each="sale : ${sales}">
+                <td th:text="${sale.category.name}"></td>
+                <td th:text="${sale.discountRate} + '%OFF'"></td>
+                <td th:text="${sale.startTime} + ' ～ ' + ${sale.endTime}"></td>
+                <td>
+                    <a th:href="@{/client/item/list/1(categoryId=${sale.category.id})}" th:text="#{msg.sale.view_items}"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="back_link">
+        <a th:href="@{/}" th:text="#{msg.back.to.top}"></a>
+    </div>
+</body>
+</html>

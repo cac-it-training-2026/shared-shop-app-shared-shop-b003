@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * 商品情報のエンティティクラス
@@ -84,6 +85,18 @@ public class Item {
 	 */
 	@OneToMany(mappedBy = "item")
 	private List<OrderItem> orderItemList;
+
+	/**
+	 * セール価格（動的計算用）
+	 */
+	@Transient
+	private Integer salePrice;
+
+	/**
+	 * セール中フラグ（動的計算用）
+	 */
+	@Transient
+	private boolean onSale;
 
 	/**
 	 * コンストラクタ
@@ -285,6 +298,38 @@ public class Item {
 	 */
 	public void setOrderItemsList(List<OrderItem> orderItemList) {
 		this.orderItemList = orderItemList;
+	}
+
+	/**
+	 * セール価格の取得
+	 * @return セール価格
+	 */
+	public Integer getSalePrice() {
+		return salePrice;
+	}
+
+	/**
+	 * セール価格のセット
+	 * @param salePrice セール価格
+	 */
+	public void setSalePrice(Integer salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	/**
+	 * セール中かどうかの取得
+	 * @return セール中の場合true
+	 */
+	public boolean isOnSale() {
+		return onSale;
+	}
+
+	/**
+	 * セール中かどうかのセット
+	 * @param onSale セール中の場合true
+	 */
+	public void setOnSale(boolean onSale) {
+		this.onSale = onSale;
 	}
 
 }

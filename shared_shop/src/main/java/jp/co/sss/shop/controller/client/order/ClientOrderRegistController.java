@@ -24,6 +24,7 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.UserRepository;
+import jp.co.sss.shop.service.PriceCalc;
 
 /**
  * お届け先入力から注文完了までのコントローラー
@@ -54,6 +55,12 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
+
+	/**
+	 * 料金計算
+	 */
+	@Autowired
+	PriceCalc priceCalc;
 
 	/**
 	 * お届け先入力画面表示
@@ -171,11 +178,12 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			int price = priceCalc.getItemPrice(item);
+			orderItemBean.setPrice(price);
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
-			int subtotal = item.getPrice() * orderNum;
+			int subtotal = price * orderNum;
 			orderItemBean.setSubtotal(subtotal);
 
 			total += subtotal;
@@ -279,11 +287,12 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			int price = priceCalc.getItemPrice(item);
+			orderItemBean.setPrice(price);
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
-			int subtotal = item.getPrice() * orderNum;
+			int subtotal = price * orderNum;
 			orderItemBean.setSubtotal(subtotal);
 
 			total += subtotal;
@@ -345,7 +354,7 @@ public class ClientOrderRegistController {
 			orderItem.setOrder(order);
 			orderItem.setItem(item);
 			orderItem.setQuantity(basketBean.getOrderNum());
-			orderItem.setPrice(item.getPrice());
+			orderItem.setPrice(priceCalc.getItemPrice(item));
 
 			orderItemRepository.save(orderItem);
 

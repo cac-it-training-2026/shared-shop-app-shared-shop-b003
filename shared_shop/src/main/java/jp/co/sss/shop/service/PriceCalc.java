@@ -2,10 +2,13 @@ package jp.co.sss.shop.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.co.sss.shop.bean.OrderItemBean;
+import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.entity.SaleSchedule;
 
 /**
  * 料金計算用クラス
@@ -14,6 +17,23 @@ import jp.co.sss.shop.entity.OrderItem;
  */
 @Service
 public class PriceCalc {
+
+	@Autowired
+	SaleService saleService;
+
+	/**
+	 * 商品の現在価格（セールを考慮）を取得
+	 * @param item 商品情報
+	 * @return 現在の価格
+	 */
+	public int getItemPrice(Item item) {
+		SaleSchedule sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
+		if (sale != null) {
+			return saleService.calculateSalePrice(item.getPrice(), sale.getDiscountRate());
+		}
+		return item.getPrice();
+	}
+
 	/**
 	 * 小計から注文した商品の合計金額を計算
 	 *

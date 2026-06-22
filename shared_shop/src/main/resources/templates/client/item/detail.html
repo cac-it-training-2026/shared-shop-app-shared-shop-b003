@@ -21,7 +21,17 @@
 				<dt>[[#{data.item.name}]]</dt>
 				<dd th:text="*{name}"></dd>
 				<dt>[[#{data.item.price}]]</dt>
-				<dd th:text="*{price}"></dd>
+				<dd>
+					<th:block th:if="*{onSale}">
+						<span th:text="#{data.item.price} + '：' + *{price} + #{data.unit.price}"></span><br/>
+						<span th:text="'↓'"></span><br/>
+						<span th:text="#{data.sale.price} + '：' + *{salePrice} + #{data.unit.price}"></span><br/>
+						<span th:text="#{msg.sale.ends_in} + ' ' + *{remainingTime}"></span>
+					</th:block>
+					<th:block th:unless="*{onSale}">
+						<span th:text="*{price}"></span>
+					</th:block>
+				</dd>
 				<dt>[[#{data.item.stock}]]</dt>
 				<dd th:if="*{stock > 5}" th:text="#{data.in.stock}"></dd>
 				<dd th:if="*{stock >= 1 and 5 >= stock }" th:text="*{stock}"></dd>
