@@ -55,7 +55,7 @@ public class CategoryListMakeFilter extends HttpFilter {
 			throws IOException, ServletException {
 
 		// リクエストURLを取得
-		String requestURL = request.getRequestURI();
+		String requestURL = request.getServletPath();
 		if (URLCheck.isURLForMakeCategoryList(requestURL)) {
 
 			// カテゴリ情報を全件検索

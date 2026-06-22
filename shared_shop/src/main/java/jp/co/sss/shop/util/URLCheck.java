@@ -86,7 +86,7 @@ public class URLCheck {
 				|| requestURL.endsWith(contextPath + "/")
 				|| requestURL.endsWith("/login")
 				|| requestURL.indexOf("client") != -1
-				|| requestURL.indexOf("admin") == -1
+				|| !requestURL.startsWith("/admin/") && !requestURL.equals("/admin")
 				|| requestURL.endsWith("/logout")) {
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;
