@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="#{review}+#{title.detail}+' | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin">
+
+	<h2 th:class="title" th:text="#{review}+#{title.detail}"></h2>
+
+	<div class="info_form_area">
+		<dl>
+			<dt th:text="#{data.id}"></dt>
+			<dd th:text="${review.id}"></dd>
+			<dt th:text="#{data.item.name}"></dt>
+			<dd th:text="${review.item.name}"></dd>
+			<dt th:text="#{userForm.name}"></dt>
+			<dd th:text="${review.user.name}"></dd>
+			<dt th:text="#{reviewForm.rating}"></dt>
+			<dd th:text="${review.rating}"></dd>
+			<dt th:text="#{reviewForm.body}"></dt>
+			<dd th:text="${review.body}"></dd>
+			<dt th:text="#{data.review.date}"></dt>
+			<dd th:text="${#dates.format(review.insertDate, 'yyyy/MM/dd HH:mm:ss')}"></dd>
+		</dl>
+
+		<div class="button_area">
+			<form th:action="@{/admin/review/delete/check/{id}(id=${review.id})}" method="post">
+				<input type="submit" value="削除" class="delete" />
+			</form>
+			<form th:action="@{/admin/review/list}" method="post">
+				<input type="submit" value="戻る" class="back_button" />
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>

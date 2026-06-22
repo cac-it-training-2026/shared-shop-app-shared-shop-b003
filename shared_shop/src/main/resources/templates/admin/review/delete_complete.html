@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="#{review}+#{title.delete.complete}+' | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin">
+
+	<h2 th:class="title" th:text="#{review}+#{title.delete.complete}"></h2>
+
+	<div class="info_form_area">
+		<p th:text="#{msg.delete.complete}"></p>
+		<div class="button_area">
+			<form th:action="@{/admin/review/list}" method="post">
+				<input type="submit" value="一覧へ戻る" class="back_button" />
+			</form>
+		</div>
+	</div>
+
+</body>
+
+</html>
