@@ -51,16 +51,6 @@
 			<td class="total">[[#{data.total}]]</td>
 			<td class="total" th:text="${total}"></td>
 		</tr>
-		<tr th:if="${session.coupon != null}">
-			<td colspan="3"></td>
-			<td class="total">クーポン割引([[${session.coupon.code}]])</td>
-			<td class="total" th:text="'-' + ${discount}"></td>
-		</tr>
-		<tr th:if="${session.coupon != null}">
-			<td colspan="3"></td>
-			<td class="total" style="color: red;">割引適用後合計</td>
-			<td class="total" style="color: red;" th:text="${discountedTotal}"></td>
-		</tr>
 	</table>
 	<div class="user_info_form_area">
 		<table class="detail_table address">

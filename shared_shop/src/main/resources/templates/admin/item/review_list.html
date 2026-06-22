@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>レビュー管理 | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin">
+
+	<h2 class="title">レビュー管理</h2>
+
+	<div th:if="${#lists.isEmpty(reviews)}">
+		<p>登録されているレビューはありません。</p>
+	</div>
+
+	<table class="list_table" th:if="${not #lists.isEmpty(reviews)}">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>商品名</th>
+				<th>会員名</th>
+				<th>評価</th>
+				<th>スタンプ</th>
+				<th>コメント</th>
+				<th>投稿日</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="review : ${reviews}">
+				<td th:text="${review.id}"></td>
+				<td th:text="${review.item.name}"></td>
+				<td th:text="${review.user.name}"></td>
+				<td th:text="${review.rating}"></td>
+				<td th:text="${review.stamp}"></td>
+				<td th:text="${review.comment}"></td>
+				<td th:text="${review.insertDate}"></td>
+				<td>
+					<form th:action="@{/admin/review/delete/{id}(id=${review.id})}" method="post">
+						<input type="submit" value="削除" class="delete" onclick="return confirm('本当に削除しますか？');" />
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="detail_button_area">
+		<form th:action="@{/admin/menu}" method="get">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
+
+</body>
+
+</html>

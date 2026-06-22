@@ -13,21 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
-import jp.co.sss.shop.bean.CouponBean;
 import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.bean.UserBean;
-import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
-import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.UserRepository;
-import jp.co.sss.shop.service.PriceCalc;
 
 /**
  * お届け先入力から注文完了までのコントローラー
@@ -58,18 +54,6 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
-
-	/**
-	 * クーポン情報リポジトリ
-	 */
-	@Autowired
-	CouponRepository couponRepository;
-
-	/**
-	 * 料金計算サービス
-	 */
-	@Autowired
-	PriceCalc priceCalc;
 
 	/**
 	 * お届け先入力画面表示
@@ -211,15 +195,6 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderForm", orderForm);
 		model.addAttribute("total", total);
 
-		// クーポン割引の計算
-		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
-		if (couponBean != null) {
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			int discountedTotal = Math.max(0, total - discount);
-			model.addAttribute("discount", discount);
-			model.addAttribute("discountedTotal", discountedTotal);
-		}
-
 		// 全商品が在庫切れの場合のメッセージ渡し
 		if (orderItemBeans.isEmpty()) {
 			model.addAttribute("orderItemBeans", null);
@@ -331,15 +306,6 @@ public class ClientOrderRegistController {
 			model.addAttribute("orderForm", orderForm);
 			model.addAttribute("total", total);
 
-			// クーポン割引の再計算
-			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
-			if (couponBean != null) {
-				int discount = priceCalc.calculateDiscount(total, couponBean);
-				int discountedTotal = Math.max(0, total - discount);
-				model.addAttribute("discount", discount);
-				model.addAttribute("discountedTotal", discountedTotal);
-			}
-
 			// 注文可能商品が1件もない場合
 			if (orderItemBeans.isEmpty()) {
 				model.addAttribute("orderItemBeans", null);
@@ -368,22 +334,6 @@ public class ClientOrderRegistController {
 		user.setId(userBean.getId());
 		order.setUser(user);
 
-		// クーポン情報の適用
-		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
-		if (couponBean != null) {
-			Coupon coupon = couponRepository.getReferenceById(couponBean.getId());
-			order.setCoupon(coupon);
-
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			order.setDiscount(discount);
-
-			// 使用回数のデクリメント
-			if (coupon.getUsageLimit() != null) {
-				coupon.setUsageLimit(coupon.getUsageLimit() - 1);
-				couponRepository.save(coupon);
-			}
-		}
-
 		orderRepository.save(order);
 
 		for (BasketBean basketBean : orderableBasketBeans) {
@@ -404,14 +354,8 @@ public class ClientOrderRegistController {
 			itemRepository.save(item);
 		}
 
-		// ガチャ実行権限をセッションに設定 (注文完了イベント)
-		session.setAttribute("canPlayGacha", true);
-		session.setAttribute("gachaEventType", "order");
-		session.setAttribute("gachaSourceOrderId", order.getId());
-
 		session.removeAttribute("basketBeans");
 		session.removeAttribute("orderForm");
-		session.removeAttribute("coupon");
 
 		return "client/order/complete";
 	}
