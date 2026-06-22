@@ -10,27 +10,38 @@
 		<p class="description" th:text="#{msg.update.input}"></p>
 
 		<div class="theme-card-container">
-			<div th:each="theme : ${themes}"
-				 th:class="${'theme-card ' + (theme.unlocked ? '' : 'locked ') + (theme.id == currentThemeId ? 'selected' : '')}"
-				 th:onclick="${theme.unlocked ? 'document.getElementById(''form-' + theme.id + ''').submit()' : ''}">
-
-				<div class="theme-card-title" th:text="#{${theme.nameKey}}"></div>
-				<div class="theme-preview" th:classappend="${'preview-' + theme.id}"></div>
-				<div class="theme-card-desc">
-					<span th:text="#{categoryForm.description} + ': '"></span>
-					<span th:text="#{${theme.descKey}}"></span>
-				</div>
-
-				<div class="theme-status">
-					<span th:if="${theme.id == currentThemeId}" class="status-selected" th:text="#{theme.selected}"></span>
-					<span th:if="${theme.id != currentThemeId and theme.unlocked}" class="status-unlocked" th:text="#{theme.unlocked}"></span>
-					<span th:if="${!theme.unlocked}" class="status-locked" th:text="#{theme.locked}"></span>
-				</div>
-
-				<form th:if="${theme.unlocked}" th:id="${'form-' + theme.id}" th:action="@{/client/theme/update}" method="post" style="display:none;">
+			<th:block th:each="theme : ${themes}">
+				<!-- Unlocked theme form -->
+				<form th:if="${theme.unlocked}" th:action="@{/client/theme/update}" method="post"
+					  th:class="${'theme-card ' + (theme.id == currentThemeId ? 'selected' : '')}">
 					<input type="hidden" name="themeId" th:value="${theme.id}" />
+					<button type="submit" class="theme-card-button">
+						<div class="theme-card-title" th:text="#{${theme.nameKey}}"></div>
+						<div class="theme-preview" th:classappend="${'preview-' + theme.id}"></div>
+						<div class="theme-card-desc">
+							<span th:text="#{categoryForm.description} + ': '"></span>
+							<span th:text="#{${theme.descKey}}"></span>
+						</div>
+						<div class="theme-status">
+							<span th:if="${theme.id == currentThemeId}" class="status-selected" th:text="#{theme.selected}"></span>
+							<span th:if="${theme.id != currentThemeId}" class="status-unlocked" th:text="#{theme.unlocked}"></span>
+						</div>
+					</button>
 				</form>
-			</div>
+
+				<!-- Locked theme display -->
+				<div th:unless="${theme.unlocked}" class="theme-card locked">
+					<div class="theme-card-title" th:text="#{${theme.nameKey}}"></div>
+					<div class="theme-preview" th:classappend="${'preview-' + theme.id}"></div>
+					<div class="theme-card-desc">
+						<span th:text="#{categoryForm.description} + ': '"></span>
+						<span th:text="#{${theme.descKey}}"></span>
+					</div>
+					<div class="theme-status">
+						<span class="status-locked" th:text="#{theme.locked}"></span>
+					</div>
+				</div>
+			</th:block>
 		</div>
 
 		<div class="back_to_top_link" style="text-align: center; margin-top: 40px;">
