@@ -3,19 +3,34 @@
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
 
 <head>
-	<title th:text="#{order}+#{title.detail}+' | '+ #{shop.title}"> </title>
+	<title th:text="#{title.detail} + ' | ' + #{shop.title}"> </title>
 	<meta charset="UTF-8" />
 </head>
 
-<body class="user">
-	<h2 th:class="title" th:text="#{order}+#{title.detail}"></h2>
-
-	<div class="info_form_area">
-		<table class="detail_table payment">
+<body class="user order_detail">
+	<h2 th:class="title" th:text="#{order} + #{title.detail}"></h2>
+	<div class="user_info_form_area">
+		<table class="detail_table address">
+			<caption class="table_caption">[[#{data.address}]]</caption>
 			<tr>
-				<th>[[#{data.client.order.date}]]</th>
-				<td th:text="${order.insertDate}"></td>
+				<th>[[#{data.address.postalcode}]]</th>
+				<td th:text="${order.postalCode}"></td>
 			</tr>
+			<tr>
+				<th>[[#{data.address.address}]]</th>
+				<td th:text="${order.address}"></td>
+			</tr>
+			<tr>
+				<th>[[#{data.address.name}]]</th>
+				<td th:text="${order.name}"></td>
+			</tr>
+			<tr>
+				<th>[[#{data.address.phonenumber}]]</th>
+				<td th:text="${order.phoneNumber}"></td>
+			</tr>
+		</table>
+		<table class="detail_table pay">
+			<caption class="table_caption">[[#{paymethod.str}]]</caption>
 			<tr>
 				<th>[[#{paymethod.str}]]</th>
 				<td th:switch="${order.payMethod}">
@@ -26,24 +41,9 @@
 					<span th:case="5">[[#{paymethod.convenience.str}]]</span>
 				</td>
 			</tr>
-			<tr>
-				<th>[[#{data.address}+#{data.address.postalcode}]]</th>
-				<td th:text="${order.postalCode}"></td>
-			</tr>
-			<tr>
-				<th>[[#{data.address}+#{data.address.address}]]</th>
-				<td th:text="${order.address}"></td>
-			</tr>
-			<tr>
-				<th>[[#{data.address}+#{data.address.name}]]</th>
-				<td th:text="${order.name}"></td>
-			</tr>
-			<tr>
-				<th>[[#{data.address}+#{data.address.phonenumber}]]</th>
-				<td th:text="${order.phoneNumber}"></td>
-			</tr>
 		</table>
-		<table class="list_table detail">
+		<table class="list_table item_detail">
+			<caption class="table_caption">[[#{msg.regist.check}]]</caption>
 			<tr>
 				<th>[[#{data.item.name}]]</th>
 				<th>[[#{data.unit.price}]]</th>
@@ -60,6 +60,16 @@
 				<td colspan="2"></td>
 				<td class="total">[[#{data.total}]]</td>
 				<td class="total" th:text="${total}"></td>
+			</tr>
+			<tr th:if="${order.discount != null}">
+				<td colspan="2"></td>
+				<td class="total">クーポン割引([[${order.couponCode}]])</td>
+				<td class="total" th:text="'-' + ${order.discount}"></td>
+			</tr>
+			<tr th:if="${order.discount != null}">
+				<td colspan="2"></td>
+				<td class="total" style="color: red;">割引適用後合計</td>
+				<td class="total" style="color: red;" th:text="${order.discountedTotal}"></td>
 			</tr>
 		</table>
 		<form th:action="@{/client/order/list}" method="post" class="detail_button_area">

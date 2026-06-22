@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
+import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
-import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
+import jp.co.sss.shop.service.BeanTools;
 
 /**
  * 注文一覧表示のコントローラー
@@ -40,6 +41,12 @@ public class ClientOrderShowController {
 	OrderItemRepository orderItemRepository;
 
 	/**
+	 * Bean変換ツール
+	 */
+	@Autowired
+	BeanTools beanTools;
+
+	/**
 	 * 注文一覧画面を表示
 	 *
 	 * @param model Viewへ渡すデータを保持するModel
@@ -56,7 +63,11 @@ public class ClientOrderShowController {
 		}
 
 		List<Order> orders = orderRepository.findByUserId(userBean.getId());
-		model.addAttribute("orders", orders);
+		List<OrderBean> orderBeans = new ArrayList<>();
+		for (Order order : orders) {
+			orderBeans.add(beanTools.copyEntityToOrderBean(order));
+		}
+		model.addAttribute("orders", orderBeans);
 
 		return "client/order/list";
 	}
@@ -80,38 +91,18 @@ public class ClientOrderShowController {
 		// IDから注文情報を取得
 		Order order = orderRepository.getReferenceById(id);
 
-		// 注文IDに紐づく注文商品を取得
-		List<OrderItem> orderItemList = orderItemRepository.findByOrderId(id);
+		// 表示する注文情報を生成
+		OrderBean orderBean = beanTools.copyEntityToOrderBean(order);
 
-		// HTML表示用の空の商品リスト作成
-		List<OrderItemBean> orderItemBeans = new ArrayList<>();
-
-		int total = 0;
-
-		// 注文商品情報を１件ずつBeanに移し替える
-		for (OrderItem orderItem : orderItemList) {
-
-			OrderItemBean orderItemBean = new OrderItemBean();
-
-			orderItemBean.setId(orderItem.getId());
-			orderItemBean.setName(orderItem.getItem().getName());
-			orderItemBean.setPrice(orderItem.getPrice());
-			orderItemBean.setOrderNum(orderItem.getQuantity());
-
-			int subtotal = orderItem.getPrice() * orderItem.getQuantity();
-			orderItemBean.setSubtotal(subtotal);
-
-			total += subtotal;
-
-			orderItemBeans.add(orderItemBean);
-		}
+		// 注文商品情報を取得
+		List<OrderItemBean> orderItemBeanList = beanTools.generateOrderItemBeanList(order.getOrderItemsList());
 
 		// order→ 注文日、支払方法、届け先情報
 		// orderItemBeans→ 商品名、単価、数量、小計
 		// total→ 合計金額
-		model.addAttribute("order", order);
-		model.addAttribute("orderItemBeans", orderItemBeans);
-		model.addAttribute("total", total);
+		model.addAttribute("order", orderBean);
+		model.addAttribute("orderItemBeans", orderItemBeanList);
+		model.addAttribute("total", orderBean.getTotal());
 
 		return "client/order/detail";
 	}

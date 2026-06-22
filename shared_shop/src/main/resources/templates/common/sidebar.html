@@ -26,6 +26,16 @@
 				</select> <input type="submit" th:value="#{select}" />
 			</form>
 		</div>
+
+		<!--/* クーポンメニュー (一般会員用) */-->
+		<th:block th:if="${session.user != null and session.user.authority == 2}">
+			<h2 th:class="title">マイメニュー</h2>
+			<ul class="menu" style="list-style: none; padding: 0;">
+				<li style="margin-bottom: 10px;">
+					<a th:href="@{/client/coupon/list}" class="display_list">所持クーポン一覧</a>
+				</li>
+			</ul>
+		</th:block>
 	</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->

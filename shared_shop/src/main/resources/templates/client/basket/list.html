@@ -3,65 +3,83 @@
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
 
 <head>
-	<title th:text="#{basket}+' | '+ #{shop.title}"> </title>
+	<title th:text="#{basket} + #{title.list} + ' | ' + #{shop.title}"> </title>
 	<meta charset="UTF-8" />
 </head>
 
-<body class="user shopping_basket">
-	<h2 th:class="title" th:text="#{basket}"></h2>
+<body class="user basket_list">
+	<h2 th:class="title" th:text="#{basket} + #{title.list}"></h2>
 
-	<th:block th:if="${itemNameListLessThan != null || itemNameListZero != null}">
-		<br />
-				<!--/* 在庫不足商品 */-->
-		<ul class="error_list_no_mark" th:if="${itemNameListLessThan != null}">
-			<li th:each="err : ${itemNameListLessThan}" th:text="#{msg.basket.stock.short(${err})}"></li>
+	<p th:if="${#lists.isEmpty(session.basketBeans)}" th:text="#{msg.basket.list.none}"></p>
 
-		</ul>
-				<!--/* 在庫なし商品 */-->
-		<ul class="error_list_no_mark" th:if="${itemNameListZero != null}">
+	<th:block th:if="${itemNameListZero != null}">
+		<ul class="error_list_no_mark">
 			<li th:each="err : ${itemNameListZero}" th:text="#{msg.basket.stock.none(${err})}"></li>
 		</ul>
-		<br />
 	</th:block>
 
-	<div th:if="${session.basketBeans == null}">
-		<!--/* 買い物かごが空のとき */-->
-		<p th:text="#{msg.basket.list.none}"></p>
-	</div>
+	<th:block th:if="${itemNameListLessThan != null}">
+		<ul class="error_list_no_mark">
+			<li th:each="err : ${itemNameListLessThan}" th:text="#{msg.basket.stock.short(${err})}"></li>
+		</ul>
+	</th:block>
 
-	<th:block th:if="${session.basketBeans != null}">
-		<table class="list_table basket">
+	<div th:unless="${#lists.isEmpty(session.basketBeans)}">
+		<table class="list_table">
 			<tr>
 				<th>[[#{data.basket.item.name}]]</th>
+				<th>[[#{data.unit.price}]]</th>
 				<th>[[#{data.basket.count}]]</th>
 				<th>[[#{data.basket.operate}]]</th>
 				<th>[[#{data.basket.stock.status}]]</th>
 			</tr>
-			<tr th:each="item, status: ${session.basketBeans}">
-				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+			<tr th:each="item: ${session.basketBeans}">
+				<td th:text="${item.name}"></td>
+				<td th:text="${item.price}"></td>
 				<td th:text="${item.orderNum}"></td>
 				<td>
 					<form th:action="@{/client/basket/delete}" method="post">
-						<input type="hidden" name="id" th:value="${item.id}" /> <input type="submit" value="削除"
-							class="delete" />
+						<input type="hidden" name="id" th:value="${item.id}" />
+						<input type="submit" value="削除" />
 					</form>
 				</td>
 				<td th:if="${item.stock == 0}" th:text="#{data.out.of.stock}"></td>
-				<td th:if="${item.stock > 5}" th:text="#{data.in.stock}"></td>
+				<td th:if="${item.stock >= 6}" th:text="#{data.in.stock}"></td>
 				<td th:if="${item.stock >= 1 and 5 >= item.stock }" th:text="${item.stock}"></td>
 			</tr>
 		</table>
+
+		<div class="coupon_area" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+			<h3>クーポン利用</h3>
+			<p th:if="${couponError != null}" style="color: red;" th:text="${couponError}"></p>
+			<form th:action="@{/client/basket/applyCoupon}" method="post">
+				クーポンコード: <input type="text" name="code" th:value="${session.coupon != null ? session.coupon.code : ''}" />
+				<input type="submit" value="適用" />
+			</form>
+			<div th:if="${session.coupon != null}" style="margin-top: 10px;">
+				<p>適用中のクーポン: <span th:text="${session.coupon.code}"></span></p>
+				<p>割引額: <span th:text="${discount}"></span>円</p>
+			</div>
+		</div>
+
+		<div class="total_area" style="margin-top: 20px; text-align: right;">
+			<p>合計金額: <span th:text="${total}"></span>円</p>
+			<div th:if="${session.coupon != null}">
+				<p>割引適用後合計: <span style="font-size: 1.5em; color: red;" th:text="${discountedTotal}"></span>円</p>
+			</div>
+		</div>
+
 		<div class="user_info_form_area shopping_button">
 			<!--/* 注文手続きフォーム */-->
 			<form th:action="@{/client/order/address/input}" method="post">
-				<input type="submit" value="ご注文のお手続き" />
+				<input type="submit" value="注文手続きへ" />
 			</form>
 			<!--/* 買い物かごを空にするフォーム */-->
 			<form th:action="@{/client/basket/allDelete}" method="post">
-				<input type="submit" value="買い物かごを空にする" class="delete" />
+				<input type="submit" value="買い物かごを空にする" />
 			</form>
 		</div>
-	</th:block>
+	</div>
 </body>
 
 </html>

@@ -111,6 +111,18 @@ public class BeanTools {
 		// 会員名を注文情報に設定
 		bean.setUserName(entity.getUser().getName());
 
+		// 合計金額の設定
+		bean.setTotal(entity.getTotal());
+
+		// 割引情報のコピー
+		bean.setDiscount(entity.getDiscount());
+		if (entity.getCoupon() != null) {
+			bean.setCouponCode(entity.getCoupon().getCode());
+		}
+
+		// 割引適用後合計金額の計算
+		bean.setDiscountedTotal(entity.getDiscountedTotal());
+
 		return bean;
 	}
 

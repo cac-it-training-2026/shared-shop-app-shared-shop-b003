@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>所持クーポン一覧 | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user coupon_list">
+	<h2 th:class="title">所持クーポン一覧</h2>
+	<p th:if="${#lists.isEmpty(coupons)}">現在、利用可能なクーポンはありません。</p>
+
+	<div th:unless="${#lists.isEmpty(coupons)}">
+		<p>獲得したクーポンの一覧です。買い物かご画面でクーポンコードを入力してご利用ください。</p>
+		<table class="list_table">
+			<tr>
+				<th>クーポンコード</th>
+				<th>割引内容</th>
+				<th>有効期限</th>
+			</tr>
+			<tr th:each="coupon : ${coupons}">
+				<td th:text="${coupon.code}" style="font-weight: bold; color: #ff4500;"></td>
+				<td th:switch="${coupon.discountType}">
+					<span th:case="'amount'" th:text="${coupon.discountValue} + '円引き'"></span>
+					<span th:case="'percent'" th:text="${coupon.discountValue} + '%引き'"></span>
+				</td>
+				<td>
+					<span th:text="${#dates.format(coupon.validUntil, 'yyyy/MM/dd HH:mm')}"></span> まで
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<p class="complete_link"><a th:href="@{/}" th:text="#{msg.back.to.top}"></a></p>
+</body>
+
+</html>
