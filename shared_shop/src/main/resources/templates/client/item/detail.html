@@ -23,13 +23,14 @@
 				<dt>[[#{data.item.price}]]</dt>
 				<dd>
 					<th:block th:if="*{onSale}">
-						<span th:text="#{data.item.price} + '：' + *{price} + #{data.unit.price}"></span><br/>
-						<span th:text="'↓'"></span><br/>
-						<span th:text="#{data.sale.price} + '：' + *{salePrice} + #{data.unit.price}"></span><br/>
-						<span th:text="#{msg.sale.ends_in} + ' ' + *{remainingTime}"></span>
+						<span style="text-decoration: line-through;" th:text="*{price} + #{data.unit.price}"></span><br/>
+						<span>↓</span><br/>
+						<span th:text="*{salePrice} + #{data.unit.price}"></span><br/>
+						<span>↓</span><br/>
+						<span th:text="*{ (price - salePrice) * 100 / price } + '%OFF'"></span>
 					</th:block>
 					<th:block th:unless="*{onSale}">
-						<span th:text="*{price}"></span>
+						<span th:text="*{price} + #{data.unit.price}"></span>
 					</th:block>
 				</dd>
 				<dt>[[#{data.item.stock}]]</dt>

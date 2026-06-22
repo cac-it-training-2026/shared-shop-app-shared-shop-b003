@@ -178,7 +178,15 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			int price = priceCalc.getItemPrice(item);
+
+			// カートの価格（固定）を使用、なければ現在のセール価格を計算
+			int price;
+			if (basketBean.getPrice() != null) {
+				price = basketBean.getPrice();
+			} else {
+				price = priceCalc.getItemPrice(item);
+			}
+
 			orderItemBean.setPrice(price);
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
@@ -287,7 +295,15 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			int price = priceCalc.getItemPrice(item);
+
+			// カートの価格（固定）を使用
+			int price;
+			if (basketBean.getPrice() != null) {
+				price = basketBean.getPrice();
+			} else {
+				price = priceCalc.getItemPrice(item);
+			}
+
 			orderItemBean.setPrice(price);
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
@@ -354,7 +370,13 @@ public class ClientOrderRegistController {
 			orderItem.setOrder(order);
 			orderItem.setItem(item);
 			orderItem.setQuantity(basketBean.getOrderNum());
-			orderItem.setPrice(priceCalc.getItemPrice(item));
+
+			// カート投入時の固定価格を使用
+			if (basketBean.getPrice() != null) {
+				orderItem.setPrice(basketBean.getPrice());
+			} else {
+				orderItem.setPrice(priceCalc.getItemPrice(item));
+			}
 
 			orderItemRepository.save(orderItem);
 

@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * タイムセールスケジュールのエンティティクラス
@@ -56,6 +57,12 @@ public class SaleSchedule {
 	 */
 	@Column(name = "enabled")
 	private Integer enabled;
+
+	/**
+	 * 残り時間（表示用）
+	 */
+	@Transient
+	private String remainingTime;
 
 	/**
 	 * コンストラクタ
@@ -157,5 +164,21 @@ public class SaleSchedule {
 	 */
 	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
+	}
+
+	/**
+	 * 残り時間の取得
+	 * @return 残り時間
+	 */
+	public String getRemainingTime() {
+		return remainingTime;
+	}
+
+	/**
+	 * 残り時間のセット
+	 * @param remainingTime 残り時間
+	 */
+	public void setRemainingTime(String remainingTime) {
+		this.remainingTime = remainingTime;
 	}
 }

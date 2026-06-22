@@ -27,10 +27,15 @@ public class GlobalControllerAdvice {
 	public void addAttributes(Model model) {
 		try {
 			List<SaleSchedule> sales = saleService.getActiveSales();
-			model.addAttribute("activeSales", sales != null ? sales : Collections.emptyList());
 
-			if (sales != null && !sales.isEmpty()) {
-				model.addAttribute("saleRemainingTime", saleService.getRemainingTime(sales.get(0).getEndTime()));
+			if (sales != null) {
+				// 各セールに対して個別に残り時間を計算・セット
+				for (SaleSchedule sale : sales) {
+					sale.setRemainingTime(saleService.getRemainingTime(sale.getEndTime()));
+				}
+				model.addAttribute("activeSales", sales);
+			} else {
+				model.addAttribute("activeSales", Collections.emptyList());
 			}
 		} catch (Exception e) {
 			// 例外が発生した場合は空のデータをセットし、アプリの動作を継続させる

@@ -200,14 +200,9 @@ public class BeanTools {
 		OrderItemBean orderItemBean = new OrderItemBean();
 		BeanUtils.copyProperties(item, orderItemBean);
 
-		// タイムセール価格の適用
-		SaleSchedule sale = null;
-		if (item.getCategory() != null && item.getCategory().getId() != null) {
-			sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
-		}
-
-		if (sale != null) {
-			orderItemBean.setPrice(saleService.calculateSalePrice(item.getPrice(), sale.getDiscountRate()));
+		// カート投入時の価格（セール価格が固定されている）を使用
+		if (basketBean.getPrice() != null) {
+			orderItemBean.setPrice(basketBean.getPrice());
 		}
 
 		orderItemBean.setOrderNum(basketBean.getOrderNum());

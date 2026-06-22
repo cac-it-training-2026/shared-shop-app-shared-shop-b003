@@ -36,6 +36,12 @@ public class ClientBasketController {
 	ItemRepository itemRepository;
 
 	/**
+	 * カートサービス
+	 */
+	@Autowired
+	jp.co.sss.shop.service.CartService cartService;
+
+	/**
 	 * 買い物かご一覧表示処理
 	 * @param model Viewとの値受渡し
 	 * @return "client/basket/list" 買い物かご一覧表示
@@ -117,48 +123,8 @@ public class ClientBasketController {
 			return "redirect:/login";
 		}
 
-		// BasketBeanを作成
-		BasketBean inputbasketBean = new BasketBean();
-		// 主キー検索
-		Optional<Item> itemOptional = itemRepository.findById(id);
+		cartService.addItem(id);
 
-		// nullチェック
-		if (!itemOptional.isEmpty()) {
-			// Itemの情報を取り出し
-			Item item = itemOptional.get();
-			// beanにコピー
-			BeanUtils.copyProperties(item, inputbasketBean);
-
-			// 在庫数の確認
-			if (inputbasketBean.getStock() <= 0) {
-				// 在庫がないなら追加せずに、リダイレクト
-				return "redirect:/client/basket/list";
-			}
-
-			// 買い物かごのリストを取得
-			List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
-
-			// リストが空なら作成する
-			if (basketBeans == null) {
-				basketBeans = new ArrayList<>();
-			} else {
-				// 同じ商品を探す
-				for (BasketBean bean : basketBeans) {
-					// 同じ商品があった場合
-					if (bean.getId().equals(id)) {
-						// orderNumをインクリメントし、リダイレクト
-						bean.setOrderNum(bean.getOrderNum() + 1);
-						return "redirect:/client/basket/list";
-					}
-				}
-			}
-			// 同じ商品がなかった場合
-			// Listに追加
-			basketBeans.add(inputbasketBean);
-
-			// リストをセッションにセット
-			session.setAttribute("basketBeans", basketBeans);
-		}
 		return "redirect:/client/basket/list";
 	}
 

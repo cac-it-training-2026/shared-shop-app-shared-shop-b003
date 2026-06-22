@@ -29,6 +29,11 @@ public class BasketBean {
 	private Integer orderNum = 1;
 
 	/**
+	 * 購入時価格
+	 */
+	private Integer price;
+
+	/**
 	 * コンストラクタ
 	 */
 	public BasketBean() {
@@ -124,6 +129,22 @@ public class BasketBean {
 	 */
 	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
+	}
+
+	/**
+	 * 価格の取得
+	 * @return 価格
+	 */
+	public Integer getPrice() {
+		return price;
+	}
+
+	/**
+	 * 価格のセット
+	 * @param price 価格
+	 */
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 }
