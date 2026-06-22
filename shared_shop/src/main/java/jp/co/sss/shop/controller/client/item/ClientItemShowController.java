@@ -21,6 +21,7 @@ import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.ReviewRepository;
+import jp.co.sss.shop.repository.ReviewStampRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 
@@ -64,6 +65,12 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	OrderRepository orderRepository;
+
+	/**
+	 * スタンプ情報
+	 */
+	@Autowired
+	ReviewStampRepository reviewStampRepository;
 
 	/**
 	 * トップ画面 表示処理
@@ -222,6 +229,9 @@ public class ClientItemShowController {
 			}
 		}
 		model.addAttribute("canReview", canReview);
+
+		// スタンプ一覧を取得 (有効なもののみ)
+		model.addAttribute("stamps", reviewStampRepository.findByActive(1));
 
 		return "client/item/detail";
 	}

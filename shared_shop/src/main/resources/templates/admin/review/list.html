@@ -25,6 +25,7 @@
 			<th>[[#{data.item.name}]]</th>
 			<th>[[#{userForm.name}]]</th>
 			<th>[[#{reviewForm.rating}]]</th>
+			<th>[[#{reviewForm.stampId}]]</th>
 			<th>[[#{reviewForm.body}]]</th>
 			<th>[[#{data.operate}]]</th>
 		</tr>
@@ -34,6 +35,9 @@
 			<td th:text="${review.item.name}"></td>
 			<td th:text="${review.user.name}"></td>
 			<td th:text="${review.rating}"></td>
+			<td>
+				<img th:if="${review.stamp != null}" th:src="@{/images/{path}(path=${review.stamp.imagePath})}" width="40" height="40" />
+			</td>
 			<td th:text="${review.body}"></td>
 			<td>
 				<form th:action="@{/admin/review/delete/check/{id}(id=${review.id})}" method="post">

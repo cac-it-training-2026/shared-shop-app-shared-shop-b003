@@ -64,6 +64,23 @@
 							</select>
 							<span th:errors="*{rating}" class="error_msg"></span>
 						</dd>
+						<dt th:text="#{reviewForm.stampId}"></dt>
+						<dd>
+							<div class="stamp_selection">
+								<label th:each="stamp : ${stamps}" style="display: inline-block; margin-right: 10px; text-align: center;">
+									<input type="radio" th:field="*{stampId}" th:value="${stamp.id}" />
+									<br/>
+									<img th:src="@{/images/{path}(path=${stamp.imagePath})}" th:alt="${stamp.name}" width="50" height="50" />
+									<br/>
+									<span th:text="${stamp.name}"></span>
+								</label>
+								<label style="display: inline-block; margin-right: 10px; text-align: center;">
+									<input type="radio" th:field="*{stampId}" th:value="${null}" />
+									<br/>
+									<span>選択しない</span>
+								</label>
+							</div>
+						</dd>
 						<dt th:text="#{reviewForm.body}"></dt>
 						<dd>
 							<textarea th:field="*{body}" rows="4" cols="40"></textarea>
@@ -87,6 +104,9 @@
 						<span th:text="${review.user.name}"></span>
 						<span>評価: <span th:text="${review.rating}"></span></span>
 					</p>
+					<div th:if="${review.stamp != null}">
+						<img th:src="@{/images/{path}(path=${review.stamp.imagePath})}" th:alt="${review.stamp.name}" width="60" height="60" />
+					</div>
 					<p th:text="${review.body}"></p>
 				</div>
 			</div>

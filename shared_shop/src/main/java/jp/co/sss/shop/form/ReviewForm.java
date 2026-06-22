@@ -2,7 +2,6 @@ package jp.co.sss.shop.form;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -28,9 +27,13 @@ public class ReviewForm {
 	/**
 	 * 本文
 	 */
-	@NotBlank
-	@Size(max = 200)
+	@Size(max = 500)
 	private String body;
+
+	/**
+	 * スタンプID
+	 */
+	private Integer stampId;
 
 	/**
 	 * 商品IDの取得
@@ -78,5 +81,21 @@ public class ReviewForm {
 	 */
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	/**
+	 * スタンプIDの取得
+	 * @return スタンプID
+	 */
+	public Integer getStampId() {
+		return stampId;
+	}
+
+	/**
+	 * スタンプIDのセット
+	 * @param stampId スタンプID
+	 */
+	public void setStampId(Integer stampId) {
+		this.stampId = stampId;
 	}
 }

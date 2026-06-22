@@ -17,11 +17,13 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.entity.Review;
+import jp.co.sss.shop.entity.ReviewStamp;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.ReviewForm;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.ReviewRepository;
+import jp.co.sss.shop.repository.ReviewStampRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 
@@ -42,6 +44,12 @@ public class ClientReviewRegistController {
 	 */
 	@Autowired
 	ReviewRepository reviewRepository;
+
+	/**
+	 * スタンプ情報
+	 */
+	@Autowired
+	ReviewStampRepository reviewStampRepository;
 
 	/**
 	 * 注文情報
@@ -79,12 +87,18 @@ public class ClientReviewRegistController {
 			return "redirect:/syserror";
 		}
 
+		// 本文またはスタンプのどちらかは必須
+		if ((form.getBody() == null || form.getBody().isBlank()) && form.getStampId() == null) {
+			result.rejectValue("body", "review.bodyOrStamp.required");
+		}
+
 		if (result.hasErrors()) {
 			// バリデーションエラーがある場合、詳細画面に戻る
 			model.addAttribute("item", beanTools.copyEntityToItemBean(item));
 			model.addAttribute("reviews",
 					reviewRepository.findByItemIdAndDeleteFlagOrderByInsertDateDesc(form.getItemId(), Constant.NOT_DELETED));
 			model.addAttribute("canReview", true);
+			model.addAttribute("stamps", reviewStampRepository.findByActive(1));
 			return "client/item/detail";
 		}
 
@@ -115,6 +129,13 @@ public class ClientReviewRegistController {
 		review.setUser(user);
 		review.setRating(form.getRating());
 		review.setBody(form.getBody());
+
+		// スタンプ設定
+		if (form.getStampId() != null) {
+			ReviewStamp stamp = reviewStampRepository.findById(form.getStampId()).orElse(null);
+			review.setStamp(stamp);
+		}
+
 		review.setDeleteFlag(Constant.NOT_DELETED);
 
 		// レビュー情報の保存

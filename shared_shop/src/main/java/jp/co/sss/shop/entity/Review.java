@@ -53,6 +53,13 @@ public class Review {
 	private String body;
 
 	/**
+	 * スタンプ情報
+	 */
+	@ManyToOne
+	@JoinColumn(name = "stamp_id", referencedColumnName = "id")
+	private ReviewStamp stamp;
+
+	/**
 	 * 削除フラグ
 	 */
 	@Column(insertable = false)
@@ -70,6 +77,22 @@ public class Review {
 	 */
 	public Integer getId() {
 		return id;
+	}
+
+	/**
+	 * スタンプ情報の取得
+	 * @return スタンプ情報
+	 */
+	public ReviewStamp getStamp() {
+		return stamp;
+	}
+
+	/**
+	 * スタンプ情報のセット
+	 * @param stamp スタンプ情報
+	 */
+	public void setStamp(ReviewStamp stamp) {
+		this.stamp = stamp;
 	}
 
 	/**

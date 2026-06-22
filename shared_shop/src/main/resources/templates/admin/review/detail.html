@@ -21,6 +21,10 @@
 			<dd th:text="${review.user.name}"></dd>
 			<dt th:text="#{reviewForm.rating}"></dt>
 			<dd th:text="${review.rating}"></dd>
+			<dt th:text="#{reviewForm.stampId}"></dt>
+			<dd>
+				<img th:if="${review.stamp != null}" th:src="@{/images/{path}(path=${review.stamp.imagePath})}" width="60" height="60" />
+			</dd>
 			<dt th:text="#{reviewForm.body}"></dt>
 			<dd th:text="${review.body}"></dd>
 			<dt th:text="#{data.order.date}"></dt>
