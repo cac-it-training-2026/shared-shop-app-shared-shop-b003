@@ -100,7 +100,11 @@ public class BeanTools {
 		bean.setCategoryName(entity.getCategory().getName());
 
 		// タイムセール情報の反映
-		SaleSchedule sale = saleService.getActiveSaleByCategory(bean.getCategoryId());
+		SaleSchedule sale = null;
+		if (bean.getCategoryId() != null) {
+			sale = saleService.getActiveSaleByCategoryCached(bean.getCategoryId());
+		}
+
 		if (sale != null) {
 			bean.setOnSale(true);
 			bean.setSalePrice(saleService.calculateSalePrice(bean.getPrice(), sale.getDiscountRate()));
@@ -197,7 +201,11 @@ public class BeanTools {
 		BeanUtils.copyProperties(item, orderItemBean);
 
 		// タイムセール価格の適用
-		SaleSchedule sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
+		SaleSchedule sale = null;
+		if (item.getCategory() != null && item.getCategory().getId() != null) {
+			sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
+		}
+
 		if (sale != null) {
 			orderItemBean.setPrice(saleService.calculateSalePrice(item.getPrice(), sale.getDiscountRate()));
 		}

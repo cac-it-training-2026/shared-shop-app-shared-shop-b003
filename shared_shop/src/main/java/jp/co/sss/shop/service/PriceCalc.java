@@ -27,6 +27,9 @@ public class PriceCalc {
 	 * @return 現在の価格
 	 */
 	public int getItemPrice(Item item) {
+		if (item.getCategory() == null || item.getCategory().getId() == null) {
+			return item.getPrice();
+		}
 		SaleSchedule sale = saleService.getActiveSaleByCategory(item.getCategory().getId());
 		if (sale != null) {
 			return saleService.calculateSalePrice(item.getPrice(), sale.getDiscountRate());

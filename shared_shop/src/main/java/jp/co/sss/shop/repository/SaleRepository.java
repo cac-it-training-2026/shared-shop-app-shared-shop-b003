@@ -31,5 +31,5 @@ public interface SaleRepository extends JpaRepository<SaleSchedule, Integer> {
 	 * @return セール情報
 	 */
 	@Query("SELECT s FROM SaleSchedule s WHERE s.category.id = :categoryId AND s.enabled = 1 AND s.startTime <= :currentTime AND s.endTime > :currentTime")
-	SaleSchedule findActiveSaleByCategory(@Param("categoryId") Integer categoryId, @Param("currentTime") LocalTime currentTime);
+	List<SaleSchedule> findActiveSaleByCategory(@Param("categoryId") Integer categoryId, @Param("currentTime") LocalTime currentTime);
 }
