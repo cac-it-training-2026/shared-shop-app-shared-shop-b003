@@ -25,32 +25,38 @@ public class DataInitializer implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// すでにデータがある場合はスキップ
-		if (saleRepository.count() > 0) {
-			return;
-		}
+		// すでにデータがある場合は削除して再投入（デバッグ・確実性のため）
+		saleRepository.deleteAll();
 
 		// セール条件（初期値）の投入
 
-		// 1. 食料品 (categoryId=1を想定) 12:00〜14:00 20%
-		createSaleIfCategoryExists(1, "12:00:00", "14:00:00", 20);
+		// 1. 食料品 12:00〜14:00 20%
+		createSaleByCategoryName("食料品", "12:00:00", "14:00:00", 20);
 
-		// 2. 書籍 (categoryId=2を想定) 20:00〜23:00 15%
-		createSaleIfCategoryExists(2, "20:00:00", "23:00:00", 15);
+		// 2. 書籍 20:00〜23:00 15%
+		createSaleByCategoryName("書籍", "20:00:00", "23:00:00", 15);
 
-		// 3. 雑貨 (categoryId=3を想定) 18:00〜21:00 10%
-		createSaleIfCategoryExists(3, "18:00:00", "21:00:00", 10);
+		// 3. 雑貨 18:00〜21:00 10%
+		createSaleByCategoryName("雑貨", "18:00:00", "21:00:00", 10);
+
+		// 検証用：24時間セール（全カテゴリを対象としたデバッグ用）
+		// 必要に応じてコメントアウト
+		// createSaleByCategoryName("食料品", "00:00:00", "23:59:59", 50);
 	}
 
-	private void createSaleIfCategoryExists(Integer categoryId, String start, String end, Integer rate) {
-		categoryRepository.findById(categoryId).ifPresent(category -> {
-			SaleSchedule sale = new SaleSchedule();
-			sale.setCategory(category);
-			sale.setStartTime(LocalTime.parse(start));
-			sale.setEndTime(LocalTime.parse(end));
-			sale.setDiscountRate(rate);
-			sale.setEnabled(1);
-			saleRepository.save(sale);
-		});
+	private void createSaleByCategoryName(String categoryName, String start, String end, Integer rate) {
+		// カテゴリ名で検索（JPASpecificationや独自メソッドがない場合はfindAllから探す）
+		categoryRepository.findAll().stream()
+			.filter(c -> categoryName.equals(c.getName()))
+			.findFirst()
+			.ifPresent(category -> {
+				SaleSchedule sale = new SaleSchedule();
+				sale.setCategory(category);
+				sale.setStartTime(LocalTime.parse(start));
+				sale.setEndTime(LocalTime.parse(end));
+				sale.setDiscountRate(rate);
+				sale.setEnabled(1);
+				saleRepository.save(sale);
+			});
 	}
 }

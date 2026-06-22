@@ -7,7 +7,7 @@
 </head>
 <body class="user index">
 	<!--/* タイムセールバナー */-->
-	<div class="sale_banner" th:if="!${#lists.isEmpty(activeSales)}">
+	<div class="sale_banner" th:if="${activeSales != null and !activeSales.empty}">
 		<div th:each="sale : ${activeSales}" class="sale_info">
 			🔥 <span th:text="#{msg.sale.active}"></span>
 			<span th:text="${sale.category.name}"></span>

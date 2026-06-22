@@ -111,6 +111,7 @@ public class BeanTools {
 		} else {
 			bean.setOnSale(false);
 			bean.setSalePrice(bean.getPrice());
+			bean.setRemainingTime(null);
 		}
 
 		return bean;

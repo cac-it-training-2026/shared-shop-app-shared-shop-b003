@@ -58,6 +58,11 @@ public class ItemBean {
 	private boolean onSale;
 
 	/**
+	 * セール終了までの残り時間
+	 */
+	private String remainingTime;
+
+	/**
 	 * 商品ID取得
 	 * @return 商品ID
 	 */
@@ -215,6 +220,22 @@ public class ItemBean {
 	 */
 	public void setOnSale(boolean onSale) {
 		this.onSale = onSale;
+	}
+
+	/**
+	 * 残り時間の取得
+	 * @return 残り時間
+	 */
+	public String getRemainingTime() {
+		return remainingTime;
+	}
+
+	/**
+	 * 残り時間のセット
+	 * @param remainingTime 残り時間
+	 */
+	public void setRemainingTime(String remainingTime) {
+		this.remainingTime = remainingTime;
 	}
 
 }

@@ -42,11 +42,10 @@
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
 				<td>
 					<th:block th:if="${item.onSale}">
-						<span style="text-decoration: line-through;" th:text="${item.price} + #{data.unit.price}"></span><br/>
+						<span class="original_price" th:text="${item.price} + #{data.unit.price}"></span><br/>
 						<span>↓</span><br/>
-						<span th:text="${item.salePrice} + #{data.unit.price}"></span><br/>
-						<span>↓</span><br/>
-						<span th:text="${(item.price - item.salePrice) * 100 / item.price} + '%OFF'"></span>
+						<span class="sale_price" th:text="${item.salePrice} + #{data.unit.price}"></span><br/>
+						<span class="discount_rate" th:text="${(item.price - item.salePrice) * 100 / item.price} + '%OFF'"></span>
 					</th:block>
 					<th:block th:unless="${item.onSale}">
 						<span th:text="${item.price} + #{data.unit.price}"></span>

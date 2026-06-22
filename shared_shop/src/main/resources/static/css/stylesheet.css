@@ -716,4 +716,46 @@ p.link_center {
 	display: block;
 }
 
+/* ---- タイムセールバナー ---- */
+.sale_banner {
+	background-color: #ff4500;
+	color: white;
+	padding: 10px;
+	margin: 10px 0;
+	border-radius: 8px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.sale_banner a {
+	color: yellow;
+	text-decoration: underline;
+	margin-left: 10px;
+}
+
+.sale_info {
+	margin: 5px 0;
+}
+
+/* ---- タイムセール価格表示 ---- */
+.sale_price {
+	color: #d22222;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.original_price {
+	text-decoration: line-through;
+	color: #888;
+	font-size: 0.9em;
+}
+
+.discount_rate {
+	background-color: #ff4500;
+	color: white;
+	padding: 2px 5px;
+	border-radius: 4px;
+	font-size: 0.8em;
+	margin-left: 5px;
+}
 
