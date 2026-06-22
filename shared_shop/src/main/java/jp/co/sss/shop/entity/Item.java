@@ -86,13 +86,6 @@ public class Item {
 	private List<OrderItem> orderItemList;
 
 	/**
-	 * 商品レビュー情報
-	 */
-	@OneToMany(mappedBy = "item")
-	@jakarta.persistence.OrderBy("insertDate DESC")
-	private List<Review> reviewList;
-
-	/**
 	 * コンストラクタ
 	 */
 	public Item() {
@@ -292,20 +285,6 @@ public class Item {
 	 */
 	public void setOrderItemsList(List<OrderItem> orderItemList) {
 		this.orderItemList = orderItemList;
-	}
-
-	/**
-	 * 商品IDに紐づくレビューエンティティのリストを取得
-	 */
-	public List<Review> getReviewList() {
-		return reviewList;
-	}
-
-	/**
-	 * 商品IDに紐づくレビューエンティティのリストをセット
-	 */
-	public void setReviewList(List<Review> reviewList) {
-		this.reviewList = reviewList;
 	}
 
 }

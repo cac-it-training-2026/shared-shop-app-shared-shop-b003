@@ -354,6 +354,11 @@ public class ClientOrderRegistController {
 			itemRepository.save(item);
 		}
 
+		// ガチャ実行権限をセッションに設定 (注文完了イベント)
+		session.setAttribute("canPlayGacha", true);
+		session.setAttribute("gachaEventType", "order");
+		session.setAttribute("gachaSourceOrderId", order.getId());
+
 		session.removeAttribute("basketBeans");
 		session.removeAttribute("orderForm");
 
