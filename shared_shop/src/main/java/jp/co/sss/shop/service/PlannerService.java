@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.PlannerKeywordCategory;
 import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.repository.PlannerKeywordCategoryRepository;
 import jp.co.sss.shop.util.Constant;
 
 @Service
@@ -26,42 +28,55 @@ public class PlannerService {
 	@Autowired
 	ItemRepository itemRepository;
 
-	private static final Map<String, List<String>> KEYWORD_TO_CATEGORIES = new HashMap<>();
+	@Autowired
+	PlannerKeywordCategoryRepository plannerKeywordCategoryRepository;
 
-	static {
-		KEYWORD_TO_CATEGORIES.put("ゲーム", Arrays.asList("PC", "マウス", "キーボード", "モニター"));
-		KEYWORD_TO_CATEGORIES.put("プログラミング", Arrays.asList("PC", "キーボード", "書籍"));
-		KEYWORD_TO_CATEGORIES.put("動画編集", Arrays.asList("PC", "モニター", "ストレージ"));
-		KEYWORD_TO_CATEGORIES.put("在宅ワーク", Arrays.asList("PC", "オフィスチェア", "デスクライト"));
-		KEYWORD_TO_CATEGORIES.put("自炊", Arrays.asList("調理器具", "調味料", "食料品"));
-		KEYWORD_TO_CATEGORIES.put("パーティー", Arrays.asList("菓子", "飲料", "惣菜"));
-		KEYWORD_TO_CATEGORIES.put("ダイエット", Arrays.asList("健康食品", "飲料"));
-		KEYWORD_TO_CATEGORIES.put("読書", Arrays.asList("書籍", "雑貨"));
-		KEYWORD_TO_CATEGORIES.put("勉強", Arrays.asList("書籍", "文房具"));
-	}
+	/**
+	 * 無効なキーワードリスト
+	 */
+	private static final List<String> INVALID_KEYWORDS = Arrays.asList("asdf", "qwer", "aaaa", "test", "テスト");
 
 	public Map<String, List<Item>> suggestPlannedSets(String purpose, int budget) {
-		List<String> targetCategoryNames = new ArrayList<>();
-		for (String keyword : KEYWORD_TO_CATEGORIES.keySet()) {
-			if (purpose != null && purpose.contains(keyword)) {
-				targetCategoryNames.addAll(KEYWORD_TO_CATEGORIES.get(keyword));
-			}
+
+		// 1. 入力バリデーション
+		if (purpose == null || purpose.trim().length() < 2) {
+			return new HashMap<>(); // 1文字以下は無効（2文字以上のキーワード「書籍」などを許可）
 		}
 
-		if (targetCategoryNames.isEmpty()) {
-			targetCategoryNames.addAll(Arrays.asList("食料品", "雑貨"));
+		String lowerPurpose = purpose.toLowerCase().trim();
+		if (INVALID_KEYWORDS.contains(lowerPurpose)) {
+			return new HashMap<>();
 		}
 
-		targetCategoryNames = targetCategoryNames.stream().distinct().collect(Collectors.toList());
+		// 2. キーワード解析（DBマッピング優先・完全一致）
+		List<PlannerKeywordCategory> mappings = plannerKeywordCategoryRepository.findByKeyword(purpose.trim());
 
+		if (mappings.isEmpty()) {
+			// 完全一致がない場合、マッピングテーブルに登録されている全キーワードとの部分一致を試みる（厳格化のため、目的語そのものがキーワードを含むかチェック）
+			List<PlannerKeywordCategory> allMappings = plannerKeywordCategoryRepository.findAll();
+			mappings = allMappings.stream()
+					.filter(m -> purpose.contains(m.getKeyword()))
+					.collect(Collectors.toList());
+		}
+
+		if (mappings.isEmpty()) {
+			return new HashMap<>();
+		}
+
+		List<String> targetCategoryNames = mappings.stream()
+				.map(PlannerKeywordCategory::getCategoryName)
+				.distinct()
+				.collect(Collectors.toList());
+
+		// 3. カテゴリ情報の取得
 		List<Category> allCategories = categoryRepository.findAll();
-		final List<String> finalNames = targetCategoryNames;
 		List<Category> targetCategories = allCategories.stream()
-				.filter(c -> finalNames.contains(c.getName()))
+				.filter(c -> targetCategoryNames.contains(c.getName()))
 				.collect(Collectors.toList());
 
 		if (targetCategories.isEmpty()) return new HashMap<>();
 
+		// 4. 各カテゴリから商品候補を取得
 		Map<Integer, List<Item>> categoryItems = new HashMap<>();
 		for (Category cat : targetCategories) {
 			List<Item> items = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(cat.getId(), Constant.NOT_DELETED)
@@ -74,9 +89,16 @@ public class PlannerService {
 			}
 		}
 
+		// 全てのカテゴリで商品が揃わない場合はプランを生成しない
+		if (categoryItems.size() < targetCategories.size()) {
+			return new HashMap<>();
+		}
+
 		Map<String, List<Item>> plans = new HashMap<>();
 
-		// 1. コスパ重視プラン (各カテゴリ最安)
+		// 5. 三パターンの生成
+
+		// パターンA: コスパ重視
 		List<Item> costSet = new ArrayList<>();
 		int costTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {
@@ -84,9 +106,9 @@ public class PlannerService {
 			costSet.add(item);
 			costTotal += item.getPrice();
 		}
-		if (costTotal <= budget && !costSet.isEmpty()) plans.put("コスパ重視プラン", costSet);
+		if (costTotal <= budget) plans.put("コスパ重視プラン", costSet);
 
-		// 2. バランスプラン (各カテゴリ中間層)
+		// パターンB: バランス
 		List<Item> balanceSet = new ArrayList<>();
 		int balanceTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {
@@ -95,9 +117,9 @@ public class PlannerService {
 			balanceSet.add(item);
 			balanceTotal += item.getPrice();
 		}
-		if (balanceTotal <= budget && !balanceSet.isEmpty()) plans.put("バランスプラン", balanceSet);
+		if (balanceTotal <= budget) plans.put("バランスプラン", balanceSet);
 
-		// 3. ハイエンドプラン (予算内最高値)
+		// パターンC: ハイエンド
 		List<Item> highSet = new ArrayList<>();
 		int highTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {
@@ -107,7 +129,7 @@ public class PlannerService {
 			highTotal += expensive.getPrice();
 		}
 
-		if (highTotal > budget && !highSet.isEmpty()) {
+		if (highTotal > budget) {
 			for (int i = 0; i < highSet.size(); i++) {
 				Item current = highSet.get(i);
 				List<Item> options = categoryItems.get(current.getCategory().getId());
@@ -121,7 +143,7 @@ public class PlannerService {
 				if (highTotal <= budget) break;
 			}
 		}
-		if (highTotal <= budget && !highSet.isEmpty()) plans.put("ハイエンドプラン", highSet);
+		if (highTotal <= budget) plans.put("ハイエンドプラン", highSet);
 
 		return plans;
 	}

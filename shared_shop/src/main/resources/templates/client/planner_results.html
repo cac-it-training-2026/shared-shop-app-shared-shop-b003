@@ -11,7 +11,8 @@
 		<p>入力された用途: <strong th:text="${purpose}"></strong> / 予算: <strong th:text="${#numbers.formatInteger(budget, 1, 'COMMA')} + '円'"></strong></p>
 
 		<div th:if="${#maps.isEmpty(plans)}">
-			<p>申し訳ありません。ご希望の予算内で条件に合う商品セットが見つかりませんでした。</p>
+			<p>申し訳ありません。ご希望の条件に合う商品セットが見つかりませんでした。</p>
+			<p>有効なキーワード（ゲーム、食料品、書籍など）を入力してください。</p>
 		</div>
 
 		<div th:each="entry : ${plans}" class="item_set" style="margin-bottom: 40px; border: 2px solid #555; padding: 20px; border-radius: 10px; background-color: #fcfcfc;">
