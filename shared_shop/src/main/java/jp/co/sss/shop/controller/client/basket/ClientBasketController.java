@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import java.sql.Timestamp;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
+import jp.co.sss.shop.bean.CouponBean;
+import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.service.PriceCalc;
 
 /**
  * 買い物かごのコントローラークラス
@@ -34,6 +39,18 @@ public class ClientBasketController {
 	 */
 	@Autowired
 	ItemRepository itemRepository;
+
+	/**
+	 * クーポン情報 リポジトリ
+	 */
+	@Autowired
+	CouponRepository couponRepository;
+
+	/**
+	 * 料金計算サービス
+	 */
+	@Autowired
+	PriceCalc priceCalc;
 
 	/**
 	 * 買い物かご一覧表示処理
@@ -94,13 +111,69 @@ public class ClientBasketController {
 			if (basketBeans.size() == 0) {
 				// 買い物かごが空なら、セッションから買い物かご情報を削除
 				session.removeAttribute("basketBeans");
+				session.removeAttribute("coupon");
 			} else {
 				// セッション情報を最新に更新
 				session.setAttribute("basketBeans", basketBeans);
 			}
 		});
 
+		// 合計金額の計算
+		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
+		if (basketBeans != null) {
+			int total = 0;
+			for (BasketBean bean : basketBeans) {
+				total += bean.getPrice() * bean.getOrderNum();
+			}
+			model.addAttribute("total", total);
+
+			// クーポン適用後の合計
+			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+			if (couponBean != null) {
+				int discount = priceCalc.calculateDiscount(total, couponBean);
+				int discountedTotal = Math.max(0, total - discount);
+				model.addAttribute("discount", discount);
+				model.addAttribute("discountedTotal", discountedTotal);
+			}
+		}
+
+		// エラーメッセージの表示
+		String couponError = (String) session.getAttribute("couponError");
+		if (couponError != null) {
+			model.addAttribute("couponError", couponError);
+			session.removeAttribute("couponError");
+		}
+
 		return "client/basket/list";
+	}
+
+	/**
+	 * クーポンの適用
+	 * @param code クーポンコード
+	 * @return "redirect:/client/basket/list" 買い物かご一覧表示
+	 */
+	@RequestMapping(path = "/client/basket/applyCoupon", method = RequestMethod.POST)
+	public String applyCoupon(String code, Model model) {
+		if (session.getAttribute("user") == null) {
+			return "redirect:/login";
+		}
+
+		Coupon coupon = couponRepository.findByCode(code);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+
+		if (coupon != null
+				&& (coupon.getValidFrom() == null || coupon.getValidFrom().before(now))
+				&& (coupon.getValidUntil() == null || coupon.getValidUntil().after(now))
+				&& (coupon.getUsageLimit() == null || coupon.getUsageLimit() > 0)) {
+
+			CouponBean couponBean = new CouponBean();
+			BeanUtils.copyProperties(coupon, couponBean);
+			session.setAttribute("coupon", couponBean);
+		} else {
+			session.setAttribute("couponError", "無効なクーポンコード、期限切れ、または使用上限に達しています。");
+		}
+
+		return "redirect:/client/basket/list";
 	}
 
 	/**
@@ -128,6 +201,7 @@ public class ClientBasketController {
 			Item item = itemOptional.get();
 			// beanにコピー
 			BeanUtils.copyProperties(item, inputbasketBean);
+			inputbasketBean.setPrice(item.getPrice());
 
 			// 在庫数の確認
 			if (inputbasketBean.getStock() <= 0) {
