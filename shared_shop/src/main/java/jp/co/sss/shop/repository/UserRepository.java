@@ -51,4 +51,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	 */
 	User findByIdAndDeleteFlag(Integer id, int deleteFlg);
 
+	void saveAll(org.apache.catalina.User user);
+
 }
