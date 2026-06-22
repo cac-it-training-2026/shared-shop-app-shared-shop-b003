@@ -25,7 +25,7 @@ public class SystemAdminAccountCheckFilter extends HttpFilter {
 			throws IOException, ServletException {
 
 		// リクエストURLを取得
-		String requestURL = request.getServletPath();
+		String requestURL = request.getContextPath() + request.getServletPath();
 
 		if (!URLCheck.isURLForSystemAdmin(requestURL)) {
 			// セッション情報を取得

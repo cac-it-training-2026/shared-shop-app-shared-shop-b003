@@ -25,7 +25,7 @@ public class ClientAccountCheckFilter extends HttpFilter {
 			throws IOException, ServletException {
 
 		// リクエストURLを取得
-		String requestURL = request.getServletPath();
+		String requestURL = request.getContextPath() + request.getServletPath();
 		
 		if (!URLCheck.isURLForClient(requestURL,request.getContextPath())) {
 			// セッション情報を取得
