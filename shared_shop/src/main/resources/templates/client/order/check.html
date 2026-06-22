@@ -57,6 +57,10 @@
 		<table class="detail_table point">
 			<caption class="table_caption">ポイント利用</caption>
 			<tr>
+				<th>商品合計金額</th>
+				<td><span th:text="${total}"></span> 円</td>
+			</tr>
+			<tr>
 				<th>保有ポイント</th>
 				<td th:text="${currentPoint} + ' pt'"></td>
 			</tr>
@@ -69,7 +73,11 @@
 				</td>
 			</tr>
 			<tr>
-				<th>お支払金額</th>
+				<th>ポイント割引額</th>
+				<td>-<span id="pointDiscount">0</span> 円</td>
+			</tr>
+			<tr>
+				<th>お支払予定金額</th>
 				<td><span id="paymentAmount" th:text="${total}"></span> 円</td>
 			</tr>
 			<tr>
@@ -151,6 +159,7 @@
 					var paymentAmount = total - usePoint;
 					var earnPoint = Math.floor(paymentAmount / 100);
 
+					$('#pointDiscount').text(usePoint);
 					$('#paymentAmount').text(paymentAmount);
 					$('#earnPoint').text(earnPoint);
 				}

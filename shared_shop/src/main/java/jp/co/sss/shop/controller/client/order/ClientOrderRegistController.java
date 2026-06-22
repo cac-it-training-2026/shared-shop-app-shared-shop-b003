@@ -365,6 +365,8 @@ public class ClientOrderRegistController {
 		order.setName(orderForm.getName());
 		order.setPhoneNumber(orderForm.getPhoneNumber());
 		order.setPayMethod(orderForm.getPayMethod());
+		order.setUsedPoint(usePoint);
+		order.setPaymentAmount(total - usePoint);
 
 		User orderUser = new User();
 		orderUser.setId(userBean.getId());

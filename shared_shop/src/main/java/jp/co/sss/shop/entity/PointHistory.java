@@ -62,7 +62,7 @@ public class PointHistory {
 	/**
 	 * 作成日時
 	 */
-	@Column(insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "created_time", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp createdTime;
 
 	/**

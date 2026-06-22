@@ -80,6 +80,18 @@ public class Order {
 	private List<OrderItem> orderItemsList;
 
 	/**
+	 * 利用ポイント
+	 */
+	@Column(name = "used_point")
+	private Integer usedPoint = 0;
+
+	/**
+	 * 支払金額
+	 */
+	@Column(name = "payment_amount")
+	private Integer paymentAmount = 0;
+
+	/**
 	 * 注文IDの取得
 	 * @return 注文ID
 	 */
@@ -221,6 +233,38 @@ public class Order {
 	 */
 	public void setOrderItemsList(List<OrderItem> orderItemsList) {
 		this.orderItemsList = orderItemsList;
+	}
+
+	/**
+	 * 利用ポイントの取得
+	 * @return 利用ポイント
+	 */
+	public Integer getUsedPoint() {
+		return usedPoint;
+	}
+
+	/**
+	 * 利用ポイントのセット
+	 * @param usedPoint 利用ポイント
+	 */
+	public void setUsedPoint(Integer usedPoint) {
+		this.usedPoint = usedPoint;
+	}
+
+	/**
+	 * 支払金額の取得
+	 * @return 支払金額
+	 */
+	public Integer getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * 支払金額のセット
+	 * @param paymentAmount 支払金額
+	 */
+	public void setPaymentAmount(Integer paymentAmount) {
+		this.paymentAmount = paymentAmount;
 	}
 
 	/**

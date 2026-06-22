@@ -111,6 +111,10 @@ public class BeanTools {
 		// 会員名を注文情報に設定
 		bean.setUserName(entity.getUser().getName());
 
+		// 利用ポイントと支払金額をセット
+		bean.setUsedPoint(entity.getUsedPoint());
+		bean.setPaymentAmount(entity.getPaymentAmount());
+
 		return bean;
 	}
 
