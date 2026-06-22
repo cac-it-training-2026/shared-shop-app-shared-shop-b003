@@ -7,6 +7,20 @@
 <body>
 	<h2 class="title" th:text="#{theme} + #{title.list}"></h2>
 	<div class="main_content">
+		<div class="order-status-summary">
+			<h3 th:text="#{theme.status.title}"></h3>
+			<div class="summary-details">
+				<div class="summary-item">
+					<span class="summary-label" th:text="#{theme.status.count} + '：'"></span>
+					<span class="summary-value" th:text="${session.user.orderCount} + #{theme.status.unit.count}"></span>
+				</div>
+				<div class="summary-item">
+					<span class="summary-label" th:text="#{theme.status.amount} + '：'"></span>
+					<span class="summary-value" th:text="${#numbers.formatInteger(session.user.totalAmount, 1, 'COMMA')} + #{theme.status.unit.amount}"></span>
+				</div>
+			</div>
+		</div>
+
 		<p class="description" th:text="#{msg.update.input}"></p>
 
 		<div class="theme-card-container">

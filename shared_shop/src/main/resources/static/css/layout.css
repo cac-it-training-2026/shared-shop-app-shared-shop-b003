@@ -487,3 +487,51 @@ small {
 .status-unlocked { color: #4caf50; }
 .status-locked { color: #f44336; }
 .status-selected { color: #3d98bf; }
+
+/* Order Status Summary Styling */
+.order-status-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-left: 5px solid #3d98bf;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.order-status-summary h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.summary-details {
+    display: flex;
+    gap: 40px;
+}
+
+.summary-item {
+    font-size: 1.1em;
+}
+
+.summary-label {
+    color: #666;
+}
+
+.summary-value {
+    color: #3d98bf;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+/* Theme variations for summary box */
+.theme-1 .order-status-summary { border-left-color: #f06292; }
+.theme-2 .order-status-summary { border-left-color: #0288d1; }
+.theme-3 .order-status-summary { border-left-color: #39ff14; background: #1a1a1a; }
+.theme-3 .order-status-summary h3, .theme-3 .summary-label { color: #39ff14; }
+.theme-4 .order-status-summary { border-left-color: #4a148c; background: #0d1117; }
+.theme-4 .order-status-summary h3, .theme-4 .summary-label { color: #e1e1e1; }
+.theme-5 .order-status-summary { border-left-color: #d4af37; background: #000; }
+.theme-5 .order-status-summary h3, .theme-5 .summary-label { color: #d4af37; }
+.theme-6 .order-status-summary { border-left-color: #ff1744; }
