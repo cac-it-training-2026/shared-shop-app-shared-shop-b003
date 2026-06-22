@@ -31,16 +31,12 @@ public class PlannerService {
 	@Autowired
 	PlannerKeywordCategoryRepository plannerKeywordCategoryRepository;
 
-	/**
-	 * 無効なキーワードリスト
-	 */
 	private static final List<String> INVALID_KEYWORDS = Arrays.asList("asdf", "qwer", "aaaa", "test", "テスト");
 
 	public Map<String, List<Item>> suggestPlannedSets(String purpose, int budget) {
 
-		// 1. 入力バリデーション
 		if (purpose == null || purpose.trim().length() < 2) {
-			return new HashMap<>(); // 1文字以下は無効（2文字以上のキーワード「書籍」などを許可）
+			return new HashMap<>();
 		}
 
 		String lowerPurpose = purpose.toLowerCase().trim();
@@ -48,11 +44,9 @@ public class PlannerService {
 			return new HashMap<>();
 		}
 
-		// 2. キーワード解析（DBマッピング優先・完全一致）
 		List<PlannerKeywordCategory> mappings = plannerKeywordCategoryRepository.findByKeyword(purpose.trim());
 
 		if (mappings.isEmpty()) {
-			// 完全一致がない場合、マッピングテーブルに登録されている全キーワードとの部分一致を試みる（厳格化のため、目的語そのものがキーワードを含むかチェック）
 			List<PlannerKeywordCategory> allMappings = plannerKeywordCategoryRepository.findAll();
 			mappings = allMappings.stream()
 					.filter(m -> purpose.contains(m.getKeyword()))
@@ -68,7 +62,6 @@ public class PlannerService {
 				.distinct()
 				.collect(Collectors.toList());
 
-		// 3. カテゴリ情報の取得
 		List<Category> allCategories = categoryRepository.findAll();
 		List<Category> targetCategories = allCategories.stream()
 				.filter(c -> targetCategoryNames.contains(c.getName()))
@@ -76,7 +69,6 @@ public class PlannerService {
 
 		if (targetCategories.isEmpty()) return new HashMap<>();
 
-		// 4. 各カテゴリから商品候補を取得
 		Map<Integer, List<Item>> categoryItems = new HashMap<>();
 		for (Category cat : targetCategories) {
 			List<Item> items = itemRepository.findByCategoryIdAndDeleteFlagOrderByInsertDateDesc(cat.getId(), Constant.NOT_DELETED)
@@ -89,16 +81,13 @@ public class PlannerService {
 			}
 		}
 
-		// 全てのカテゴリで商品が揃わない場合はプランを生成しない
 		if (categoryItems.size() < targetCategories.size()) {
 			return new HashMap<>();
 		}
 
 		Map<String, List<Item>> plans = new HashMap<>();
 
-		// 5. 三パターンの生成
-
-		// パターンA: コスパ重視
+		// 1. コスパ重視
 		List<Item> costSet = new ArrayList<>();
 		int costTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {
@@ -108,7 +97,7 @@ public class PlannerService {
 		}
 		if (costTotal <= budget) plans.put("コスパ重視プラン", costSet);
 
-		// パターンB: バランス
+		// 2. バランス
 		List<Item> balanceSet = new ArrayList<>();
 		int balanceTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {
@@ -119,7 +108,7 @@ public class PlannerService {
 		}
 		if (balanceTotal <= budget) plans.put("バランスプラン", balanceSet);
 
-		// パターンC: ハイエンド
+		// 3. ハイエンド
 		List<Item> highSet = new ArrayList<>();
 		int highTotal = 0;
 		for (Integer catId : categoryItems.keySet()) {

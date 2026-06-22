@@ -38,6 +38,11 @@ public class ItemBean {
 	private String image;
 
 	/**
+	 * 商品画像URL (外部)
+	 */
+	private String imageUrl;
+
+	/**
 	 * カテゴリID
 	 */
 	private Integer categoryId;
@@ -141,6 +146,20 @@ public class ItemBean {
 	 */
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	/**
+	 * 画像URLの取得
+	 */
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	/**
+	 * 画像URLのセット
+	 */
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	/**

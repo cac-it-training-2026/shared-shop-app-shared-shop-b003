@@ -7,8 +7,5 @@ import jp.co.sss.shop.entity.PlannerKeywordCategory;
 
 @Repository
 public interface PlannerKeywordCategoryRepository extends JpaRepository<PlannerKeywordCategory, Integer> {
-	/**
-	 * キーワードに完全一致するマッピングを取得
-	 */
 	List<PlannerKeywordCategory> findByKeyword(String keyword);
 }

@@ -89,6 +89,7 @@ public class BeanTools {
 
 		BeanUtils.copyProperties(entity, bean);
 
+		bean.setImageUrl(entity.getImageUrl());
 		bean.setCategoryId(entity.getCategory().getId());
 		bean.setCategoryName(entity.getCategory().getName());
 
@@ -146,6 +147,7 @@ public class BeanTools {
 			ItemBean bean = new ItemBean();
 			BeanUtils.copyProperties(entity, bean);
 
+			bean.setImageUrl(entity.getImageUrl());
 			if (entity.getCategory() != null) {
 				bean.setCategoryName(entity.getCategory().getName());
 			}

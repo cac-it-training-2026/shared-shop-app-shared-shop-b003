@@ -20,6 +20,7 @@
 			<table class="list_table">
 				<thead>
 					<tr>
+						<th>画像</th>
 						<th>商品名</th>
 						<th>カテゴリ</th>
 						<th>価格</th>
@@ -27,6 +28,11 @@
 				</thead>
 				<tbody>
 					<tr th:each="item : ${entry.value}">
+						<td>
+							<img th:src="${item.imageUrl}" th:if="${item.imageUrl != null}" style="max-width: 80px; max-height: 80px;"/>
+							<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.imageUrl == null and item.image != null}" style="max-width: 80px; max-height: 80px;"/>
+							<img th:src="@{/images/common/no_image.jpg}" th:if="${item.imageUrl == null and item.image == null}" style="max-width: 80px; max-height: 80px;"/>
+						</td>
 						<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
 						<td th:text="${item.category.name}"></td>
 						<td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + '円'"></td>
@@ -34,11 +40,11 @@
 				</tbody>
 				<tfoot>
 					<tr th:with="total=${#aggregates.sum(entry.value.![price])}">
-						<th colspan="2" style="text-align: right;">合計金額</th>
+						<th colspan="3" style="text-align: right;">合計金額</th>
 						<th th:text="${#numbers.formatInteger(total, 1, 'COMMA')} + '円'"></th>
 					</tr>
 					<tr th:with="total=${#aggregates.sum(entry.value.![price])}">
-						<th colspan="2" style="text-align: right; color: #d9534f;">残予算</th>
+						<th colspan="3" style="text-align: right; color: #d9534f;">残予算</th>
 						<th th:text="${#numbers.formatInteger(budget - total, 1, 'COMMA')} + '円'" style="color: #d9534f;"></th>
 					</tr>
 				</tfoot>
