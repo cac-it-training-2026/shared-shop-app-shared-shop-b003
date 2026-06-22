@@ -1,6 +1,5 @@
 package jp.co.sss.shop.controller.login;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -65,24 +64,21 @@ public class LoginController {
 
 		if (result.hasErrors()) {
 			// 入力値に誤りがあった場合（認証失敗）
-			User user = (User) userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
+			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
 			if (user != null) {
 				// すでにロックされているか確認
-				if (((jp.co.sss.shop.entity.User) user).getLockedUntil() != null && ((jp.co.sss.shop.entity.User) user)
-						.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+				if (user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
 					result.reject("error.login.locked", "アカウントがロックされています。15分後にお試しください。");
 				} else {
 					// 失敗回数をインクリメント
-					int count = (((jp.co.sss.shop.entity.User) user).getFailedLoginCount() == null ? 0
-							: ((jp.co.sss.shop.entity.User) user).getFailedLoginCount()) + 1;
-					((jp.co.sss.shop.entity.User) user).setFailedLoginCount(count);
+					int count = (user.getFailedLoginCount() == null ? 0 : user.getFailedLoginCount()) + 1;
+					user.setFailedLoginCount(count);
 					if (count >= 5) {
 						// 15分ロック
-						((jp.co.sss.shop.entity.User) user)
-								.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
+						user.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
 						result.reject("error.login.locked", "ログイン失敗が5回に達したため、アカウントを15分間ロックしました。");
 					}
-					userRepository.saveAll(user);
+					userRepository.save(user);
 				}
 			}
 
@@ -93,14 +89,14 @@ public class LoginController {
 		} else {
 			// 成功時
 			UserBean userBean = (UserBean) session.getAttribute("user");
-			User user = (User) userRepository.getReferenceById(userBean.getId());
+			User user = userRepository.getReferenceById(userBean.getId());
 
 			// 失敗回数とロック状態をリセット
-			((jp.co.sss.shop.entity.User) user).setFailedLoginCount(0);
-			((jp.co.sss.shop.entity.User) user).setLockedUntil(null);
-			userRepository.saveAll(user);
+			user.setFailedLoginCount(0);
+			user.setLockedUntil(null);
+			userRepository.save(user);
 
-			if (((UserBean) user).getAuthority() == Constant.AUTH_CLIENT) {
+			if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
 				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
 				return "redirect:/";
 			} else {
