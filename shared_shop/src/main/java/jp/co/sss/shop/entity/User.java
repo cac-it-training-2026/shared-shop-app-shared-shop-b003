@@ -84,7 +84,7 @@ public class User {
 	/**
 	 * 現在のポイント
 	 */
-	@Column
+	@Column(name = "current_point")
 	private Integer currentPoint = 0;
 
 	/**
