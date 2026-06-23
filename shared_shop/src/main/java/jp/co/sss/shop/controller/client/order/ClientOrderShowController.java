@@ -85,7 +85,7 @@ public class ClientOrderShowController {
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return 注文詳細画面
 	 */
-	@GetMapping("/client/order/detail/{id}")
+	@PostMapping("/client/order/detail/{id}")
 	public String showOrderDetail(Model model, @PathVariable int id, HttpSession session) {
 
 		// ログインチェック
