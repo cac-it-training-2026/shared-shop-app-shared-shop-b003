@@ -18,3 +18,5 @@
 - **マージを行う際の注意点**:
   - `init.sql` が大きく書き換わっています。ローカル環境で再度DBの初期化が必要になります。
   - `application.properties` の `ddl-auto` が設定されているため、アプリケーション起動時にスキーマが更新される可能性があります。
+  - **追加の修正事項**:
+    - `client/order/detail.html` を表示する際、`ClientOrderShowController` からエンティティ `Order` を直接渡していたため、プロパティ解決（`couponCode`など）で Thymeleaf のパースエラー（`SpelEvaluationException`）が発生しました。このため、他コントローラと同様に `OrderBean` に変換してから View に渡すように修正しました。
