@@ -38,11 +38,13 @@ public class SaleServiceTest {
 
         Category food = new Category();
         food.setId(1);
+        food.setName("食品");
 
         SaleSchedule foodSale = new SaleSchedule();
+        foodSale.setId(100);
         foodSale.setCategory(food);
-        foodSale.setStartTime(LocalTime.of(12, 0));
-        foodSale.setEndTime(LocalTime.of(14, 0));
+        foodSale.setStartTime("00:00:00");
+        foodSale.setEndTime("23:59:59");
         foodSale.setDiscountRate(20);
         foodSale.setDeleteFlag(Constant.NOT_DELETED);
 
@@ -50,9 +52,11 @@ public class SaleServiceTest {
     }
 
     @Test
-    public void testGetActiveSales_Safe() {
-        lenient().when(saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED)).thenReturn(sales);
-        saleService.getActiveSales();
+    public void testGetActiveSales_DuringSale() {
+        when(saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED)).thenReturn(sales);
+        Map<Integer, SaleSchedule> activeSales = saleService.getActiveSales();
+        assertEquals(1, activeSales.size());
+        assertTrue(activeSales.containsKey(1));
     }
 
     @Test
@@ -67,7 +71,7 @@ public class SaleServiceTest {
 
         saleService.applyDiscount(item, activeSales);
 
-        assertEquals(800, item.getDiscountedPrice());
+        assertEquals(800, item.getSalePrice());
         assertEquals(20, item.getDiscountRate());
     }
 
@@ -76,5 +80,6 @@ public class SaleServiceTest {
         SaleSchedule sale = sales.get(0);
         String remaining = saleService.getRemainingTime(sale);
         assertNotNull(remaining);
+        assertNotEquals("-", remaining);
     }
 }

@@ -81,7 +81,7 @@ public class ClientBasketController {
 				// itemOptionalのnullチェック
 				itemOptional.ifPresent(item -> {
 					// 商品情報を最新に更新（価格は上書きしない）
-					BeanUtils.copyProperties(item, basketBean, "orderNum", "price");
+					BeanUtils.copyProperties(item, basketBean, "orderNum", "salePrice");
 
 					// 在庫数を確認
 					if (item.getStock() <= 0 || item.getDeleteFlag() == 1) {
@@ -150,7 +150,7 @@ public class ClientBasketController {
 			BeanUtils.copyProperties(item, inputbasketBean);
 
 			// セール価格を適用
-			inputbasketBean.setPrice(itemBean.getDiscountedPrice());
+			inputbasketBean.setSalePrice(itemBean.getSalePrice());
 
 			// 在庫数の確認
 			if (inputbasketBean.getStock() <= 0) {

@@ -48,9 +48,9 @@ public class ItemBean {
 	private String categoryName;
 
 	/**
-	 * 割引価格
+	 * セール価格
 	 */
-	private Integer discountedPrice;
+	private Integer salePrice;
 
 	/**
 	 * 割引率
@@ -186,19 +186,19 @@ public class ItemBean {
 	}
 
 	/**
-	 * 割引価格の取得
-	 * @return 割引価格
+	 * セール価格の取得
+	 * @return セール価格
 	 */
-	public Integer getDiscountedPrice() {
-		return discountedPrice;
+	public Integer getSalePrice() {
+		return salePrice;
 	}
 
 	/**
-	 * 割引価格のセット
-	 * @param discountedPrice 割引価格
+	 * セール価格のセット
+	 * @param salePrice セール価格
 	 */
-	public void setDiscountedPrice(Integer discountedPrice) {
-		this.discountedPrice = discountedPrice;
+	public void setSalePrice(Integer salePrice) {
+		this.salePrice = salePrice;
 	}
 
 	/**

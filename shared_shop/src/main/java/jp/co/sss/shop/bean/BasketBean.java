@@ -24,9 +24,9 @@ public class BasketBean {
 	private Integer stock;
 
 	/**
-	 * 商品単価
+	 * セール価格（追加時の価格）
 	 */
-	private Integer price;
+	private Integer salePrice;
 
 	/**
 	 * 商品注文個数 初期値 1
@@ -132,19 +132,19 @@ public class BasketBean {
 	}
 
 	/**
-	 * 商品単価の取得
-	 * @return 商品単価
+	 * セール価格の取得
+	 * @return セール価格
 	 */
-	public Integer getPrice() {
-		return price;
+	public Integer getSalePrice() {
+		return salePrice;
 	}
 
 	/**
-	 * 商品単価のセット
-	 * @param price 商品単価
+	 * セール価格のセット
+	 * @param salePrice セール価格
 	 */
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void setSalePrice(Integer salePrice) {
+		this.salePrice = salePrice;
 	}
 
 }
