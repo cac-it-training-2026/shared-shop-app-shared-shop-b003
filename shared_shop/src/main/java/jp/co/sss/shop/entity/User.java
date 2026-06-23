@@ -86,10 +86,9 @@ public class User {
 	 */
 	@Column(name = "current_point")
 	private Integer currentPoint = 0;
-}
-/**
-	 * ログイン失敗回数
-	 */
+	/**
+		 * ログイン失敗回数
+		 */
 	@Column
 	private Integer failedLoginCount = 0;
 
@@ -279,8 +278,9 @@ public class User {
 	 */
 	public void setCurrentPoint(Integer currentPoint) {
 		this.currentPoint = currentPoint;
-  }
-  /**
+	}
+
+	/**
 	 * ログイン失敗回数の取得
 	 * @return ログイン失敗回数
 	 */

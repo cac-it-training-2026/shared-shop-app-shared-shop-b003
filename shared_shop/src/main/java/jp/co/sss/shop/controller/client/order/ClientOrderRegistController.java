@@ -470,4 +470,107 @@ public class ClientOrderRegistController {
 		}
 
 		// 【マージ対応：2箇所目】ポイント付与処理とガチャ機能用セッション設定の競合を解決
-		// ポイント付与加
+		// ポイント付与加算処理（ポイント機能ブランチの処理）
+		int paymentAmount = total - usePoint;
+		int earnPoint = paymentAmount / 10;
+		if (earnPoint > 0) {
+			user.setCurrentPoint(user.getCurrentPoint() + earnPoint);
+			userRepository.save(user);
+
+			// ポイント履歴登録（獲得）
+			PointHistory earnHistory = new PointHistory();
+			earnHistory.setUser(user);
+			earnHistory.setPoint(earnPoint);
+			earnHistory.setBalance(user.getCurrentPoint());
+			earnHistory.setType("EARN");
+			earnHistory.setDescription("商品購入");
+			pointHistoryRepository.save(earnHistory);
+		}
+
+		// セッションのユーザー情報を更新
+		org.springframework.beans.BeanUtils.copyProperties(user, userBean);
+		session.setAttribute("user", userBean);
+
+		// ガチャ実行権限をセッションに設定 (devブランチの処理)
+		session.setAttribute("canPlayGacha", true);
+		session.setAttribute("gachaEventType", "order");
+		session.setAttribute("gachaSourceOrderId", order.getId());
+
+		// 不要なセッションのクリーンアップ
+		session.removeAttribute("basketBeans");
+		session.removeAttribute("orderForm");
+		session.removeAttribute("coupon");
+
+		return "client/order/complete";
+	}
+
+	/**
+	 * ポイント確認画面から注文確認画面へ戻る
+	 * @param usePoint 利用ポイント
+	 * @param session セッション情報
+	 * @param model viewへ渡すデータを保持するModel
+	 * @return 注文確認画面
+	 */
+	@SuppressWarnings("unchecked")
+	@PostMapping("/client/order/complete/back")
+	public String backToCheck(@RequestParam(name = "usePoint", required = false) Integer usePoint,
+			HttpSession session, Model model) {
+
+		// セッションから情報を再取得してcheckメソッドと同じ状態を作る
+		// (checkメソッドを直接呼ぶのは引数が違うため難しいので、必要な情報をモデルに積む)
+
+		// お届け先入力画面で保存したorderForm取り出し
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+		// 買い物かごの商品リスト取り出し
+		List<BasketBean> basketBeans = (List<BasketBean>) session.getAttribute("basketBeans");
+
+		List<OrderItemBean> orderItemBeans = new ArrayList<>();
+		int total = 0;
+
+		for (BasketBean basketBean : basketBeans) {
+			Item item = itemRepository.getReferenceById(basketBean.getId());
+			OrderItemBean orderItemBean = new OrderItemBean();
+			orderItemBean.setId(item.getId());
+			orderItemBean.setName(item.getName());
+			orderItemBean.setPrice(item.getPrice());
+			orderItemBean.setImage(item.getImage());
+			orderItemBean.setOrderNum(basketBean.getOrderNum());
+			int subtotal = item.getPrice() * basketBean.getOrderNum();
+			orderItemBean.setSubtotal(subtotal);
+			total += subtotal;
+			orderItemBeans.add(orderItemBean);
+		}
+
+		model.addAttribute("orderForm", orderForm);
+		model.addAttribute("total", total);
+		model.addAttribute("orderItemBeans", orderItemBeans);
+
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		User user = userRepository.getReferenceById(userBean.getId());
+		model.addAttribute("currentPoint", user.getCurrentPoint());
+
+		// 戻った際、以前入力していたポイントを反映させるためにフォームにセットする等の対応が必要だが、
+		// 現在のHTML側はvalue="0"固定なので、モデル等で渡してJavaScriptでセットする必要があるかもしれない。
+		// ここでは要件に基づき、戻るボタンの動作を優先する。
+		model.addAttribute("prevUsePoint", usePoint);
+
+		return "client/order/check";
+	}
+
+	@PostMapping("/client/order/payment/back")
+	public String paymentBack(Model model, HttpSession session) {
+
+		// セッションに保存してある届け先情報を取得
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+
+		// 念のため、なければ空フォーム
+		if (orderForm == null) {
+			orderForm = new OrderForm();
+		}
+
+		model.addAttribute("orderForm", orderForm);
+
+		return "client/order/address_input";
+
+	}
+}
