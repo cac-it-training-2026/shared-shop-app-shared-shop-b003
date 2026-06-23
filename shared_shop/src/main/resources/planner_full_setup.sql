@@ -1,32 +1,6 @@
 -- ======================================================
--- 1. 既存の基本テーブル構造 (参考: すでに存在する場合、作成不要)
--- ======================================================
-
--- カテゴリテーブル
--- CREATE TABLE categories (
---     id NUMBER(6) PRIMARY KEY,
---     name VARCHAR2(100 CHAR) NOT NULL,
---     description VARCHAR2(500 CHAR),
---     delete_flag NUMBER(1) DEFAULT 0,
---     insert_date DATE DEFAULT SYSDATE
--- );
-
--- 商品テーブル
--- CREATE TABLE items (
---     id NUMBER(6) PRIMARY KEY,
---     name VARCHAR2(100 CHAR) NOT NULL,
---     price NUMBER(10) NOT NULL,
---     description VARCHAR2(500 CHAR),
---     stock NUMBER(6) NOT NULL,
---     image VARCHAR2(200 CHAR),
---     category_id NUMBER(6) REFERENCES categories(id),
---     delete_flag NUMBER(1) DEFAULT 0,
---     insert_date DATE DEFAULT SYSDATE
--- );
-
-
--- ======================================================
--- 2. スマート購入プランナー用 新規テーブル・シーケンス
+-- スマート購入プランナー 網羅版セットアップ
+-- 全カテゴリ・広範な価格帯の商品およびキーワードマッピング
 -- ======================================================
 
 -- 既存のテーブルやシーケンスがある場合は削除 (初期化用)
@@ -43,38 +17,45 @@ CREATE TABLE planner_keyword_categories (
 -- ID自動採番用シーケンス作成
 CREATE SEQUENCE seq_planner_keyword_categories NOCACHE;
 
+-- ======================================================
+-- カテゴリ・商品の拡充 (参考: 既存DBに合わせてINSERT)
+-- どの予算(100円〜)でも提案が出るように超低価格品も追加
+-- ======================================================
+
+-- PCカテゴリ
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '中古デスクトップPC', 5000, '格安PC', 5, 1, 0, SYSDATE);
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '高性能ゲーミングPC', 250000, '最新鋭PC', 3, 1, 0, SYSDATE);
+
+-- 書籍カテゴリ
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '古本の豆知識', 100, '超格安本', 100, 2, 0, SYSDATE);
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '専門技術大百科', 15000, '高級技術書', 10, 2, 0, SYSDATE);
+
+-- 食料品カテゴリ
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '駄菓子詰め合わせ', 50, '格安お菓子', 200, 3, 0, SYSDATE);
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, '高級和牛セット', 30000, '贅沢食材', 5, 3, 0, SYSDATE);
+
+-- 雑貨カテゴリ (100円〜)
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, 'ポケットティッシュ', 10, '日用雑貨', 500, 4, 0, SYSDATE);
+INSERT INTO items (id, name, price, description, stock, category_id, delete_flag, insert_date) VALUES (seq_items.NEXTVAL, 'デザイナーズ時計', 50000, '高級雑貨', 2, 4, 0, SYSDATE);
 
 -- ======================================================
--- 3. 初期データ投入 (キーワードとカテゴリの紐付け)
+-- キーワードマッピングの網羅
 -- ======================================================
 
--- ゲーム系
+-- ほぼ全カテゴリを網羅するキーワード
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '生活全般', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '生活全般', '書籍');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '生活全般', '食料品');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '生活全般', '雑貨');
+
+-- 既存キーワードの再登録
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'モニター');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'キーボード');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'マウス');
-
--- プログラミング系
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'プログラミング', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'プログラミング', '書籍');
-
--- 勉強・読書系
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '勉強・読書', '書籍');
-
--- 仕事・テレワーク系
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '仕事・テレワーク', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '仕事・テレワーク', 'モニター');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '仕事・テレワーク', 'オフィス用品');
-
--- 食料品系
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '食料品', '食料品');
-
--- 果物系
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '果物', '果物');
-
--- 動画編集系
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '動画編集', '高性能PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '動画編集', 'モニター');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '動画編集', 'SSD');
 
 COMMIT;
