@@ -62,6 +62,10 @@
 				<th>支払金額</th>
 				<td th:text="*{paymentAmount} + '円'"></td>
 			</tr>
+			<tr>
+				<th>付与ポイント</th>
+				<td th:text="*{paymentAmount / 10} + 'pt'"></td>
+			</tr>
 		</table>
 
 		<table class="list_table detail">
