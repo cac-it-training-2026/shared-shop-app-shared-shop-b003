@@ -73,7 +73,7 @@ public class ClientReviewRegistController {
 	 * @return 遷移先画面
 	 */
 	@RequestMapping(path = "/client/review/regist", method = RequestMethod.POST)
-	public String regist(@Valid @ModelAttribute ReviewForm form, BindingResult result, Model model,
+	public String regist(@Valid @ModelAttribute("reviewForm") ReviewForm form, BindingResult result, Model model,
 			HttpSession session) {
 
 		UserBean userBean = (UserBean) session.getAttribute("user");
@@ -88,7 +88,7 @@ public class ClientReviewRegistController {
 		}
 
 		// 本文またはスタンプのどちらかは必須
-		if ((form.getBody() == null || form.getBody().isBlank()) && form.getStampId() == null) {
+		if ((form.getBody() == null || form.getBody().isBlank()) && (form.getStampId() == null || form.getStampId() == 0)) {
 			result.rejectValue("body", "review.bodyOrStamp.required");
 		}
 
@@ -132,7 +132,7 @@ public class ClientReviewRegistController {
 		review.setApproved(1); // 初期状態は公開
 
 		// スタンプ設定
-		if (form.getStampId() != null) {
+		if (form.getStampId() != null && form.getStampId() != 0) {
 			ReviewStamp stamp = reviewStampRepository.findById(form.getStampId()).orElse(null);
 			review.setStamp(stamp);
 		}

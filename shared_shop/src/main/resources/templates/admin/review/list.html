@@ -27,6 +27,7 @@
 			<th>[[#{reviewForm.rating}]]</th>
 			<th>[[#{reviewForm.stampId}]]</th>
 			<th>[[#{reviewForm.body}]]</th>
+			<th>状態</th>
 			<th>[[#{data.operate}]]</th>
 		</tr>
 		<!--/* レビュー情報 */-->
@@ -39,6 +40,7 @@
 				<img th:if="${review.stamp != null}" th:src="@{/images/{path}(path=${review.stamp.imagePath})}" width="40" height="40" />
 			</td>
 			<td th:text="${review.body}"></td>
+			<td th:text="${review.approved == 1 ? '公開' : '非公開'}"></td>
 			<td>
 				<form th:action="@{/admin/review/delete/check/{id}(id=${review.id})}" method="post">
 					<input type="submit" value="削除" class="delete" />

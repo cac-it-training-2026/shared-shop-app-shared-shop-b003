@@ -192,13 +192,16 @@ public class ClientItemShowController {
 	 */
 
 	@RequestMapping(path = "/client/item/detail/{id}")
-	public String showItem(@PathVariable int id, @ModelAttribute ReviewForm reviewForm, Model model, HttpSession session) {
+	public String showItem(@PathVariable int id, @ModelAttribute("reviewForm") ReviewForm reviewForm, Model model, HttpSession session) {
 
 		// 商品IDに該当する商品情報を取得する
 		Item item = itemRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
 		if (item == null) {
 			return "redirect:/syserror";
 		}
+
+		// フォームの初期化
+		reviewForm.setItemId(id);
 
 		// Itemエンティティの各フィールドの値をItemBeanにコピー
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
