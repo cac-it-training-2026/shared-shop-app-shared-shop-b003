@@ -42,13 +42,14 @@
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
 				<td>
 					<th:block th:if="${item.discountRate > 0}">
-						<span class="original-price" th:text="${item.price}" style="text-decoration: line-through; color: #999;"></span>
+						<span class="original-price" style="text-decoration: line-through; color: #999;">[[${item.price}]]円</span>
 						<br />
-						<span class="discounted-price" th:text="${item.discountedPrice}" style="color: red; font-weight: bold;"></span>
-						<span class="discount-rate" th:text="'(' + ${item.discountRate} + '% OFF)'" style="color: red; font-size: 0.8em;"></span>
+						<span class="discounted-price" style="color: red; font-weight: bold;">[[${item.discountedPrice}]]円</span>
+						<br />
+						<span class="discount-rate" style="color: red; font-size: 0.8em;">[[${item.discountRate}]]%OFF</span>
 					</th:block>
 					<th:block th:unless="${item.discountRate > 0}">
-						<span th:text="${item.price}"></span>
+						<span>[[${item.price}]]円</span>
 					</th:block>
 				</td>
 				<td th:text="${item.categoryName}"></td>

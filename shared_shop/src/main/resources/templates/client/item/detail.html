@@ -23,12 +23,12 @@
 				<dt>[[#{data.item.price}]]</dt>
 				<dd>
 					<th:block th:if="*{discountRate > 0}">
-						<span class="original-price" th:text="*{price}" style="text-decoration: line-through; color: #999;"></span>
-						<span class="discounted-price" th:text="*{discountedPrice}" style="color: red; font-weight: bold; margin-left: 10px;"></span>
-						<span class="discount-rate" th:text="'(' + *{discountRate} + '% OFF)'" style="color: red; font-size: 0.8em; margin-left: 5px;"></span>
+						<span class="original-price" style="text-decoration: line-through; color: #999;">[[*{price}]]円</span>
+						<span class="discounted-price" style="color: red; font-weight: bold; margin-left: 10px;">[[*{discountedPrice}]]円</span>
+						<span class="discount-rate" style="color: red; font-size: 0.8em; margin-left: 5px;">[[*{discountRate}]]%OFF</span>
 					</th:block>
 					<th:block th:unless="*{discountRate > 0}">
-						<span th:text="*{price}"></span>
+						<span>[[*{price}]]円</span>
 					</th:block>
 				</dd>
 				<dt>[[#{data.item.stock}]]</dt>

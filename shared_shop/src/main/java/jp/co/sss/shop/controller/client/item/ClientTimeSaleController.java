@@ -37,7 +37,7 @@ public class ClientTimeSaleController {
      * @param model モデル
      * @return "client/item/sale_list" タイムセール一覧画面
      */
-    @RequestMapping(path = "/client/item/sale/list")
+    @RequestMapping(path = "/sale")
     public String showSaleList(Model model) {
         Map<Integer, SaleSchedule> activeSales = saleService.getActiveSales();
 

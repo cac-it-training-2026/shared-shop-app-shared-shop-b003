@@ -36,9 +36,13 @@ public class SaleService {
             LocalTime now = LocalTime.now();
             List<SaleSchedule> allSales = saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED);
 
-            return allSales.stream()
+            Map<Integer, SaleSchedule> activeSales = allSales.stream()
                 .filter(s -> isSaleActive(s, now))
                 .collect(Collectors.toMap(s -> s.getCategory().getId(), s -> s, (s1, s2) -> s1));
+
+            System.out.println("SALE COUNT=" + activeSales.size());
+
+            return activeSales;
         } catch (Exception e) {
             // データベースエラーやテーブル未存在時にアプリケーションを落とさないための防御
             return new HashMap<>();
@@ -112,6 +116,10 @@ public class SaleService {
 
             itemBean.setDiscountedPrice(discountedPrice);
             itemBean.setDiscountRate(discountRate);
+
+            System.out.println("ITEM=" + itemBean.getCategoryName());
+            System.out.println("PRICE=" + originalPrice);
+            System.out.println("SALE=" + discountedPrice);
         } else {
             itemBean.setDiscountedPrice(itemBean.getPrice());
             itemBean.setDiscountRate(0);
