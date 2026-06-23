@@ -13,6 +13,14 @@
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>
 	</header>
+	<!--/* タイムセールバー */-->
+	<div th:if="${not #maps.isEmpty(activeSales)}" class="time-sale-bar">
+		<span class="sale-label">SALE開催中！</span>
+		<span th:each="entry : ${activeSales}" class="sale-info">
+			[[${entry.value.category.name}]]: [[${entry.value.discountRate}]]% OFF! (あと[[${@saleService.getRemainingTime(entry.value)}]])
+		</span>
+		<a th:href="@{/client/item/sale/list}" class="sale-link">セール商品を見る</a>
+	</div>
 	<!--/* ナビゲーションバー */-->
 	<nav th:if="${session.user == null or session.user.authority == 2}" class="navi_area">
 		<div th:replace="~{common/menu :: layout-menu}"></div>

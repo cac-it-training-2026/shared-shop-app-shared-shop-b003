@@ -171,11 +171,12 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			// 買い物かごの価格（セール適用済み）を使用
+			orderItemBean.setPrice(basketBean.getPrice());
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
-			int subtotal = item.getPrice() * orderNum;
+			int subtotal = basketBean.getPrice() * orderNum;
 			orderItemBean.setSubtotal(subtotal);
 
 			total += subtotal;
@@ -279,11 +280,12 @@ public class ClientOrderRegistController {
 
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			// 買い物かごの価格（セール適用済み）を使用
+			orderItemBean.setPrice(basketBean.getPrice());
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
-			int subtotal = item.getPrice() * orderNum;
+			int subtotal = basketBean.getPrice() * orderNum;
 			orderItemBean.setSubtotal(subtotal);
 
 			total += subtotal;
@@ -345,7 +347,8 @@ public class ClientOrderRegistController {
 			orderItem.setOrder(order);
 			orderItem.setItem(item);
 			orderItem.setQuantity(basketBean.getOrderNum());
-			orderItem.setPrice(item.getPrice());
+			// 買い物かごの価格（セール適用済み）を保存
+			orderItem.setPrice(basketBean.getPrice());
 
 			orderItemRepository.save(orderItem);
 

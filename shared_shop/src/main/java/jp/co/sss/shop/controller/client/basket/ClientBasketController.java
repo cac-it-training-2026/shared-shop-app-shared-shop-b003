@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
+import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.service.BeanTools;
+import jp.co.sss.shop.service.SaleService;
 
 /**
  * 買い物かごのコントローラークラス
@@ -34,6 +37,18 @@ public class ClientBasketController {
 	 */
 	@Autowired
 	ItemRepository itemRepository;
+
+	/**
+	 * Entity、Form、Bean間のデータコピーサービス
+	 */
+	@Autowired
+	BeanTools beanTools;
+
+	/**
+	 * タイムセールサービス
+	 */
+	@Autowired
+	SaleService saleService;
 
 	/**
 	 * 買い物かご一覧表示処理
@@ -65,8 +80,8 @@ public class ClientBasketController {
 
 				// itemOptionalのnullチェック
 				itemOptional.ifPresent(item -> {
-					// 商品情報を最新に更新
-					BeanUtils.copyProperties(item, basketBean, "orderNum");
+					// 商品情報を最新に更新（価格は上書きしない）
+					BeanUtils.copyProperties(item, basketBean, "orderNum", "price");
 
 					// 在庫数を確認
 					if (item.getStock() <= 0 || item.getDeleteFlag() == 1) {
@@ -126,8 +141,16 @@ public class ClientBasketController {
 		if (!itemOptional.isEmpty()) {
 			// Itemの情報を取り出し
 			Item item = itemOptional.get();
+
+			// タイムセール適用
+			ItemBean itemBean = beanTools.copyEntityToItemBean(item);
+			saleService.applyDiscount(itemBean, saleService.getActiveSales());
+
 			// beanにコピー
 			BeanUtils.copyProperties(item, inputbasketBean);
+
+			// セール価格を適用
+			inputbasketBean.setPrice(itemBean.getDiscountedPrice());
 
 			// 在庫数の確認
 			if (inputbasketBean.getStock() <= 0) {

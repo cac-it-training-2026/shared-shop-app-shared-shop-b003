@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="'タイムセール一覧 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user item_list">
+
+	<h2 th:class="title">タイムセール商品一覧</h2>
+
+	<div class="sorted_by">
+		<p th:text="'現在、セール対象の商品は ' + ${#lists.size(items)} + ' 件あります。'" th:if="!${#lists.isEmpty(items)}"></p>
+		<p th:text="'現在、開催中のタイムセールはありません。'" th:if="${#lists.isEmpty(items)}"></p>
+	</div>
+
+	<th:block th:if="!${#lists.isEmpty(items)}">
+		<table class="list_table item_detail">
+			<tr>
+				<th th:text="#{data.item.image}"></th>
+				<th th:text="#{data.item.name}"></th>
+				<th th:text="#{data.item.price}"></th>
+				<th th:text="#{category}"></th>
+			</tr>
+			<!--/* 商品一覧 */-->
+			<tr th:each="item : ${items}">
+				<td class="image">
+					<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" />
+					<img th:src="@{/images/common/no_image.jpg}" th:if="${item.image == null}" />
+				</td>
+				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+				<td>
+					<span class="original-price" th:text="${item.price}" style="text-decoration: line-through; color: #999;"></span>
+					<br />
+					<span class="discounted-price" th:text="${item.discountedPrice}" style="color: red; font-weight: bold;"></span>
+					<span class="discount-rate" th:text="'(' + ${item.discountRate} + '% OFF)'" style="color: red; font-size: 0.8em;"></span>
+				</td>
+				<td th:text="${item.categoryName}"></td>
+			</tr>
+		</table>
+	</th:block>
+
+	<div class="sale-link-container" style="margin-top: 20px;">
+		<a th:href="@{/}" class="back_button" style="text-decoration: none; padding: 5px 10px; background: #eee; border: 1px solid #ccc; color: #333;">トップへ戻る</a>
+	</div>
+
+</body>
+
+</html>
