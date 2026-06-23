@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title>提案結果 | スマート購入プランナー | [[#{shop.title}]]</title>
+</head>
+<body class="user">
+	<h2 class="page_title">ご提案プラン</h2>
+	<div class="user_info_form_area">
+		<p>
+			「<span th:text="${result.purposeName}"></span>」向けに、予算 <span th:text="${result.budget}"></span> 円以内で以下の商品をセレクトしました。
+		</p>
+
+		<div th:if="${#lists.isEmpty(result.itemList)}">
+			<p>条件に合うプランが見つかりませんでした。</p>
+		</div>
+
+		<table class="list_table" th:if="${not #lists.isEmpty(result.itemList)}">
+			<tr>
+				<th>商品名</th>
+				<th>価格</th>
+				<th>操作</th>
+			</tr>
+			<tr th:each="item : ${result.itemList}">
+				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+				<td th:text="${item.price} + ' 円'"></td>
+				<td>
+					<form th:action="@{/client/basket/add}" method="post">
+						<input type="hidden" name="id" th:value="${item.id}" />
+						<input type="submit" value="かごに追加" />
+					</form>
+				</td>
+			</tr>
+			<tr class="total">
+				<td>合計金額</td>
+				<td th:text="${result.totalAmount} + ' 円'"></td>
+				<td></td>
+			</tr>
+		</table>
+
+		<div class="detail_button_area">
+			<form th:action="@{/client/planner/input}" method="post">
+				<input type="submit" value="やり直す" class="back_button" />
+			</form>
+			<form th:action="@{/}" method="get">
+				<input type="submit" value="トップへ戻る" class="back_button" />
+			</form>
+		</div>
+	</div>
+</body>
+</html>
