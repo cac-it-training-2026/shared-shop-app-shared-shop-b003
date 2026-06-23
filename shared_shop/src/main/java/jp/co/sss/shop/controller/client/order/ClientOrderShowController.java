@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -64,7 +64,7 @@ public class ClientOrderShowController {
 
 		// OrderBeanのリストに変換
 		List<OrderBean> orderBeans = new ArrayList<>();
-		for(Order order : orders) {
+		for (Order order : orders) {
 			OrderBean ob = beanTools.copyEntityToOrderBean(order);
 			ob.setTotal(order.getTotal());
 			if (order.getDiscount() != null) {
@@ -85,7 +85,7 @@ public class ClientOrderShowController {
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return 注文詳細画面
 	 */
-	@GetMapping("/client/order/detail/{id}")
+	@PostMapping("/client/order/detail/{id}")
 	public String showOrderDetail(Model model, @PathVariable int id, HttpSession session) {
 
 		// ログインチェック
