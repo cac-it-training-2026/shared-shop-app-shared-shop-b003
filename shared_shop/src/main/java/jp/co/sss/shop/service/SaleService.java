@@ -2,7 +2,6 @@ package jp.co.sss.shop.service;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,6 @@ public class SaleService {
     @Autowired
     private SaleScheduleRepository saleScheduleRepository;
 
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     /**
      * 現在開催中のセール情報を取得（カテゴリIDをキーとしたマップ）
      * @return 開催中のセール情報
@@ -44,24 +41,21 @@ public class SaleService {
 
             return activeSales;
         } catch (Exception e) {
-            // データベースエラーやテーブル未存在時にアプリケーションを落とさないための防御
+            e.printStackTrace();
             return new HashMap<>();
         }
     }
 
     private boolean isSaleActive(SaleSchedule sale, LocalTime now) {
-        try {
-            LocalTime start = LocalTime.parse(sale.getStartTime(), TIME_FORMATTER);
-            LocalTime end = LocalTime.parse(sale.getEndTime(), TIME_FORMATTER);
+        LocalTime start = sale.getStartTime();
+        LocalTime end = sale.getEndTime();
+        if (start == null || end == null) return false;
 
-            if (start.isBefore(end)) {
-                return !now.isBefore(start) && !now.isAfter(end);
-            } else {
-                // 日をまたぐセールの考慮（例: 22:00 - 02:00）
-                return !now.isBefore(start) || !now.isAfter(end);
-            }
-        } catch (Exception e) {
-            return false;
+        if (start.isBefore(end)) {
+            return !now.isBefore(start) && !now.isAfter(end);
+        } else {
+            // 日をまたぐセールの考慮（例: 22:00 - 02:00）
+            return !now.isBefore(start) || !now.isAfter(end);
         }
     }
 
@@ -77,7 +71,7 @@ public class SaleService {
                 return "終了";
             }
 
-            LocalTime end = LocalTime.parse(sale.getEndTime(), TIME_FORMATTER);
+            LocalTime end = sale.getEndTime();
 
             Duration duration;
             if (now.isBefore(end)) {
