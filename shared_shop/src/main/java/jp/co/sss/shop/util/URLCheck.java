@@ -28,7 +28,7 @@ public class URLCheck {
 
 	/**
 	 * システム管理者 リクエストURLがアクセス可能かを判定
-	 * 
+	 *
 	 * @param requestURL リクエストURL
 	 * @param contextPath コンテキストパス名
 	 * @return true：アクセス可能、false：アクセス不可

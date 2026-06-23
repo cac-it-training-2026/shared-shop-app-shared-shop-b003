@@ -9,7 +9,9 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/gacha.css}" />
 <title  th:replace="${title}"></title>
 </head>
-<body class="user" th:data-context-path="@{/}">
+  
+<body class="user" th:classappend="${(session.user != null and session.user.themeId != null) ? 'theme-' + session.user.themeId : ''}">
+
 	<!--/* ヘッダー */-->
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>
