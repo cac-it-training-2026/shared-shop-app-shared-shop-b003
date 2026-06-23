@@ -13,9 +13,9 @@ CREATE TABLE sale_schedule (
 CREATE SEQUENCE seq_sale_schedule START WITH 1 INCREMENT BY 1;
 
 -- サンプルデータ
--- 食料品 (categoryId: 1を想定) 00:00〜18:00 20%OFF (動作確認用)
+-- 食料品 (categoryId: 1を想定) 00:00〜15:00 20%OFF (動作確認用)
 INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
-VALUES (seq_sale_schedule.NEXTVAL, 1, TO_DATE('00:00:00', 'HH24:MI:SS'), TO_DATE('18:00:00', 'HH24:MI:SS'), 20, 0);
+VALUES (seq_sale_schedule.NEXTVAL, 1, TO_DATE('00:00:00', 'HH24:MI:SS'), TO_DATE('15:00:00', 'HH24:MI:SS'), 20, 0);
 
 -- 書籍 (categoryId: 2を想定) 20:00〜23:00 15%OFF
 INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
