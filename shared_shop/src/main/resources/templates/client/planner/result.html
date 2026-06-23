@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title>提案プラン | シェアショップ</title>
+</head>
+<body>
+	<div class="user_info_form_area">
+		<h2 class="title">スマート購入プランナー - 提案結果</h2>
+		<p>
+			キーワード: <strong th:text="${keyword}"></strong> /
+			ご予算: <strong th:text="${#numbers.formatInteger(budget, 3, 'COMMA')} + '円'"></strong>
+		</p>
+
+		<div th:if="${#lists.isEmpty(plans) or (plans[0] == null and plans[1] == null and plans[2] == null)}" class="error_msg">
+			申し訳ありません。ご予算や条件に合うプランが見つかりませんでした。
+		</div>
+
+		<div th:if="${not #lists.isEmpty(plans)}">
+			<!-- プラン1: コスパ重視 -->
+			<div th:if="${plans[0] != null}" class="plan_box">
+				<h3>【プラン1】コストパフォーマンス重視</h3>
+				<p>各カテゴリで最も手頃な商品を選んだ、経済的なプランです。</p>
+				<table class="list_table">
+					<tr>
+						<th>商品名</th>
+						<th>カテゴリ</th>
+						<th>価格</th>
+					</tr>
+					<tr th:each="item : ${plans[0]}">
+						<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+						<td th:text="${item.categoryName}"></td>
+						<td th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '円'"></td>
+					</tr>
+					<tr class="total_row">
+						<td colspan="2">合計</td>
+						<td><strong th:text="${#numbers.formatInteger(#aggregates.sum(plans[0].![price]), 3, 'COMMA')} + '円'"></strong></td>
+					</tr>
+				</table>
+			</div>
+
+			<hr th:if="${plans[0] != null and (plans[1] != null or plans[2] != null)}" />
+
+			<!-- プラン2: バランス -->
+			<div th:if="${plans[1] != null}" class="plan_box">
+				<h3>【プラン2】バランス重視</h3>
+				<p>価格と機能のバランスが取れた、標準的なプランです。</p>
+				<table class="list_table">
+					<tr>
+						<th>商品名</th>
+						<th>カテゴリ</th>
+						<th>価格</th>
+					</tr>
+					<tr th:each="item : ${plans[1]}">
+						<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+						<td th:text="${item.categoryName}"></td>
+						<td th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '円'"></td>
+					</tr>
+					<tr class="total_row">
+						<td colspan="2">合計</td>
+						<td><strong th:text="${#numbers.formatInteger(#aggregates.sum(plans[1].![price]), 3, 'COMMA')} + '円'"></strong></td>
+					</tr>
+				</table>
+			</div>
+
+			<hr th:if="${plans[1] != null and plans[2] != null}" />
+
+			<!-- プラン3: ハイエンド -->
+			<div th:if="${plans[2] != null}" class="plan_box">
+				<h3>【プラン3】ハイエンド・満足度重視</h3>
+				<p>ご予算の範囲内で、可能な限り高品質な商品を選んだプランです。</p>
+				<table class="list_table">
+					<tr>
+						<th>商品名</th>
+						<th>カテゴリ</th>
+						<th>価格</th>
+					</tr>
+					<tr th:each="item : ${plans[2]}">
+						<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+						<td th:text="${item.categoryName}"></td>
+						<td th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '円'"></td>
+					</tr>
+					<tr class="total_row">
+						<td colspan="2">合計</td>
+						<td><strong th:text="${#numbers.formatInteger(#aggregates.sum(plans[2].![price]), 3, 'COMMA')} + '円'"></strong></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div class="btns">
+			<a th:href="@{/client/planner/input}" class="btn">戻る</a>
+		</div>
+	</div>
+
+	<style>
+		.plan_box { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background: #f9f9f9; }
+		.plan_box h3 { color: #333; border-bottom: 2px solid #555; padding-bottom: 5px; }
+		.total_row { background: #eee; font-weight: bold; }
+		.error_msg { color: red; padding: 20px; text-align: center; font-weight: bold; }
+	</style>
+</body>
+</html>

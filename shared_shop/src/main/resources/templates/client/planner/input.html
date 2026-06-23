@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title>スマート購入プランナー | シェアショップ</title>
+</head>
+<body>
+	<div class="user_info_form_area">
+		<h2 class="title">スマート購入プランナー</h2>
+		<p>あなたの用途と予算に合わせて、最適な商品の組み合わせを提案します。</p>
+
+		<form th:action="@{/client/planner/result}" method="post">
+			<ul class="input_form">
+				<li>
+					<label>用途（キーワード）:</label>
+					<select name="keyword" required>
+						<option value="">選択してください</option>
+						<option th:each="kw : ${keywords}" th:value="${kw}" th:text="${kw}"></option>
+					</select>
+				</li>
+				<li>
+					<label>ご希望の予算:</label>
+					<select name="budget" required>
+						<option value="">選択してください</option>
+						<option value="5000">~ 5,000円</option>
+						<option value="10000">~ 10,000円</option>
+						<option value="30000">~ 30,000円</option>
+						<option value="50000">~ 50,000円</option>
+						<option value="100000">~ 100,000円</option>
+						<option value="200000">~ 200,000円</option>
+						<option value="300000">~ 300,000円</option>
+						<option value="500000">~ 500,000円</option>
+					</select>
+				</li>
+			</ul>
+			<div class="btns">
+				<input type="submit" value="プランを生成する" class="btn" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>
