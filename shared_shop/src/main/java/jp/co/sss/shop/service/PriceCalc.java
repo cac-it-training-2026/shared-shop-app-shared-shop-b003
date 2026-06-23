@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jp.co.sss.shop.bean.CouponBean;
 import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.entity.OrderItem;
 
@@ -63,5 +64,25 @@ public class PriceCalc {
 		}
 
 		return total;
+	}
+
+	/**
+	 * クーポンによる割引額を計算
+	 *
+	 * @param total 合計金額
+	 * @param couponBean クーポン情報
+	 * @return 割引額
+	 */
+	public int calculateDiscount(int total, CouponBean couponBean) {
+		if (couponBean == null) {
+			return 0;
+		}
+		int discount = 0;
+		if ("amount".equals(couponBean.getDiscountType())) {
+			discount = couponBean.getDiscountValue();
+		} else if ("percent".equals(couponBean.getDiscountType())) {
+			discount = (int) (total * (couponBean.getDiscountValue() / 100.0));
+		}
+		return discount;
 	}
 }

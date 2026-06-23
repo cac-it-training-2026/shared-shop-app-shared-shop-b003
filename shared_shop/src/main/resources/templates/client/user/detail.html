@@ -33,10 +33,17 @@
 					<span class="input_title">[[#{userForm.phoneNumber}]]</span>
 					<span class="input_value" th:text="*{phoneNumber}"></span>
 				</li>
+				<li>
+					<span class="input_title">現在ポイント</span>
+					<span class="input_value" th:text="*{currentPoint != null ? currentPoint + 'pt' : '0pt'}"></span>
+				</li>
 			</ul>
 		</div>
 
 		<div class="detail_button_area">
+			<form th:action="@{/client/point/history}" method="get">
+				<input type="submit" value="ポイント履歴" />
+			</form>
 			<form th:action="@{/}" method="post">
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
