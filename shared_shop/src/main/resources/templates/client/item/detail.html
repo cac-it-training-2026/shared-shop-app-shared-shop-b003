@@ -41,6 +41,76 @@
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
 		</div>
+
+		<hr />
+
+		<div class="review_area">
+			<h3 th:text="#{review}"></h3>
+
+			<!-- レビュー投稿フォーム -->
+			<div th:if="${canReview}">
+				<h4 th:text="#{title.input}"></h4>
+				<form th:action="@{/client/review/regist}" method="post" th:object="${reviewForm}">
+					<input type="hidden" th:field="*{itemId}" th:value="${item.id}" />
+					<dl>
+						<dt th:text="#{reviewForm.rating}"></dt>
+						<dd>
+							<select th:field="*{rating}">
+								<option value="5">5</option>
+								<option value="4">4</option>
+								<option value="3">3</option>
+								<option value="2">2</option>
+								<option value="1">1</option>
+							</select>
+							<span th:errors="*{rating}" class="error_msg"></span>
+						</dd>
+						<dt th:text="#{reviewForm.stampId}"></dt>
+						<dd>
+							<div class="stamp_selection">
+								<label th:each="stamp : ${stamps}" style="display: inline-block; margin-right: 10px; text-align: center;">
+									<input type="radio" th:field="*{stampId}" th:value="${stamp.id}" />
+									<br/>
+									<img th:src="@{/images/{path}(path=${stamp.imagePath})}" th:alt="${stamp.name}" width="50" height="50" />
+									<br/>
+									<span th:text="${stamp.name}"></span>
+								</label>
+								<label style="display: inline-block; margin-right: 10px; text-align: center;">
+									<input type="radio" th:field="*{stampId}" th:value="0" />
+									<br/>
+									<span>選択しない</span>
+								</label>
+							</div>
+						</dd>
+						<dt th:text="#{reviewForm.body}"></dt>
+						<dd>
+							<textarea th:field="*{body}" rows="4" cols="40"></textarea>
+							<span th:errors="*{body}" class="error_msg"></span>
+						</dd>
+					</dl>
+					<input type="submit" value="レビューを投稿する" class="send_button" />
+				</form>
+			</div>
+
+			<!-- レビュー一覧 -->
+			<div class="review_list">
+				<h4 th:text="#{title.list}"></h4>
+				<div th:if="${#lists.isEmpty(reviews)}">
+					<p>レビューはまだありません。</p>
+				</div>
+				<div th:each="review : ${reviews}" class="review_item">
+					<hr />
+					<p>
+						<span th:text="${#dates.format(review.insertDate, 'yyyy/MM/dd HH:mm:ss')}"></span>
+						<span th:text="${review.user.name}"></span>
+						<span>評価: <span th:text="${review.rating}"></span></span>
+					</p>
+					<div th:if="${review.stamp != null}">
+						<img th:src="@{/images/{path}(path=${review.stamp.imagePath})}" th:alt="${review.stamp.name}" width="60" height="60" />
+					</div>
+					<p th:text="${review.body}"></p>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </body>
