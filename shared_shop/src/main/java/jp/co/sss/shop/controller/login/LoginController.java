@@ -55,9 +55,8 @@ public class LoginController {
 	 *
 	 * @param form ログインフォーム
 	 * @param result 入力チェック結果
-	 * @return
-			一般会員の場合 "redirect:/" トップ画面表示処理
-			運用管理者、システム管理者の場合 "redirect:/adminmenu"管理者メニュー表示処理
+	 * @return 一般会員の場合 "redirect:/" トップ画面表示処理
+	 * 運用管理者、システム管理者の場合 "redirect:/admin/menu" 管理者メニュー表示処理
 	 */
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public String doLogin(@Valid @ModelAttribute LoginForm form, BindingResult result) {
@@ -67,7 +66,8 @@ public class LoginController {
 			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
 			if (user != null) {
 				// すでにロックされているか確認
-				if (user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+				if (user.getLockedUntil() != null
+						&& user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
 					result.reject("error.login.locked", "アカウントがロックされています。15分後にお試しください。");
 				} else {
 					// 失敗回数をインクリメント
@@ -87,18 +87,23 @@ public class LoginController {
 			return "login";
 
 		} else {
-      // 成功時、セッションスコープからユーザー情報を取り出す
-			UserBean userBean = (UserBean) session.getAttribute("user");
-			
-			// 失敗回数とロック状態をリセットするためにDBからユーザー実体を取得
-			if (userBean != null) {
-				User user = userRepository.getReferenceById(userBean.getId());
-				// 失敗回数とロック状態をリセット
+			// 成功時、フォームのメールアドレスからユーザー情報を確実に取得
+			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
+
+			if (user != null) {
+				// 1. 失敗回数とロック状態をリセットして保存
 				user.setFailedLoginCount(0);
 				user.setLockedUntil(null);
 				userRepository.save(user);
 
-				// 権限の判定
+				// 2. セッションにセットするためのBeanを生成して格納（ログイン状態の確立）
+				UserBean userBean = new UserBean();
+				userBean.setId(user.getId());
+				userBean.setName(user.getName());
+				userBean.setAuthority(user.getAuthority());
+				session.setAttribute("user", userBean);
+
+				// 3. 権限の判定
 				if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
 					// ガチャの実行権限をセッションに設定 (ログインイベント)
 					session.setAttribute("canPlayGacha", true);
@@ -107,11 +112,15 @@ public class LoginController {
 					// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
 					return "redirect:/";
 				} else {
-				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
-				return "redirect:/admin/menu";
+					// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
+					return "redirect:/admin/menu";
+				}
+			} else {
+				// 万が一ユーザーが取得できなかった場合の安全リダイレクト
+				session.invalidate();
+				return "login";
 			}
 		}
-
 	}
 
 	/**
