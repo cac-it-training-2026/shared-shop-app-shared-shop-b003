@@ -5,14 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpSession;
+
 import jp.co.sss.shop.bean.ItemBean;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.form.ReviewForm;
 import jp.co.sss.shop.repository.CategoryRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.repository.OrderRepository;
+import jp.co.sss.shop.repository.ReviewRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 
@@ -44,6 +52,18 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	CategoryRepository categoryRepository;
+
+	/**
+	 * レビュー情報
+	 */
+	@Autowired
+	ReviewRepository reviewRepository;
+
+	/**
+	 * 注文情報
+	 */
+	@Autowired
+	OrderRepository orderRepository;
 
 	/**
 	 * トップ画面 表示処理
@@ -165,7 +185,10 @@ public class ClientItemShowController {
 	 */
 
 	@RequestMapping(path = "/client/item/detail/{id}")
-	public String showItem(@PathVariable int id, Model model) {
+	public String showItem(@PathVariable int id, @ModelAttribute ReviewForm reviewForm, Model model, HttpSession session) {
+
+		// フォームに商品IDをセット
+		reviewForm.setItemId(id);
 
 		// 商品IDに該当する商品情報を取得する
 		Item item = itemRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
@@ -178,6 +201,30 @@ public class ClientItemShowController {
 
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
+
+		// レビュー情報を取得
+		model.addAttribute("reviews",
+				reviewRepository.findByItemIdAndDeleteFlagOrderByInsertDateDesc(id, Constant.NOT_DELETED));
+
+		// レビュー投稿可能かチェック
+		boolean canReview = false;
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		if (userBean != null && userBean.getAuthority() == Constant.AUTH_CLIENT) {
+			// ログインしている一般会員の場合、購入履歴があるかチェック
+			List<jp.co.sss.shop.entity.Order> orders = orderRepository.findByUserId(userBean.getId());
+			for (jp.co.sss.shop.entity.Order order : orders) {
+				for (OrderItem orderItem : order.getOrderItemsList()) {
+					if (orderItem.getItem().getId().equals(id)) {
+						canReview = true;
+						break;
+					}
+				}
+				if (canReview) {
+					break;
+				}
+			}
+		}
+		model.addAttribute("canReview", canReview);
 
 		return "client/item/detail";
 	}
