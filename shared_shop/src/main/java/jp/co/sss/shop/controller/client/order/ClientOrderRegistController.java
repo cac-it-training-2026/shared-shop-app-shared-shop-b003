@@ -30,14 +30,15 @@ import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.service.PriceCalc;
 
 /**
- * お届け先入力から注文完了までのコントローラー
- * @author hayato takahashi
+ * 注文登録用コントローラ
+ *
+ * @author SystemShared
  */
 @Controller
 public class ClientOrderRegistController {
 
 	/**
-	 * 商品表示リポジトリ
+	 * 商品情報リポジトリ
 	 */
 	@Autowired
 	ItemRepository itemRepository;
@@ -47,17 +48,18 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	OrderRepository orderRepository;
-	/**
-	 * 注文商品情報リポジトリ
-	 */
-	@Autowired
-	OrderItemRepository orderItemRepository;
 
 	/**
-	 * ユーザー情報リポジトリ
+	 * 会員情報リポジトリ
 	 */
 	@Autowired
 	UserRepository userRepository;
+
+	/**
+	 * 注文商品リポジトリ
+	 */
+	@Autowired
+	OrderItemRepository orderItemRepository;
 
 	/**
 	 * クーポン情報リポジトリ
