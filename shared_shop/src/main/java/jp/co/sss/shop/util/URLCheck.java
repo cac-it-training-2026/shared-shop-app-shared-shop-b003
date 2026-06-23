@@ -86,7 +86,7 @@ public class URLCheck {
 				|| requestURL.endsWith(contextPath + "/")
 				|| requestURL.endsWith("/login")
 				|| requestURL.indexOf("client") != -1
-				|| requestURL.indexOf("admin") == -1
+				|| requestURL.indexOf("/admin/") == -1 && !requestURL.endsWith("/admin")
 				|| requestURL.endsWith("/logout")) {
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;
@@ -156,7 +156,8 @@ public class URLCheck {
 						|| requestURL.indexOf("/client/user/detail") != -1
 						|| requestURL.indexOf("/client/user/regist") != -1
 						|| requestURL.indexOf("/client/user/update") != -1
-						|| requestURL.indexOf("/client/user/delete") != -1)) {
+						|| requestURL.indexOf("/client/user/delete") != -1
+						|| requestURL.indexOf("/client/planner") != -1)) {
 
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;
