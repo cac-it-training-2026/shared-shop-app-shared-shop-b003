@@ -7,6 +7,7 @@
 <div th:fragment="layout-header" class="container">
 	<h1 th:class="site_title" th:text="#{shop.title}"></h1>
 	<div th:if="${session.user != null and session.user.authority == 2}" class="user_info">
+		保有ポイント：<span th:text="${session.user.currentPoint != null ? session.user.currentPoint : 0}"></span>pt | <a th:href="@{/client/user/detail}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}" th:text="#{logout}"></a>
 		<a th:href="@{/client/theme/input}" th:text="#{theme}"></a> | <a th:href="@{/client/user/detail}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}" th:text="#{logout}"></a>
 	</div>
 	<div th:if="${session.user != null and (session.user.authority == 0 or session.user.authority == 1)}" class="user_info">

@@ -21,7 +21,9 @@
 				<dt>[[#{data.item.name}]]</dt>
 				<dd th:text="*{name}"></dd>
 				<dt>[[#{data.item.price}]]</dt>
-				<dd th:text="*{price}"></dd>
+				<dd th:text="*{price} + '円'"></dd>
+				<dt>付与予定ポイント</dt>
+				<dd th:text="*{price / 10} + 'pt'"></dd>
 				<dt>[[#{data.item.stock}]]</dt>
 				<dd th:if="*{stock > 5}" th:text="#{data.in.stock}"></dd>
 				<dd th:if="*{stock >= 1 and 5 >= stock }" th:text="*{stock}"></dd>

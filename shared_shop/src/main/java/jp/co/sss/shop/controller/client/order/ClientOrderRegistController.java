@@ -20,12 +20,14 @@ import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.entity.PointHistory;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.OrderForm;
 import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
+import jp.co.sss.shop.repository.PointHistoryRepository;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.service.PriceCalc;
 
@@ -72,6 +74,12 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	PriceCalc priceCalc;
+
+	/**
+	 * ポイント履歴情報リポジトリ
+	 */
+	@Autowired
+	PointHistoryRepository pointHistoryRepository;
 
 	/**
 	 * お届け先入力画面表示
@@ -136,12 +144,12 @@ public class ClientOrderRegistController {
 	 * 買い物かご内商品の最新在庫数を確認する。
 	 * 在庫不足・在庫切れ商品を判定し、
 	 * 注文確認画面に表示する情報を作成する。
-	 * 
-	 * @param payMethod 選択された支払方法
+	 * * @param payMethod 選択された支払方法
 	 * @param session セッション情報
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return 注文確認画面
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/client/order/check")
 	public String check(
 			@RequestParam Integer payMethod,
@@ -213,6 +221,12 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderForm", orderForm);
 		model.addAttribute("total", total);
 
+		// 【マージ対応：1箇所目】ポイント機能とクーポン機能のパラメータを統合して受け渡す
+		// 会員の最新情報を取得（最新ポイント取得のため）
+		UserBean userBean = (UserBean) session.getAttribute("user");
+		User user = userRepository.getReferenceById(userBean.getId());
+		model.addAttribute("currentPoint", user.getCurrentPoint());
+
 		// クーポン割引の計算
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
@@ -250,8 +264,11 @@ public class ClientOrderRegistController {
 	 * @param session セッション情報
 	 * @return 注文完了画面
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/client/order/complete")
-	public String showOrderComplete(HttpSession session, Model model) {
+	public String showOrderComplete(@RequestParam(name = "usePoint", required = false) Integer usePoint,
+			@RequestParam(name = "isConfirmed", required = false, defaultValue = "false") boolean isConfirmed,
+			HttpSession session, Model model) {
 
 		// セッションから取得（届け先、支払い方法）
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
@@ -319,8 +336,25 @@ public class ClientOrderRegistController {
 			orderableBasketBeans.add(basketBean);
 		}
 
-		// 在庫切れ・在庫不足の商品があった場合は、注文登録せず確認画面へ戻す
-		if (!itemNameListZero.isEmpty() || !itemNameListLessThan.isEmpty()) {
+		// ポイント関連のバリデーション
+		User user = userRepository.getReferenceById(userBean.getId());
+		int currentPoint = user.getCurrentPoint();
+
+		if (usePoint == null) {
+			usePoint = 0;
+		}
+
+		boolean pointError = false;
+		if (usePoint < 0) {
+			pointError = true;
+		} else if (usePoint > currentPoint) {
+			pointError = true;
+		} else if (usePoint > total) {
+			pointError = true;
+		}
+
+		// 在庫切れ・在庫不足の商品があった場合、またはポイントにエラーがあった場合は、注文登録せず確認画面へ戻す
+		if (!itemNameListZero.isEmpty() || !itemNameListLessThan.isEmpty() || pointError) {
 
 			if (!itemNameListZero.isEmpty()) {
 				model.addAttribute("itemNameListZero", itemNameListZero);
@@ -330,8 +364,13 @@ public class ClientOrderRegistController {
 				model.addAttribute("itemNameListLessThan", itemNameListLessThan);
 			}
 
+			if (pointError) {
+				model.addAttribute("pointError", true);
+			}
+
 			model.addAttribute("orderForm", orderForm);
 			model.addAttribute("total", total);
+			model.addAttribute("currentPoint", currentPoint);
 
 			// クーポン割引の再計算
 			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
@@ -356,6 +395,13 @@ public class ClientOrderRegistController {
 			return "client/order/check";
 		}
 
+		// ポイント利用がある場合、未確認なら確認画面へ
+		if (usePoint > 0 && !isConfirmed) {
+			model.addAttribute("total", total);
+			model.addAttribute("usePoint", usePoint);
+			return "client/order/point_confirm";
+		}
+
 		// ここから下は、在庫に問題がない場合だけ注文登録
 
 		Order order = new Order();
@@ -365,10 +411,12 @@ public class ClientOrderRegistController {
 		order.setName(orderForm.getName());
 		order.setPhoneNumber(orderForm.getPhoneNumber());
 		order.setPayMethod(orderForm.getPayMethod());
+		order.setUsedPoint(usePoint);
+		order.setPaymentAmount(total - usePoint);
 
-		User user = new User();
-		user.setId(userBean.getId());
-		order.setUser(user);
+		User orderUser = new User();
+		orderUser.setId(userBean.getId());
+		order.setUser(orderUser);
 
 		// クーポン情報の適用
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
@@ -388,6 +436,21 @@ public class ClientOrderRegistController {
 
 		orderRepository.save(order);
 
+		// ポイント利用減算処理
+		if (usePoint > 0) {
+			user.setCurrentPoint(user.getCurrentPoint() - usePoint);
+			userRepository.save(user);
+
+			// ポイント履歴登録（利用）
+			PointHistory useHistory = new PointHistory();
+			useHistory.setUser(user);
+			useHistory.setPoint(-usePoint);
+			useHistory.setBalance(user.getCurrentPoint());
+			useHistory.setType("USE");
+			useHistory.setDescription("ポイント利用");
+			pointHistoryRepository.save(useHistory);
+		}
+
 		for (BasketBean basketBean : orderableBasketBeans) {
 
 			Item item = itemRepository.getReferenceById(basketBean.getId());
@@ -406,39 +469,5 @@ public class ClientOrderRegistController {
 			itemRepository.save(item);
 		}
 
-		// ガチャ実行権限をセッションに設定 (注文完了イベント)
-		session.setAttribute("canPlayGacha", true);
-		session.setAttribute("gachaEventType", "order");
-		session.setAttribute("gachaSourceOrderId", order.getId());
-
-		session.removeAttribute("basketBeans");
-		session.removeAttribute("orderForm");
-		session.removeAttribute("coupon");
-
-		return "client/order/complete";
-	}
-
-	/**
-	 * 届け先入力画面へ戻る
-	 * 入力情報は保持
-	 * @param model viewへ渡すデータを保持するModel
-	 * @param session セッション情報
-	 * @return 届け先入力画面
-	 */
-	@PostMapping("/client/order/payment/back")
-	public String paymentBack(Model model, HttpSession session) {
-
-		// セッションに保存してある届け先情報を取得
-		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
-
-		// 念のため、なければ空フォーム
-		if (orderForm == null) {
-			orderForm = new OrderForm();
-		}
-
-		model.addAttribute("orderForm", orderForm);
-
-		return "client/order/address_input";
-
-	}
-}
+		// 【マージ対応：2箇所目】ポイント付与処理とガチャ機能用セッション設定の競合を解決
+		// ポイント付与加

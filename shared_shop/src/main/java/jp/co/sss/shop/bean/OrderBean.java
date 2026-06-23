@@ -53,6 +53,15 @@ public class OrderBean {
 	private String userName;
 
 	/**
+	 * 利用ポイント
+	 */
+	private Integer usedPoint;
+
+	/**
+	 * 支払金額
+	 */
+	private Integer paymentAmount;
+  /**
 	 * 割引額
 	 */
 	private Integer discount;
@@ -212,6 +221,37 @@ public class OrderBean {
 	}
 
 	/**
+	 * 利用ポイントの取得
+	 * @return 利用ポイント
+	 */
+	public Integer getUsedPoint() {
+		return usedPoint;
+	}
+
+	/**
+	 * 利用ポイントのセット
+	 * @param usedPoint 利用ポイント
+	 */
+	public void setUsedPoint(Integer usedPoint) {
+		this.usedPoint = usedPoint;
+	}
+
+	/**
+	 * 支払金額の取得
+	 * @return 支払金額
+	 */
+	public Integer getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * 支払金額のセット
+	 * @param paymentAmount 支払金額
+	 */
+	public void setPaymentAmount(Integer paymentAmount) {
+		this.paymentAmount = paymentAmount;
+  }
+  /**
 	 * 割引額の取得
 	 * @return 割引額
 	 */

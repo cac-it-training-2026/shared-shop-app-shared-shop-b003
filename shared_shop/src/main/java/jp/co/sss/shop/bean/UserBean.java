@@ -40,6 +40,10 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * 現在のポイント
+	 */
+	private Integer currentPoint;
+  /**
 	 * テーマID
 	 */
 	private Integer themeId;
@@ -183,6 +187,21 @@ public class UserBean {
 	}
 
 	/**
+	 * 現在のポイントの取得
+	 * @return 現在のポイント
+	 */
+	public Integer getCurrentPoint() {
+		return currentPoint;
+	}
+
+	/**
+	 * 現在のポイントのセット
+	 * @param currentPoint 現在のポイント
+	 */
+	public void setCurrentPoint(Integer currentPoint) {
+		this.currentPoint = currentPoint;
+  }
+  /**
 	 * テーマIDの取得
 	 * @return テーマID
 	 */
