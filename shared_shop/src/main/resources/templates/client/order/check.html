@@ -72,7 +72,7 @@
 					<p th:if="${pointError}" style="color: red;">ポイント利用額が正しくありません。再度入力してください。</p>
 				</td>
 			</tr>
-			<tr>
+			<tr id="pointDiscountRow" style="display: none;">
 				<th>ポイント割引額</th>
 				<td>-<span id="pointDiscount">0</span> 円</td>
 			</tr>
@@ -163,6 +163,12 @@
 
 					var paymentAmount = total - usePoint;
 					var earnPoint = Math.floor(paymentAmount / 10);
+
+					if (usePoint > 0) {
+						$('#pointDiscountRow').show();
+					} else {
+						$('#pointDiscountRow').hide();
+					}
 
 					$('#pointDiscount').text(usePoint);
 					$('#paymentAmount').text(paymentAmount);
