@@ -168,6 +168,7 @@ public class URLCheck {
 				&& (requestURL.endsWith("/")
 						|| requestURL.indexOf("/item/list") != -1
 						|| requestURL.indexOf("/item/detail") != -1
+						|| requestURL.indexOf("/client/review/regist") != -1
 						|| requestURL.indexOf("/admin/item/regist/input") != -1
 						|| requestURL.indexOf("/admin/item/update/input") != -1
 						|| requestURL.indexOf("/client/basket") != -1
