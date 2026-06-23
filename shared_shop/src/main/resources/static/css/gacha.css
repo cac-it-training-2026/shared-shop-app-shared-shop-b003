@@ -1,0 +1,82 @@
+/* ガチャモーダル */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.gacha-animation {
+    margin: 20px 0;
+}
+
+.shaking {
+    animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0eg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.gacha-result {
+    margin-top: 20px;
+}
+
+.coupon-code {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #e74c3c;
+    background-color: #f9f9f9;
+    padding: 5px 10px;
+    border: 1px dashed #e74c3c;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.btn-play {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-play:hover {
+    background-color: #e67e22;
+}
+
+.btn-close {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-close:hover {
+    background-color: #7f8c8d;
+}
