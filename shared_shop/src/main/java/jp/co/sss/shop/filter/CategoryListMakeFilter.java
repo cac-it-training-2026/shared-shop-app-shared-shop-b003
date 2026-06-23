@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jp.co.sss.shop.bean.CategoryBean;
 import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.repository.CategoryRepository;
+import jp.co.sss.shop.repository.PlannerKeywordCategoryRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.Constant;
 import jp.co.sss.shop.util.URLCheck;
@@ -32,6 +33,12 @@ public class CategoryListMakeFilter extends HttpFilter {
 	 */
 	@Autowired
 	CategoryRepository categoryRepository;
+
+	/**
+	 * プランナーリポジトリ
+	 */
+	@Autowired
+	PlannerKeywordCategoryRepository plannerRepository;
 
 	/**
 	 * Entity、Form、Bean間のデータコピーサービス
@@ -67,6 +74,9 @@ public class CategoryListMakeFilter extends HttpFilter {
 
 			//リクエストスコープに検索結果を保存
 			request.setAttribute("categories", categoryBeanList);
+
+			// プランナー用キーワードを取得
+			request.setAttribute("plannerKeywords", plannerRepository.findAllCustomKeywords());
 		}
 		chain.doFilter(request, response);
 	}
