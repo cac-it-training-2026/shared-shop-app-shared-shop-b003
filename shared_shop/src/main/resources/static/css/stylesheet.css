@@ -716,6 +716,43 @@ p.link_center {
 	display: block;
 }
 
+/* ---- レビュー表示 ---- */
+.review_area {
+	margin-top: 50px;
+	border-top: 2px solid #add8e6;
+	padding-top: 20px;
+}
+.review_box {
+	border-bottom: 1px solid #e8e8e8;
+	padding: 15px 0;
+}
+.review_header {
+	margin-bottom: 10px;
+}
+.review_header span {
+	margin-right: 15px;
+}
+.review_header .evaluation {
+	font-weight: bold;
+	color: #d22222;
+}
+.review_header .stamp {
+	background-color: #f0f8fb;
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 0.9rem;
+}
+.review_header .user_name {
+	color: #666;
+}
+.review_header .insert_date {
+	color: #999;
+	font-size: 0.8rem;
+}
+.review_content p {
+	margin: 5px 0;
+	white-space: pre-wrap;
+}
 
 
 /* タイムセールバー */
