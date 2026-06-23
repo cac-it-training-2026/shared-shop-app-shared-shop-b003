@@ -37,9 +37,32 @@
 				<input type="hidden" th:field="*{id}" />
 				<input type="submit" value="買い物かごに入れる" class="send_button" />
 			</form>
+			<form th:action="@{/client/review/regist/input/{itemId}(itemId=*{id})}" method="get" class="user_info_form" th:if="${session.user != null}">
+				<input type="submit" value="レビューを書く" class="send_button" />
+			</form>
 			<form th:action="@{/client/item/list/1}" method="post">
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
+		</div>
+
+		<div class="review_area">
+			<h3 th:text="#{review}+#{title.list}"></h3>
+			<p th:if="${#lists.isEmpty(reviews)}">レビューはまだありません。</p>
+			<div th:each="review : ${reviews}" class="review_box">
+				<div class="review_header">
+					<span class="evaluation" th:text="'評価: ' + ${review.evaluation}"></span>
+					<span class="stamp" th:if="${review.stamp == 1}">😊 満足</span>
+					<span class="stamp" th:if="${review.stamp == 2}">👍 おすすめ</span>
+					<span class="stamp" th:if="${review.stamp == 3}">⭐ コスパ良し</span>
+					<span class="stamp" th:if="${review.stamp == 4}">🎁 プレゼント向き</span>
+					<span class="stamp" th:if="${review.stamp == 5}">🚚 配送が早い</span>
+					<span class="user_name" th:text="${review.userName} + ' さん'"></span>
+					<span class="insert_date" th:text="${review.insertDate}"></span>
+				</div>
+				<div class="review_content">
+					<p th:text="${review.content}"></p>
+				</div>
+			</div>
 		</div>
 	</div>
 
