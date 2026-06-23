@@ -30,9 +30,10 @@ public class URLCheck {
 	 * システム管理者 リクエストURLがアクセス可能かを判定
 	 * 
 	 * @param requestURL リクエストURL
+	 * @param contextPath コンテキストパス名
 	 * @return true：アクセス可能、false：アクセス不可
 	 */
-	public static boolean isURLForSystemAdmin(String requestURL) {
+	public static boolean isURLForSystemAdmin(String requestURL, String contextPath) {
 		boolean isCheckURLOK = false;
 		if (isURLForStaticFile(requestURL)
 				|| requestURL.endsWith("/login")
@@ -50,16 +51,18 @@ public class URLCheck {
 	}
 
 	/**
-	 * 運用管理者 リクエストURLがチェック対象であるかを判定
+	 * 運用管理者 リクエストURLがアクセス可能かを判定
 	 * 
 	 * @param requestURL リクエストURL
-	 * @return true：チェック対象、false：チェック対象外
+	 * @param contextPath コンテキストパス名
+	 * @return true：アクセス可能、false：アクセス不可
 	 */
-	public static boolean istURLForAdmin(String requestURL) {
+	public static boolean isURLForAdmin(String requestURL, String contextPath) {
 		boolean isCheckURLOK = false;
 		if (isURLForStaticFile(requestURL)
-				|| isURLForSystemAdmin(requestURL)
+				|| isURLForSystemAdmin(requestURL, contextPath)
 				|| requestURL.indexOf("admin/category") != -1
+				|| requestURL.indexOf("admin/coupon") != -1
 				|| requestURL.indexOf("admin/item") != -1
 				|| requestURL.indexOf("admin/order") != -1) {
 			// URLのリクエスト先がフィルタ実行対象である場合
@@ -73,11 +76,11 @@ public class URLCheck {
 	}
 
 	/**
-	 * 一般会員 リクエストURLがチェック対象であるかを判定
+	 * 一般会員 リクエストURLがアクセス可能かを判定
 	 * 
 	 * @param requestURL リクエストURL
 	 * @param contextPath コンテキストパス名
-	 * @return true：チェック対象、false：チェック対象外
+	 * @return true：アクセス可能、false：アクセス不可
 	 */
 	public static boolean isURLForClient(String requestURL, String contextPath) {
 
@@ -131,6 +134,27 @@ public class URLCheck {
 	}
 
 	/**
+	 * ログインが必要なURLかを判定
+	 *
+	 * @param requestURL リクエストURL
+	 * @return true：ログイン必要、false：ログイン不要
+	 */
+	public static boolean isURLRequireLogin(String requestURL) {
+		boolean isCheckURLOK = true;
+		if (URLCheck.isURLForStaticFile(requestURL)
+				|| requestURL.endsWith("/login")
+				|| requestURL.endsWith("/")
+				|| requestURL.indexOf("/client/item/list/") != -1
+				|| requestURL.indexOf("/client/item/detail/") != -1
+				|| requestURL.indexOf("/client/user/regist/") != -1) {
+			// ログイン不要なURLの場合
+			isCheckURLOK = false;
+		}
+		return isCheckURLOK;
+
+	}
+
+	/**
 	 * カテゴリ一覧用 リクエストURLがチェック対象であるかを判定
 	 *
 	 * @param requestURL リクエストURL
@@ -156,7 +180,8 @@ public class URLCheck {
 						|| requestURL.indexOf("/client/user/detail") != -1
 						|| requestURL.indexOf("/client/user/regist") != -1
 						|| requestURL.indexOf("/client/user/update") != -1
-						|| requestURL.indexOf("/client/user/delete") != -1)) {
+						|| requestURL.indexOf("/client/user/delete") != -1
+						|| requestURL.indexOf("/client/gacha") != -1)) {
 
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;

@@ -70,8 +70,13 @@ public class LoginController {
 
 		} else {
 			//セッションスコープから権限を取り出す
-			Integer authority = ((UserBean) session.getAttribute("user")).getAuthority();
+			UserBean userBean = (UserBean) session.getAttribute("user");
+			Integer authority = userBean.getAuthority();
 			if (authority.intValue() == Constant.AUTH_CLIENT) {
+				// ガチャの実行権限をセッションに設定 (ログインイベント)
+				session.setAttribute("canPlayGacha", true);
+				session.setAttribute("gachaEventType", "login");
+
 				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
 				returnStr = "redirect:/";
 			} else {

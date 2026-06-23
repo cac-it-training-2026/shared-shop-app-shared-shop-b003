@@ -26,7 +26,7 @@ public class LoginCheckFilter extends HttpFilter {
 		// リクエストURLを取得
 		String requestURL = request.getContextPath() + request.getServletPath();
 
-		if (URLCheck.isURLForNonLogin(requestURL, request.getContextPath())) {
+		if (URLCheck.isURLRequireLogin(requestURL)) {
 
 			// セッション情報を取得
 			HttpSession session = request.getSession();
