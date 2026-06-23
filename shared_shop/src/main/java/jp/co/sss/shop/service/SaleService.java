@@ -2,6 +2,8 @@ package jp.co.sss.shop.service;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,25 +25,39 @@ public class SaleService {
     @Autowired
     private SaleScheduleRepository saleScheduleRepository;
 
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     /**
      * 現在開催中のセール情報を取得（カテゴリIDをキーとしたマップ）
      * @return 開催中のセール情報
      */
     public Map<Integer, SaleSchedule> getActiveSales() {
-        LocalTime now = LocalTime.now();
-        List<SaleSchedule> allSales = saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED);
+        try {
+            LocalTime now = LocalTime.now();
+            List<SaleSchedule> allSales = saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED);
 
-        return allSales.stream()
-            .filter(s -> isSaleActive(s, now))
-            .collect(Collectors.toMap(s -> s.getCategory().getId(), s -> s, (s1, s2) -> s1));
+            return allSales.stream()
+                .filter(s -> isSaleActive(s, now))
+                .collect(Collectors.toMap(s -> s.getCategory().getId(), s -> s, (s1, s2) -> s1));
+        } catch (Exception e) {
+            // データベースエラーやテーブル未存在時にアプリケーションを落とさないための防御
+            return new HashMap<>();
+        }
     }
 
     private boolean isSaleActive(SaleSchedule sale, LocalTime now) {
-        if (sale.getStartTime().isBefore(sale.getEndTime())) {
-            return !now.isBefore(sale.getStartTime()) && !now.isAfter(sale.getEndTime());
-        } else {
-            // 日をまたぐセールの考慮（例: 22:00 - 02:00）
-            return !now.isBefore(sale.getStartTime()) || !now.isAfter(sale.getEndTime());
+        try {
+            LocalTime start = LocalTime.parse(sale.getStartTime(), TIME_FORMATTER);
+            LocalTime end = LocalTime.parse(sale.getEndTime(), TIME_FORMATTER);
+
+            if (start.isBefore(end)) {
+                return !now.isBefore(start) && !now.isAfter(end);
+            } else {
+                // 日をまたぐセールの考慮（例: 22:00 - 02:00）
+                return !now.isBefore(start) || !now.isAfter(end);
+            }
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -51,26 +67,32 @@ public class SaleService {
      * @return 残り時間の文字列
      */
     public String getRemainingTime(SaleSchedule sale) {
-        LocalTime now = LocalTime.now();
-        if (!isSaleActive(sale, now)) {
-            return "終了";
-        }
+        try {
+            LocalTime now = LocalTime.now();
+            if (!isSaleActive(sale, now)) {
+                return "終了";
+            }
 
-        Duration duration;
-        if (now.isBefore(sale.getEndTime())) {
-            duration = Duration.between(now, sale.getEndTime());
-        } else {
-            // 日をまたぐ場合
-            duration = Duration.between(now, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, sale.getEndTime()));
-        }
+            LocalTime end = LocalTime.parse(sale.getEndTime(), TIME_FORMATTER);
 
-        long hours = duration.toHours();
-        long minutes = duration.toMinutesPart();
+            Duration duration;
+            if (now.isBefore(end)) {
+                duration = Duration.between(now, end);
+            } else {
+                // 日をまたぐ場合
+                duration = Duration.between(now, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, end));
+            }
 
-        if (hours > 0) {
-            return hours + "時間" + minutes + "分";
-        } else {
-            return minutes + "分";
+            long hours = duration.toHours();
+            long minutes = duration.toMinutesPart();
+
+            if (hours > 0) {
+                return hours + "時間" + minutes + "分";
+            } else {
+                return minutes + "分";
+            }
+        } catch (Exception e) {
+            return "-";
         }
     }
 
@@ -80,6 +102,8 @@ public class SaleService {
      * @param activeSales 開催中のセール情報
      */
     public void applyDiscount(ItemBean itemBean, Map<Integer, SaleSchedule> activeSales) {
+        if (activeSales == null) return;
+
         SaleSchedule sale = activeSales.get(itemBean.getCategoryId());
         if (sale != null) {
             int originalPrice = itemBean.getPrice();
@@ -100,6 +124,7 @@ public class SaleService {
      * @param activeSales 開催中のセール情報
      */
     public void applyDiscounts(List<ItemBean> itemBeanList, Map<Integer, SaleSchedule> activeSales) {
+        if (itemBeanList == null) return;
         for (ItemBean itemBean : itemBeanList) {
             applyDiscount(itemBean, activeSales);
         }

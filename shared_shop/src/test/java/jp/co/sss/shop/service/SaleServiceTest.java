@@ -3,7 +3,6 @@ package jp.co.sss.shop.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +40,8 @@ public class SaleServiceTest {
 
         SaleSchedule foodSale = new SaleSchedule();
         foodSale.setCategory(food);
-        foodSale.setStartTime(LocalTime.of(12, 0));
-        foodSale.setEndTime(LocalTime.of(14, 0));
+        foodSale.setStartTime("12:00:00");
+        foodSale.setEndTime("14:00:00");
         foodSale.setDiscountRate(20);
         foodSale.setDeleteFlag(Constant.NOT_DELETED);
 
@@ -50,10 +49,11 @@ public class SaleServiceTest {
     }
 
     @Test
-    public void testGetActiveSales_CallRepository() {
-        lenient().when(saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED)).thenReturn(sales);
-        // We don't assert much here because LocalTime.now() is used inside
-        saleService.getActiveSales();
+    public void testGetActiveSales_SafeHandling() {
+        when(saleScheduleRepository.findByDeleteFlag(Constant.NOT_DELETED)).thenThrow(new RuntimeException("DB Error"));
+        Map<Integer, SaleSchedule> activeSales = saleService.getActiveSales();
+        assertNotNull(activeSales);
+        assertTrue(activeSales.isEmpty());
     }
 
     @Test
@@ -86,10 +86,8 @@ public class SaleServiceTest {
     }
 
     @Test
-    public void testGetRemainingTime() {
+    public void testGetRemainingTime_Safe() {
         SaleSchedule sale = sales.get(0);
-        // We can't easily mock LocalTime.now() without extra libraries,
-        // but we can check if it returns something reasonable.
         String remaining = saleService.getRemainingTime(sale);
         assertNotNull(remaining);
     }

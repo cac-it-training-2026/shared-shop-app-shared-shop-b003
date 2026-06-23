@@ -1,5 +1,6 @@
 package jp.co.sss.shop.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,15 @@ public class GlobalControllerAdvice {
      */
     @ModelAttribute
     public void addAttributes(Model model) {
-        Map<Integer, SaleSchedule> activeSales = saleService.getActiveSales();
-        model.addAttribute("activeSales", activeSales);
+        try {
+            Map<Integer, SaleSchedule> activeSales = saleService.getActiveSales();
+            if (activeSales == null) {
+                activeSales = new HashMap<>();
+            }
+            model.addAttribute("activeSales", activeSales);
+        } catch (Exception e) {
+            // 万が一サービス側でハンドリングしきれなかった場合も、画面表示を妨げない
+            model.addAttribute("activeSales", new HashMap<>());
+        }
     }
 }

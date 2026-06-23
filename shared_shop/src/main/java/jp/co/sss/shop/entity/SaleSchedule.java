@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.time.LocalTime;
 
 /**
  * タイムセールスケジュールのエンティティクラス
@@ -33,16 +32,16 @@ public class SaleSchedule {
     private Category category;
 
     /**
-     * 開始時間
+     * 開始時間 (HH:mm:ss形式)
      */
     @Column(name = "start_time")
-    private LocalTime startTime;
+    private String startTime;
 
     /**
-     * 終了時間
+     * 終了時間 (HH:mm:ss形式)
      */
     @Column(name = "end_time")
-    private LocalTime endTime;
+    private String endTime;
 
     /**
      * 割引率
@@ -72,19 +71,19 @@ public class SaleSchedule {
         this.category = category;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
