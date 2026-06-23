@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>スマート購入プランナー | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user">
+
+	<h2 class="title">スマート購入プランナー</h2>
+
+	<div class="info_form_area">
+		<p>利用目的と予算を入力してください。あなたに最適な商品セットを提案します。</p>
+
+		<form th:action="@{/client/planner/plan}" method="post" th:object="${plannerForm}" class="user_info_form">
+			<ul class="error_message" th:if="${#fields.hasErrors('*')}">
+				<li th:each="err : ${#fields.errors('*')}" th:text="${err}" class="error_msg"></li>
+			</ul>
+
+			<dl>
+				<dt>利用目的 (例: ゲームをしたい、プログラミングを学びたい)</dt>
+				<dd>
+					<input type="text" th:field="*{usage}" class="usage_input" placeholder="例: 動画編集をしたい" />
+				</dd>
+
+				<dt>ご予算</dt>
+				<dd>
+					<select th:field="*{budget}">
+						<option value="1000">～1,000円</option>
+						<option value="3000">～3,000円</option>
+						<option value="5000">～5,000円</option>
+						<option value="10000">～10,000円</option>
+						<option value="20000">～20,000円</option>
+						<option value="30000">～30,000円</option>
+						<option value="50000">～50,000円</option>
+						<option value="100000">～100,000円</option>
+						<option value="150000">～150,000円</option>
+						<option value="200000">～200,000円</option>
+						<option value="9999999">200,000円以上</option>
+					</select>
+				</dd>
+			</dl>
+
+			<div class="button_area">
+				<input type="submit" value="プランを生成する" class="send_button" />
+			</div>
+		</form>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>提案結果 | スマート購入プランナー | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user">
+
+	<h2 class="title">スマート購入プランナー - 提案結果</h2>
+
+	<div class="info_form_area">
+		<p>
+			利用目的: <strong th:text="${usage}"></strong><br/>
+			ご予算: <strong th:text="${#numbers.formatInteger(budget, 1, 'COMMA')}"></strong>円 以内
+		</p>
+
+		<hr />
+
+		<div th:if="${#lists.isEmpty(plans)}">
+			<p>申し訳ありません。ご予算や条件に合うセットが見つかりませんでした。</p>
+			<a th:href="@{/client/planner/input}" class="back_button">条件を変えてやり直す</a>
+		</div>
+
+		<div th:each="plan : ${plans}" class="plan_container">
+			<h3 th:text="${plan.title}"></h3>
+			<p><strong>合計金額: <span th:text="${#numbers.formatInteger(plan.totalPrice, 1, 'COMMA')}"></span>円</strong></p>
+			<p th:text="${plan.reason}"></p>
+
+			<table class="list_table">
+				<thead>
+					<tr>
+						<th>商品名</th>
+						<th>価格</th>
+						<th>詳細</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${plan.items}">
+						<td th:text="${item.name}"></td>
+						<td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + '円'"></td>
+						<td>
+							<a th:href="@{/client/item/detail/{id}(id=${item.id})}">商品ページへ</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr />
+		</div>
+
+		<div class="button_area">
+			<a th:href="@{/client/planner/input}" class="back_button">戻る</a>
+		</div>
+	</div>
+
+</body>
+
+</html>
