@@ -153,6 +153,7 @@ public class BeanTools {
 			BeanUtils.copyProperties(entity, bean);
 
 			if (entity.getCategory() != null) {
+				bean.setCategoryId(entity.getCategory().getId());
 				bean.setCategoryName(entity.getCategory().getName());
 			}
 

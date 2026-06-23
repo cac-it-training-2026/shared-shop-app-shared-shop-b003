@@ -754,3 +754,93 @@ p.link_center {
 	white-space: pre-wrap;
 }
 
+
+/* タイムセールバー */
+.time-sale-bar {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    z-index: 1000;
+}
+.time-sale-bar .sale-label {
+    background-color: white;
+    color: #ff4d4d;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.time-sale-bar .sale-info {
+    margin: 0 10px;
+}
+.time-sale-bar .sale-link {
+    color: white;
+    text-decoration: underline;
+    margin-left: 20px;
+}
+
+/* タイムセールエリア（トップ画面） */
+.time-sale-area {
+    background-color: #fff0f0;
+    border: 2px solid #ff4d4d;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.sale-title {
+    color: #ff4d4d !important;
+    border-bottom: 2px solid #ff4d4d !important;
+}
+.sale-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.sale-category-card {
+    background: white;
+    border: 1px solid #ffcccc;
+    border-radius: 5px;
+    padding: 15px;
+    min-width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.sale-category-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.sale-discount-rate {
+    font-size: 1.5em;
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.sale-duration {
+    font-size: 0.9em;
+    color: #666;
+}
+.sale-link-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.btn-sale {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+.btn-sale:hover {
+    background-color: #e60000;
+}
+
+.sale-remaining {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #ff4d4d;
+}
