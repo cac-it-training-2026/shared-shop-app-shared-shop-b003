@@ -82,7 +82,7 @@
 			</tr>
 			<tr>
 				<th>獲得予定ポイント</th>
-				<td><span id="earnPoint" th:text="${total / 100}"></span> pt</td>
+				<td><span id="earnPoint" th:text="${total / 10}"></span> pt</td>
 			</tr>
 		</table>
 	<div class="user_info_form_area">
@@ -162,7 +162,7 @@
 					$('.send_button').prop('disabled', false);
 
 					var paymentAmount = total - usePoint;
-					var earnPoint = Math.floor(paymentAmount / 100);
+					var earnPoint = Math.floor(paymentAmount / 10);
 
 					$('#pointDiscount').text(usePoint);
 					$('#paymentAmount').text(paymentAmount);

@@ -417,7 +417,7 @@ public class ClientOrderRegistController {
 
 		// ポイント付与加算処理
 		int paymentAmount = total - usePoint;
-		int earnPoint = paymentAmount / 100;
+		int earnPoint = paymentAmount / 10;
 		if (earnPoint > 0) {
 			user.setCurrentPoint(user.getCurrentPoint() + earnPoint);
 			userRepository.save(user);
