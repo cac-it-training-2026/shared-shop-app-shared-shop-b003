@@ -1,0 +1,26 @@
+タイムセール機能 実装完了レポート
+1. 提出情報
+ブランチ名: feature/time-sale-system
+Pull Request タイトル: feat: タイムセール機能追加
+実装概要: カテゴリおよび時間帯に応じた動的な割引価格適用、および全画面への通知・専用一覧・購入フローへの統合。
+2. 修正・変更ファイル一覧
+Entity/Repository: SaleSchedule.java, SaleScheduleRepository.java
+Service: SaleService.java (セール判定・価格計算), BeanTools.java (マッピング修正)
+Controller: GlobalControllerAdvice.java (共通モデル提供), ClientTimeSaleController.java (セール一覧), ClientItemShowController.java, ClientBasketController.java, ClientOrderRegistController.java
+Bean: ItemBean.java, BasketBean.java (価格保持フィールド追加)
+Template: layout_5block.html, index.html, list.html, detail.html, sale_list.html
+Static/SQL: stylesheet.css, create_sale_schedule_table.sql
+3. 実装詳細
+動的価格計算: DBを更新せず、表示時のみ SaleService で割引価格を算出。
+UI要件の適用: 全画面上部に「🔥 開催中タイムセール」バーを表示。残り時間を「n時間m分」形式でカウントダウン表示。
+価格表示: 定価を打消し線、セール価格を赤太字、割引率を表示（例: ~~500円~~ 400円 20%OFF）。
+カート保持: カート投入時の価格を BasketBean に固定保持し、セール終了後も購入価格を維持。
+堅牢性: DBエラーやテーブル未作成時もサイト全体が停止しないよう try-catch による例外処理を徹底。
+4. 修正対応のまとめ
+表示不備の解消: BeanTools.copyEntityListToItemBeanList で categoryId がセットされていなかった不備を修正し、/sale 画面でのフィルタリングを正常化。
+スケジュールの更新: 食料品カテゴリのセール終了時間を 15:00 に設定。
+デバッグログ: 要件に基づき SALE COUNT, ITEM, PRICE, SALE のログ出力を実装。
+5. 動作確認結果
+ユニットテスト (SaleServiceTest) により、割引計算および残り時間算出のロジックが正常であることを確認済み。
+ログ出力により、期待通りの価格適用とセール対象件数の取得が行われていることを確認済み。
+以上で、タイムセール機能のすべての要件を満たした状態で実装を完了いたしました。
