@@ -250,29 +250,196 @@ UPDATE items SET stock = 0; -- \x8d݌ɂ\xf00\x82\xc9
 UPDATE items SET delete_flag = 1; -- \x8f\xa4\x95i\x82\xf0\x8d폜
 -----------------------------------------------------------------------
 -- プランナーキーワードカテゴリテーブルの作成
-CREATE TABLE planner_keyword_categories (
-  id NUMBER(6) PRIMARY KEY,
-  keyword VARCHAR2(100 CHAR) NOT NULL,
-  category_name VARCHAR2(100 CHAR) NOT NULL
-);
+-- \x83J\x83e\x83S\x83\x8a\x92ǉ\xc1
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, 'PC', '\x83f\x83X\x83N\x83g\x83b\x83vPC\x81A\x83m\x81[\x83gPC\x82Ȃ\xc7', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x83\x82\x83j\x83^\x81[', '\x89t\x8f\xbb\x83f\x83B\x83X\x83v\x83\x8c\x83C\x81A\x83Q\x81[\x83~\x83\x93\x83O\x83\x82\x83j\x83^\x81[\x82Ȃ\xc7', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x83L\x81[\x83{\x81[\x83h', '\x83\x81\x83J\x83j\x83J\x83\x8b\x81A\x83\x81\x83\x93\x83u\x83\x8c\x83\x93\x81A\x90Ód\x97e\x97ʖ\xb3\x90ړ_\x95\xfb\x8e\xae\x82Ȃ\xc7', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x83}\x83E\x83X', '\x83\x8f\x83C\x83\x84\x83\x8c\x83X\x81A\x83Q\x81[\x83~\x83\x93\x83O\x83}\x83E\x83X\x82Ȃ\xc7', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x8d\x82\x90\xab\x94\PC', '\x93\xae\x89\xe6\x95ҏW\x82\xe23D\x83Q\x81[\x83\x80\x8c\xfc\x82\xaf\x82̃n\x83C\x83X\x83y\x83b\x83NPC', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, 'SSD', '\x8d\x82\x91\xac\x83X\x83g\x83\x8c\x81[\x83W\x91\x95\x92u', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x83I\x83t\x83B\x83X\x97p\x95i', '\x83f\x83X\x83N\x81A\x83`\x83F\x83A\x81A\x95\xb6\x96[\x8b\xef\x82Ȃ\xc7', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, '\x89ʕ\xa8', '\x8f{\x82̃t\x83\x8b\x81[\x83c', DEFAULT, DEFAULT);
 
--- シーケンスの作成
+-- \x8f\xa4\x95i\x92ǉ\xc1 (\x8ae\x83J\x83e\x83S\x83\x8a3\x93_\x88ȏ\xe3\x81A\x8d݌ɂ\xa0\x82\xe8\x81A\x8d폜\x83t\x83\x89\x83O0)
+
+-- PC (Category ID: 3)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83X\x83^\x83\x93\x83_\x81[\x83h\x83m\x81[\x83gPC', 50000, '\x95\x81\x92i\x8eg\x82\xa2\x82ɍœK\x82\xc8PC', 10, NULL, 3, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83r\x83W\x83l\x83X\x83m\x81[\x83gPC', 80000, '\x8ed\x8e\x96\x82ɍœK\x82\xc8PC', 10, NULL, 3, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83v\x83\x8c\x83~\x83A\x83\x80\x83m\x81[\x83gPC', 120000, '\x8d\x82\x90\xab\x94\\x82\xc8PC', 10, NULL, 3, 0, SYSDATE);
+
+-- \x83\x82\x83j\x83^\x81[ (Category ID: 4)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '21\x83C\x83\x93\x83`\x83\x82\x83j\x83^\x81[', 15000, '\x83R\x83\x93\x83p\x83N\x83g\x82ȃ\x82\x83j\x83^\x81[', 10, NULL, 4, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '24\x83C\x83\x93\x83`\x83t\x83\x8bHD\x83\x82\x83j\x83^\x81[', 25000, '\x95W\x8f\x80\x93I\x82ȃ\x82\x83j\x83^\x81[', 10, NULL, 4, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '27\x83C\x83\x93\x83`4K\x83\x82\x83j\x83^\x81[', 45000, '\x8d\x82\x90\xb8\x8dׂȃ\x82\x83j\x83^\x81[', 10, NULL, 4, 0, SYSDATE);
+
+-- \x83L\x81[\x83{\x81[\x83h (Category ID: 5)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83\x81\x83\x93\x83u\x83\x8c\x83\x93\x83L\x81[\x83{\x81[\x83h', 2000, '\x90Â\xa9\x82ȃL\x81[\x83{\x81[\x83h', 10, NULL, 5, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83\x81\x83J\x83j\x83J\x83\x8b\x83L\x81[\x83{\x81[\x83h', 8000, '\x90S\x92n\x82悢\x91Ō\xae\x8a\xb4', 10, NULL, 5, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8d\x82\x8b\x89\x90Ód\x97e\x97ʖ\xb3\x90ړ_\x83L\x81[\x83{\x81[\x83h', 25000, '\x8dō\x82\x82̃^\x83C\x83s\x83\x93\x83O\x91̌\xb1', 10, NULL, 5, 0, SYSDATE);
+
+-- \x83}\x83E\x83X (Category ID: 6)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x97L\x90\xfc\x8c\xf5\x8aw\x8e\xae\x83}\x83E\x83X', 1000, '\x83V\x83\x93\x83v\x83\x8b\x82ȃ}\x83E\x83X', 10, NULL, 6, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83\x8f\x83C\x83\x84\x83\x8c\x83X\x83}\x83E\x83X', 3000, '\x95֗\x98\x82ȃ}\x83E\x83X', 10, NULL, 6, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x91\xbd\x83{\x83^\x83\x93\x83Q\x81[\x83~\x83\x93\x83O\x83}\x83E\x83X', 10000, '\x91\xbd\x8b@\x94\\x82ȃ}\x83E\x83X', 10, NULL, 6, 0, SYSDATE);
+
+-- \x8f\x91\x90\xd0 (Category ID: 2)
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'Java\x93\xfc\x96\xe5', 3000, 'Java\x82̊\xee\x91b\x82\xf0\x8aw\x82\xd4', 10, NULL, 2, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'Spring Boot\x93O\x92\xea\x89\xf0\x90\xe0', 4500, '\x8e\xc0\x91H\x93I\x82ȃt\x83\x8c\x81[\x83\x80\x83\x8f\x81[\x83N\x8aw\x8fK', 10, NULL, 2, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83\\x83t\x83g\x83E\x83F\x83A\x83A\x81[\x83L\x83e\x83N\x83`\x83\x83', 6000, '\x8d\x82\x93x\x82Ȑ݌v\x8e\xe8\x96@', 10, NULL, 2, 0, SYSDATE);
+
+-- \x8d\x82\x90\xab\x94\PC (Category ID: 7)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83G\x83\x93\x83g\x83\x8a\x81[\x83Q\x81[\x83~\x83\x93\x83OPC', 150000, '\x83Q\x81[\x83\x80\x93\xfc\x96\xe5\x82\xc9', 5, NULL, 7, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83~\x83h\x83\x8b\x83\x8c\x83\x93\x83W\x83Q\x81[\x83~\x83\x93\x83OPC', 250000, '\x82قƂ\xf1\x82ǂ̃Q\x81[\x83\x80\x82\xaa\x89\xf5\x93K', 5, NULL, 7, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83n\x83C\x83G\x83\x93\x83h\x83\x8f\x81[\x83N\x83X\x83e\x81[\x83V\x83\x87\x83\x93', 450000, '\x83v\x83\x8d\x82̓\xae\x89\xe6\x95ҏW\x82\xc9', 5, NULL, 7, 0, SYSDATE);
+
+-- SSD (Category ID: 8)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '500GB SSD', 7000, '\x8e\xe8\x8cy\x82ɑ\x9d\x90\xdd', 20, NULL, 8, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '1TB NVMe SSD', 15000, '\x8d\x82\x91\xac\x82ȃf\x81[\x83^\x93]\x91\x97', 20, NULL, 8, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '2TB \x8d\x82\x91ϋvSSD', 30000, '\x91\xe5\x97e\x97ʂň\xc0\x90S', 20, NULL, 8, 0, SYSDATE);
+
+-- \x83I\x83t\x83B\x83X\x97p\x95i (Category ID: 9)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83V\x83\x93\x83v\x83\x8b\x83f\x83X\x83N', 10000, '\x8eg\x82\xa2\x82₷\x82\xa2\x83f\x83X\x83N', 10, NULL, 9, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83G\x83\x8b\x83S\x83m\x83~\x83N\x83X\x83`\x83F\x83A', 30000, '\x94\xe6\x82\xea\x82ɂ\xad\x82\xa2\x88֎q', 10, NULL, 9, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8f\xb8\x8d~\x83f\x83X\x83N', 60000, '\x97\xa7\x82\xc1\x82Ă\xe0\x8d\xc0\x82\xc1\x82Ă\xe0\x8eg\x82\xa6\x82\xe9', 10, NULL, 9, 0, SYSDATE);
+
+-- \x90H\x97\xbf\x95i (Category ID: 1)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x93\xc1\x91储\x82ɂ\xac\x82\xe8', 200, '\x83{\x83\x8a\x83\x85\x81[\x83\x80\x96\x9e\x93_', 50, NULL, 1, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8d\x82\x8b\x89\x83\x8c\x83g\x83\x8b\x83g\x83J\x83\x8c\x81[', 800, '\x82\xa8\x93X\x82̖\xa1', 50, NULL, 1, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8d\x8b\x89؂\xa8\x8e\xe6\x82\xe8\x8a񂹃Z\x83b\x83g', 5000, '\x8e\xa9\x95\xaa\x82ւ̂\xb2\x96J\x94\xfc', 10, NULL, 1, 0, SYSDATE);
+
+-- \x89ʕ\xa8 (Category ID: 10)
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83T\x83\x93\x82ӂ\xb6(\x82\xe8\x82\xf1\x82\xb2)', 200, '\x8aÂ݂\xaa\x8b\xad\x82\xa2', 30, NULL, 10, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8d\x82\x8b\x89\x8a\xae\x8fn\x83\x81\x83\x8d\x83\x93', 3000, '\x96F\x8f\x86\x82ȍ\x81\x82\xe8', 5, NULL, 10, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x83V\x83\x83\x83C\x83\x93\x83}\x83X\x83J\x83b\x83g', 5000, '\x8e\xed\x82Ȃ\xb5\x82ŐH\x82ׂ₷\x82\xa2', 5, NULL, 10, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x8a\xae\x8fn\x83o\x83i\x83i', 300, '\x89h\x97{\x96\x9e\x93_', 20, NULL, 10, 0, SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL, '\x89\xb7\x8fB\x82݂\xa9\x82\xf1 5kg', 2500, '\x93~\x82̒\xe8\x94\xd4', 15, NULL, 10, 0, SYSDATE);
+
+-- \x83L\x81[\x83\x8f\x81[\x83h\x83}\x83b\x83s\x83\x93\x83O\x82̃N\x83\x8a\x83A
+-- \x83J\x83e\x83S\x83\x8a\x8am\x94F\x81E\x92ǉ\xc1
+-- \x90H\x97\xbf\x95i (1), \x8f\x91\x90\xd0 (2) \x82͊\xf9\x82ɂ\xa0\x82\xe9\x91z\x92\xe8
+-- \x90V\x8bK: PC (3), \x83\x82\x83j\x83^\x81[ (4), \x83L\x81[\x83{\x81[\x83h (5), \x83}\x83E\x83X (6), \x8d\x82\x90\xab\x94\PC (7), SSD (8), \x83I\x83t\x83B\x83X\x97p\x95i (9), \x89ʕ\xa8 (10)
+
+-- \x83L\x81[\x83\x8f\x81[\x83h\x83}\x83b\x83s\x83\x93\x83O\x8ag\x92\xa3
+TRUNCATE TABLE planner_keyword_categories;
+-- \x83V\x81[\x83P\x83\x93\x83X\x82̃\x8a\x83Z\x83b\x83g\x82͊\xab\x82Ɉˑ\xb6\x82\xb7\x82邽\x82߁A\x8d폜\x82\xb5\x82čč쐬\x82\xaa\x88\xc0\x91S
+DROP SEQUENCE seq_planner_keyword_categories;
 CREATE SEQUENCE seq_planner_keyword_categories NOCACHE;
 
------------------------------------------------------------------------
--- プランナー用初期データ
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'PC');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'モニター');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'キーボード');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ゲーム', 'マウス');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'プログラミング', 'PC');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'プログラミング', '書籍');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '動画編集', '高性能PC');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '動画編集', 'モニター');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '動画編集', 'SSD');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '在宅ワーク', 'PC');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '在宅ワーク', 'モニター');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '読書', '書籍');
-INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '料理', '食料品');
+-- \x83Q\x81[\x83\x80\x8cn -> PC, \x83\x82\x83j\x83^\x81[, \x83L\x81[\x83{\x81[\x83h, \x83}\x83E\x83X
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'game', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'game', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'game', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'game', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'gaming', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'gaming', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'gaming', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'gaming', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83Q\x81[\x83\x80', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83Q\x81[\x83\x80', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83Q\x81[\x83\x80', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83Q\x81[\x83\x80', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'FPS', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'FPS', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'FPS', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'FPS', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fps', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fps', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fps', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fps', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'RPG', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'RPG', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'RPG', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'RPG', '\x83}\x83E\x83X');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'rpg', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'rpg', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'rpg', '\x83L\x81[\x83{\x81[\x83h');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'rpg', '\x83}\x83E\x83X');
+
+-- \x83v\x83\x8d\x83O\x83\x89\x83~\x83\x93\x83O\x8cn -> PC, \x8f\x91\x90\xd0
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'programming', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'programming', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'java', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'java', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'python', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'python', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ai', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'ai', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'development', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'development', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'coding', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'coding', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83v\x83\x8d\x83O\x83\x89\x83~\x83\x93\x83O', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83v\x83\x8d\x83O\x83\x89\x83~\x83\x93\x83O', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8aJ\x94\xad', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'Java', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'Java', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'Python', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'Python', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'AI', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'AI', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x90l\x8dH\x92m\x94\', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x90l\x8dH\x92m\x94\', '\x8f\x91\x90\xd0');
+
+-- \x95׋\xad\x8cn\x81E\x8f\x91\x90Ќn -> \x8f\x91\x90\xd0
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'study', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'learning', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'school', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x95׋\xad', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8aw\x8fK', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x91\xe5\x8aw', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83\x8c\x83|\x81[\x83g', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8e\x91\x8ai', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8eQ\x8dl\x8f\x91', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'book', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'books', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'reading', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x96{', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8f\x91\x90\xd0', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x93Ǐ\x91', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8f\xac\x90\xe0', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x96\x9f\x89\xe6', '\x8f\x91\x90\xd0');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83}\x83\x93\x83K', '\x8f\x91\x90\xd0');
+
+-- \x8ed\x8e\x96\x8cn -> PC, \x83\x82\x83j\x83^\x81[, \x83I\x83t\x83B\x83X\x97p\x95i
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'work', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'work', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'office', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'office', '\x83I\x83t\x83B\x83X\x97p\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'business', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'business', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8ed\x8e\x96', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8ed\x8e\x96', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8dݑ\x81[\x83N', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8dݑ\x81[\x83N', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83e\x83\x8c\x83\x8f\x81[\x83N', 'PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83e\x83\x8c\x83\x8f\x81[\x83N', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83I\x83t\x83B\x83X', '\x83I\x83t\x83B\x83X\x97p\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x8e\x96\x96\xb1\x8d\xec\x8b\xc6', '\x83I\x83t\x83B\x83X\x97p\x95i');
+
+-- \x90H\x97\xbf\x95i\x8cn -> \x90H\x97\xbf\x95i
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'food', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'meal', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'grocery', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x90H\x82ו\xa8', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x90H\x95i', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x90H\x97\xbf\x95i', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x82\xb2\x94\xd1', '\x90H\x97\xbf\x95i');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x97\xbf\x97\x9d', '\x90H\x97\xbf\x95i');
+
+-- \x89ʕ\xa8\x8cn -> \x89ʕ\xa8
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fruit', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, 'fruits', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x89ʕ\xa8', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83t\x83\x8b\x81[\x83c', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x82\xe8\x82\xf1\x82\xb2', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83\x8a\x83\x93\x83S', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x82݂\xa9\x82\xf1', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x83o\x83i\x83i', '\x89ʕ\xa8');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x82Ԃǂ\xa4', '\x89ʕ\xa8');
+
+-- \x93\xae\x89\xe6\x95ҏW -> \x8d\x82\x90\xab\x94\PC, \x83\x82\x83j\x83^\x81[, SSD
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x93\xae\x89\xe6\x95ҏW', '\x8d\x82\x90\xab\x94\PC');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x93\xae\x89\xe6\x95ҏW', '\x83\x82\x83j\x83^\x81[');
+INSERT INTO planner_keyword_categories VALUES(seq_planner_keyword_categories.NEXTVAL, '\x93\xae\x89\xe6\x95ҏW', 'SSD');
 
 COMMIT;
