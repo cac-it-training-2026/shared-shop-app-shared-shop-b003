@@ -43,6 +43,20 @@ public class UserBean {
 	 * 現在のポイント
 	 */
 	private Integer currentPoint;
+  /**
+	 * テーマID
+	 */
+	private Integer themeId;
+
+	/**
+	 * 注文回数
+	 */
+	private Integer orderCount;
+
+	/**
+	 * 累計購入金額
+	 */
+	private Integer totalAmount;
 
 	/**
 	 * 会員IDの取得
@@ -186,6 +200,53 @@ public class UserBean {
 	 */
 	public void setCurrentPoint(Integer currentPoint) {
 		this.currentPoint = currentPoint;
+  }
+  /**
+	 * テーマIDの取得
+	 * @return テーマID
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId テーマID
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
+	}
+
+	/**
+	 * 注文回数の取得
+	 * @return 注文回数
+	 */
+	public Integer getOrderCount() {
+		return orderCount;
+	}
+
+	/**
+	 * 注文回数のセット
+	 * @param orderCount 注文回数
+	 */
+	public void setOrderCount(Integer orderCount) {
+		this.orderCount = orderCount;
+	}
+
+	/**
+	 * 累計購入金額の取得
+	 * @return 累計購入金額
+	 */
+	public Integer getTotalAmount() {
+		return totalAmount;
+	}
+
+	/**
+	 * 累計購入金額のセット
+	 * @param totalAmount 累計購入金額
+	 */
+	public void setTotalAmount(Integer totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 }

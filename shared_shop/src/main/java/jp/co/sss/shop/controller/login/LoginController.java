@@ -55,40 +55,75 @@ public class LoginController {
 	 *
 	 * @param form ログインフォーム
 	 * @param result 入力チェック結果
-	 * @return
-			一般会員の場合 "redirect:/" トップ画面表示処理
-			運用管理者、システム管理者の場合 "redirect:/adminmenu"管理者メニュー表示処理
+	 * @return 一般会員の場合 "redirect:/" トップ画面表示処理
+	 * 運用管理者、システム管理者の場合 "redirect:/admin/menu" 管理者メニュー表示処理
 	 */
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public String doLogin(@Valid @ModelAttribute LoginForm form, BindingResult result) {
 
-		String returnStr = "login";
 		if (result.hasErrors()) {
-			// 入力値に誤りがあった場合
+			// 入力値に誤りがあった場合（認証失敗）
+			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
+			if (user != null) {
+				// すでにロックされているか確認
+				if (user.getLockedUntil() != null
+						&& user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+					result.reject("error.login.locked", "アカウントがロックされています。15分後にお試しください。");
+				} else {
+					// 失敗回数をインクリメント
+					int count = (user.getFailedLoginCount() == null ? 0 : user.getFailedLoginCount()) + 1;
+					user.setFailedLoginCount(count);
+					if (count >= 5) {
+						// 15分ロック
+						user.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
+						result.reject("error.login.locked", "ログイン失敗が5回に達したため、アカウントを15分間ロックしました。");
+					}
+					userRepository.save(user);
+				}
+			}
+
 			// セッション情報を無効にして、ログイン画面再表示
 			session.invalidate();
-			returnStr = "login";
+			return "login";
 
 		} else {
-			// ログインユーザーの情報を最新に更新（ポイント情報など）
-			UserBean userBean = (UserBean) session.getAttribute("user");
-			User user = userRepository.getReferenceById(userBean.getId());
-			org.springframework.beans.BeanUtils.copyProperties(user, userBean);
-			session.setAttribute("user", userBean);
+			// 成功時、フォームのメールアドレスからユーザー情報を確実に取得
+			User user = userRepository.findByEmailAndDeleteFlag(form.getEmail(), Constant.NOT_DELETED);
 
-			//セッションスコープから権限を取り出す
-			Integer authority = userBean.getAuthority();
-			if (authority.intValue() == Constant.AUTH_CLIENT) {
-				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
-				returnStr = "redirect:/";
+			if (user != null) {
+				// 1. 失敗回数とロック状態をリセットして保存
+				user.setFailedLoginCount(0);
+				user.setLockedUntil(null);
+				userRepository.save(user);
+
+				// 2. セッションにセットするためのBeanを生成して格納（ログイン状態の確立）
+				UserBean userBean = new UserBean();
+				userBean.setId(user.getId());
+				userBean.setName(user.getName());
+				userBean.setAuthority(user.getAuthority());
+
+				// 3. ポイント機能ブランチの処理をマージ（最新のEntity情報をBeanへコピーする）
+				org.springframework.beans.BeanUtils.copyProperties(user, userBean);
+				session.setAttribute("user", userBean);
+
+				// 4. 権限の判定
+				if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
+					// ガチャの実行権限をセッションに設定 (ログインイベント)
+					session.setAttribute("canPlayGacha", true);
+					session.setAttribute("gachaEventType", "login");
+
+					// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
+					return "redirect:/";
+				} else {
+					// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
+					return "redirect:/admin/menu";
+				}
 			} else {
-
-				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
-				returnStr = "redirect:/admin/menu";
+				// 万が一ユーザーが取得できなかった場合の安全リダイレクト
+				session.invalidate();
+				return "login";
 			}
 		}
-		return returnStr;
-
 	}
 
 	/**

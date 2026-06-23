@@ -90,6 +90,19 @@ public class Order {
 	 */
 	@Column(name = "payment_amount")
 	private Integer paymentAmount = 0;
+  
+  /**
+	 * クーポン情報
+	 */
+	@ManyToOne
+	@JoinColumn(name = "coupon_id", referencedColumnName = "id")
+	private Coupon coupon;
+
+	/**
+	 * 割引額
+	 */
+	@Column
+	private Integer discount;
 
 	/**
 	 * 注文IDの取得
@@ -265,6 +278,37 @@ public class Order {
 	 */
 	public void setPaymentAmount(Integer paymentAmount) {
 		this.paymentAmount = paymentAmount;
+  }
+  /**
+	 * クーポンの取得
+	 * @return クーポン
+	 */
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	/**
+	 * クーポンのセット
+	 * @param coupon クーポン
+	 */
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	/**
+	 * 割引額の取得
+	 * @return 割引額
+	 */
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	/**
+	 * 割引額のセット
+	 * @param discount 割引額
+	 */
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
 	}
 
 	/**
@@ -281,6 +325,18 @@ public class Order {
 		}
 
 		return total;
+	}
+
+	/**
+	 * 割引適用後の注文合計金額の取得
+	 * @return 割引適用後の注文合計金額
+	 */
+	public int getDiscountedTotal() {
+		int total = getTotal();
+		if (discount != null) {
+			total -= discount;
+		}
+		return Math.max(0, total);
 	}
 
 }

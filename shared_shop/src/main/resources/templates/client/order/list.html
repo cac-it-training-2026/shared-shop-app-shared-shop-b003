@@ -9,19 +9,25 @@
 
 <body class="user order_list">
 	<h2 th:class="title" th:text="#{order}+#{title.list}"></h2>
-	<div th:if="${#lists.isEmpty(orders)}">
-		<p th:text="#{msg.client.order.list.none}"></p>
+	<div th:if="${orders == null}">
+		<p class="list_none">[[#{msg.order.list.none}]]</p>
+		<p class="complete_link"><a th:href="@{/}" th:text="#{msg.back.to.top}"></a></p>
 	</div>
-	<table class="list_table order" th:if="!${#lists.isEmpty(orders)}">
+
+	<table class="list_table order" th:if="${orders != null}">
 		<tr>
 			<th>[[#{data.client.order.date}]]</th>
 			<th>[[#{paymethod.str}]]</th>
 			<th>[[#{data.total.price}]]</th>
 			<th>利用ポイント</th>
 			<th>支払金額</th>
+			<th>[[#{data.order.date}]]</th>
+			<th>[[#{data.paymethod}]]</th>
+			<th>[[#{data.total}]]</th>
+			<th>[[#{data.operate}]]</th>
 		</tr>
 		<tr th:each="order: ${orders}">
-			<td><a th:href="@{/client/order/detail/{id}(id=${order.id})}" th:text="${order.insertDate}"></a></td>
+			<td th:text="${order.insertDate}"></td>
 			<td th:switch="${order.payMethod}">
 				<span th:case="1">[[#{paymethod.credit.str}]]</span>
 				<span th:case="2">[[#{paymethod.bank.str}]]</span>
@@ -32,8 +38,15 @@
 			<td th:text="${order.total}" class="text"></td>
 			<td th:text="${order.usedPoint} + 'pt'"></td>
 			<td th:text="${order.paymentAmount}" class="text"></td>
+			<td th:text="${order.discountedTotal != null ? order.discountedTotal : order.total}"></td>
+			<td>
+				<form th:action="@{/client/order/detail/{id}(id=${order.id})}" method="post">
+					<input type="submit" value="詳細" />
+				</form>
+			</td>
 		</tr>
 	</table>
+
 </body>
 
 </html>
