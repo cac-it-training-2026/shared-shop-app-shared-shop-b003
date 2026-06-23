@@ -87,19 +87,26 @@ public class LoginController {
 			return "login";
 
 		} else {
-			// 成功時
+      // 成功時、セッションスコープからユーザー情報を取り出す
 			UserBean userBean = (UserBean) session.getAttribute("user");
-			User user = userRepository.getReferenceById(userBean.getId());
+			
+			// 失敗回数とロック状態をリセットするためにDBからユーザー実体を取得
+			if (userBean != null) {
+				User user = userRepository.getReferenceById(userBean.getId());
+				// 失敗回数とロック状態をリセット
+				user.setFailedLoginCount(0);
+				user.setLockedUntil(null);
+				userRepository.save(user);
 
-			// 失敗回数とロック状態をリセット
-			user.setFailedLoginCount(0);
-			user.setLockedUntil(null);
-			userRepository.save(user);
+				// 権限の判定
+				if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
+					// ガチャの実行権限をセッションに設定 (ログインイベント)
+					session.setAttribute("canPlayGacha", true);
+					session.setAttribute("gachaEventType", "login");
 
-			if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
-				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
-				return "redirect:/";
-			} else {
+					// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
+					return "redirect:/";
+				} else {
 				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
 				return "redirect:/admin/menu";
 			}

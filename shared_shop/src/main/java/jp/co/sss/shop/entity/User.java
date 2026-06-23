@@ -93,6 +93,11 @@ public class User {
 	@Column
 	private java.sql.Timestamp lockedUntil;
 
+	 * テーマID
+	 */
+	@Column
+	private Integer themeId;
+
 	/**
 	 * 会員IDの取得
 	 * @return 会員ID
@@ -283,5 +288,19 @@ public class User {
 	 */
 	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
 		this.lockedUntil = lockedUntil;
+  }
+	 * テーマIDの取得
+	 * @return テーマID
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId テーマID
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
 	}
 }
