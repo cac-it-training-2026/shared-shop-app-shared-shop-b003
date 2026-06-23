@@ -55,6 +55,7 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 			userBean.setId(user.getId());
 			userBean.setName(user.getName());
 			userBean.setAuthority(user.getAuthority());
+			userBean.setCurrentPoint(user.getCurrentPoint());
 			userBean.setThemeId(user.getThemeId());
 
 			// セッションスコープにログインしたユーザの情報を登録

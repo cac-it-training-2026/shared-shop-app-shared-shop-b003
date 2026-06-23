@@ -42,6 +42,26 @@
 				<th>[[#{data.address}+#{data.address.phonenumber}]]</th>
 				<td th:text="${order.phoneNumber}"></td>
 			</tr>
+			<tr>
+				<th>商品合計金額</th>
+				<td th:text="${total} + '円'"></td>
+			</tr>
+			<tr>
+				<th>利用ポイント</th>
+				<td th:text="${order.usedPoint} + 'pt'"></td>
+			</tr>
+			<tr>
+				<th>ポイント割引</th>
+				<td th:text="'-' + ${order.usedPoint} + '円'"></td>
+			</tr>
+			<tr>
+				<th>支払金額</th>
+				<td th:text="${order.paymentAmount} + '円'"></td>
+			</tr>
+			<tr>
+				<th>付与ポイント</th>
+				<td th:text="${order.paymentAmount / 10} + 'pt'"></td>
+			</tr>
 		</table>
 		<table class="list_table detail">
 			<tr>

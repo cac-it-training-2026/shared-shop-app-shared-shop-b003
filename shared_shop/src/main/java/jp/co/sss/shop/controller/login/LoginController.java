@@ -101,9 +101,12 @@ public class LoginController {
 				userBean.setId(user.getId());
 				userBean.setName(user.getName());
 				userBean.setAuthority(user.getAuthority());
+
+				// 3. ポイント機能ブランチの処理をマージ（最新のEntity情報をBeanへコピーする）
+				org.springframework.beans.BeanUtils.copyProperties(user, userBean);
 				session.setAttribute("user", userBean);
 
-				// 3. 権限の判定
+				// 4. 権限の判定
 				if (userBean.getAuthority() == Constant.AUTH_CLIENT) {
 					// ガチャの実行権限をセッションに設定 (ログインイベント)
 					session.setAttribute("canPlayGacha", true);

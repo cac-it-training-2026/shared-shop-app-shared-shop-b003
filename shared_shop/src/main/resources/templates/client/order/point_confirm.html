@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>ポイント利用確認 | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user order_point_confirm">
+	<h2 th:class="title">ポイント利用確認</h2>
+	<p th:class="check_message">以下の内容でポイントを使用します。よろしければ、ご注文を確定してください。</p>
+
+	<div class="user_info_form_area">
+		<p><strong th:text="${usePoint}"></strong> pt を使用します。</p>
+
+		<table class="detail_table point">
+			<tr>
+				<th>商品合計金額</th>
+				<td><span th:text="${total}"></span> 円</td>
+			</tr>
+			<tr>
+				<th>ポイント割引</th>
+				<td>-<span th:text="${usePoint}"></span> 円</td>
+			</tr>
+			<tr>
+				<th>お支払金額</th>
+				<td><strong th:text="${total - usePoint}"></strong> 円</td>
+			</tr>
+		</table>
+
+		<h3>この内容で注文を確定しますか？</h3>
+
+		<div class="detail_button_area">
+			<form th:action="@{/client/order/complete}" method="post">
+				<input type="hidden" name="usePoint" th:value="${usePoint}" />
+				<input type="hidden" name="isConfirmed" value="true" />
+				<input class="send_button" type="submit" value="注文を確定する" />
+			</form>
+			<form th:action="@{/client/order/complete/back}" method="post">
+				<input type="hidden" name="usePoint" th:value="${usePoint}" />
+				<input type="submit" value="戻る" class="back_button" />
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -82,6 +82,12 @@ public class User {
 	private Date insertDate;
 
 	/**
+	 * 現在のポイント
+	 */
+	@Column(name = "current_point")
+	private Integer currentPoint = 0;
+}
+/**
 	 * ログイン失敗回数
 	 */
 	@Column
@@ -260,6 +266,21 @@ public class User {
 	}
 
 	/**
+	 * 現在のポイントの取得
+	 * @return 現在のポイント
+	 */
+	public Integer getCurrentPoint() {
+		return currentPoint;
+	}
+
+	/**
+	 * 現在のポイントのセット
+	 * @param currentPoint 現在のポイント
+	 */
+	public void setCurrentPoint(Integer currentPoint) {
+		this.currentPoint = currentPoint;
+  }
+  /**
 	 * ログイン失敗回数の取得
 	 * @return ログイン失敗回数
 	 */
