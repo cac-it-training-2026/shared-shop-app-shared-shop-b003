@@ -96,7 +96,7 @@ public class ClientReviewRegistController {
 			// バリデーションエラーがある場合、詳細画面に戻る
 			model.addAttribute("item", beanTools.copyEntityToItemBean(item));
 			model.addAttribute("reviews",
-					reviewRepository.findByItemIdAndDeleteFlagOrderByInsertDateDesc(form.getItemId(), Constant.NOT_DELETED));
+					reviewRepository.findByItemIdAndApprovedOrderByInsertDateDesc(form.getItemId(), 1));
 			model.addAttribute("canReview", true);
 			model.addAttribute("stamps", reviewStampRepository.findByActive(1));
 			return "client/item/detail";
@@ -129,14 +129,13 @@ public class ClientReviewRegistController {
 		review.setUser(user);
 		review.setRating(form.getRating());
 		review.setBody(form.getBody());
+		review.setApproved(1); // 初期状態は公開
 
 		// スタンプ設定
 		if (form.getStampId() != null) {
 			ReviewStamp stamp = reviewStampRepository.findById(form.getStampId()).orElse(null);
 			review.setStamp(stamp);
 		}
-
-		review.setDeleteFlag(Constant.NOT_DELETED);
 
 		// レビュー情報の保存
 		reviewRepository.save(review);

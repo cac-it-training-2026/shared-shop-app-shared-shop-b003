@@ -60,16 +60,22 @@ public class Review {
 	private ReviewStamp stamp;
 
 	/**
-	 * 削除フラグ
+	 * 公開フラグ (1:公開, 0:非公開)
 	 */
-	@Column(insertable = false)
-	private Integer deleteFlag;
+	@Column
+	private Integer approved;
 
 	/**
-	 * 登録日付
+	 * 登録日時
 	 */
 	@Column(insertable = false, updatable = false)
 	private Timestamp insertDate;
+
+	/**
+	 * 更新日時
+	 */
+	@Column(insertable = false)
+	private Timestamp updateDate;
 
 	/**
 	 * レビューIDの取得
@@ -168,19 +174,35 @@ public class Review {
 	}
 
 	/**
-	 * 削除フラグの取得
-	 * @return 削除フラグ
+	 * 公開フラグの取得
+	 * @return 公開フラグ
 	 */
-	public Integer getDeleteFlag() {
-		return deleteFlag;
+	public Integer getApproved() {
+		return approved;
 	}
 
 	/**
-	 * 削除フラグのセット
-	 * @param deleteFlag 削除フラグ
+	 * 公開フラグのセット
+	 * @param approved 公開フラグ
 	 */
-	public void setDeleteFlag(Integer deleteFlag) {
-		this.deleteFlag = deleteFlag;
+	public void setApproved(Integer approved) {
+		this.approved = approved;
+	}
+
+	/**
+	 * 更新日時の取得
+	 * @return 更新日時
+	 */
+	public Timestamp getUpdateDate() {
+		return updateDate;
+	}
+
+	/**
+	 * 更新日時のセット
+	 * @param updateDate 更新日時
+	 */
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	/**

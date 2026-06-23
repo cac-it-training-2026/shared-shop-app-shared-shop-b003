@@ -16,26 +16,17 @@ import jp.co.sss.shop.entity.Review;
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 	/**
-	 * 商品IDと削除フラグを条件に検索(新着順)
+	 * 商品IDと公開フラグを条件に検索(新着順)
 	 * @param itemId 商品ID
-	 * @param deleteFlag 削除フラグ
+	 * @param approved 公開フラグ
 	 * @return レビューエンティティのリスト
 	 */
-	List<Review> findByItemIdAndDeleteFlagOrderByInsertDateDesc(Integer itemId, Integer deleteFlag);
+	List<Review> findByItemIdAndApprovedOrderByInsertDateDesc(Integer itemId, Integer approved);
 
 	/**
-	 * 削除フラグを条件に検索(新着順)
-	 * @param deleteFlag 削除フラグ
+	 * すべてのレビューを新着順で取得 (管理者用)
 	 * @param pageable ページング情報
 	 * @return レビューエンティティのページオブジェクト
 	 */
-	Page<Review> findByDeleteFlagOrderByInsertDateDesc(Integer deleteFlag, Pageable pageable);
-
-	/**
-	 * レビューIDと削除フラグを条件に検索
-	 * @param id レビューID
-	 * @param deleteFlag 削除フラグ
-	 * @return レビューエンティティ
-	 */
-	Review findByIdAndDeleteFlag(Integer id, Integer deleteFlag);
+	Page<Review> findAllByOrderByInsertDateDesc(Pageable pageable);
 }

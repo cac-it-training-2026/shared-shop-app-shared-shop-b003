@@ -37,8 +37,8 @@ public class AdminReviewShowController {
 	@RequestMapping(path = "/admin/review/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showReviewList(Model model, Pageable pageable) {
 
-		// 削除されていないレビューを新着順で取得
-		Page<Review> reviewsPage = reviewRepository.findByDeleteFlagOrderByInsertDateDesc(Constant.NOT_DELETED, pageable);
+		// すべてのレビューを新着順で取得
+		Page<Review> reviewsPage = reviewRepository.findAllByOrderByInsertDateDesc(pageable);
 
 		model.addAttribute("pages", reviewsPage);
 		model.addAttribute("reviews", reviewsPage.getContent());
@@ -56,7 +56,7 @@ public class AdminReviewShowController {
 	@RequestMapping(path = "/admin/review/detail/{id}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showReview(@PathVariable Integer id, Model model) {
 
-		Review review = reviewRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
+		Review review = reviewRepository.findById(id).orElse(null);
 		if (review == null) {
 			return "redirect:/syserror";
 		}

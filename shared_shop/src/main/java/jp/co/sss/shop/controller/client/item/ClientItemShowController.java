@@ -206,9 +206,9 @@ public class ClientItemShowController {
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
 
-		// レビュー情報を取得
+		// レビュー情報を取得 (公開されているもののみ)
 		model.addAttribute("reviews",
-				reviewRepository.findByItemIdAndDeleteFlagOrderByInsertDateDesc(id, Constant.NOT_DELETED));
+				reviewRepository.findByItemIdAndApprovedOrderByInsertDateDesc(id, 1));
 
 		// レビュー投稿可能かチェック
 		boolean canReview = false;

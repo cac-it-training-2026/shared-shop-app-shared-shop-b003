@@ -40,7 +40,7 @@ public class AdminReviewDeleteController {
 	@RequestMapping(path = "/admin/review/delete/check/{id}", method = RequestMethod.POST)
 	public String deleteCheck(@PathVariable Integer id) {
 
-		Review review = reviewRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
+		Review review = reviewRepository.findById(id).orElse(null);
 		if (review == null) {
 			return "redirect:/syserror";
 		}
@@ -82,9 +82,12 @@ public class AdminReviewDeleteController {
 			return "redirect:/syserror";
 		}
 
-		Review review = reviewRepository.findByIdAndDeleteFlag(sessionReview.getId(), Constant.NOT_DELETED);
+		Review review = reviewRepository.findById(sessionReview.getId()).orElse(null);
 		if (review != null) {
-			review.setDeleteFlag(Constant.DELETED);
+			// 今回の要件に基づき、削除ボタン押下で「非公開」状態にする、または物理削除も検討可能だが、
+			// 一般的な管理機能に合わせて、ここではステータスを非公開(0)に変更する、または削除する。
+			// 要件に「削除または非公開」とあるため、非公開フラグ(approved)を0にする実装にする。
+			review.setApproved(0);
 			reviewRepository.save(review);
 		}
 
