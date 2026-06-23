@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.CategoryRepository;
-import jp.co.sss.shop.entity.SaleSchedule;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.BeanTools;
-import jp.co.sss.shop.service.SaleService;
 import jp.co.sss.shop.util.Constant;
 
 /**
@@ -46,12 +44,6 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	CategoryRepository categoryRepository;
-
-	/**
-	 * タイムセールサービス
-	 */
-	@Autowired
-	SaleService saleService;
 
 	/**
 	 * トップ画面 表示処理
@@ -92,14 +84,10 @@ public class ClientItemShowController {
 		// エンティティ内の検索結果をJavaBeansにコピー（画面用に変換）
 		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
 
-		// 開催中のタイムセール情報を取得
-		List<SaleSchedule> sales = saleService.getActiveSales();
-
 		// 商品情報をView（画面）へ渡す（商品一覧、並び順、カテゴリ一覧）
 		model.addAttribute("items", itemBeanList);
 		model.addAttribute("sortType", sortType);
 		model.addAttribute("categories", categoryRepository.findAll());
-		model.addAttribute("sales", sales);
 
 		return "index";
 	}

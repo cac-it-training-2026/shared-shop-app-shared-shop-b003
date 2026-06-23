@@ -18,17 +18,12 @@ public interface SaleRepository extends JpaRepository<SaleSchedule, Integer> {
 
 	/**
 	 * 現在時刻に該当する有効なセール情報を取得
-	 * @param currentTime 現在時刻
-	 * @return セール情報リスト
 	 */
 	@Query("SELECT s FROM SaleSchedule s WHERE s.enabled = 1 AND s.startTime <= :currentTime AND s.endTime > :currentTime")
 	List<SaleSchedule> findActiveSales(@Param("currentTime") LocalTime currentTime);
 
 	/**
 	 * 現在時刻に該当する有効なカテゴリ別セール情報を取得
-	 * @param categoryId カテゴリID
-	 * @param currentTime 現在時刻
-	 * @return セール情報
 	 */
 	@Query("SELECT s FROM SaleSchedule s WHERE s.category.id = :categoryId AND s.enabled = 1 AND s.startTime <= :currentTime AND s.endTime > :currentTime")
 	List<SaleSchedule> findActiveSaleByCategory(@Param("categoryId") Integer categoryId, @Param("currentTime") LocalTime currentTime);

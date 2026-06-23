@@ -58,7 +58,7 @@ public class ItemBean {
 	private boolean onSale;
 
 	/**
-	 * セール終了までの残り時間
+	 * 残り時間
 	 */
 	private String remainingTime;
 
@@ -192,7 +192,6 @@ public class ItemBean {
 
 	/**
 	 * セール価格の取得
-	 * @return セール価格
 	 */
 	public Integer getSalePrice() {
 		return salePrice;
@@ -200,7 +199,6 @@ public class ItemBean {
 
 	/**
 	 * セール価格のセット
-	 * @param salePrice セール価格
 	 */
 	public void setSalePrice(Integer salePrice) {
 		this.salePrice = salePrice;
@@ -208,7 +206,6 @@ public class ItemBean {
 
 	/**
 	 * セール中フラグの取得
-	 * @return セール中の場合true
 	 */
 	public boolean isOnSale() {
 		return onSale;
@@ -216,7 +213,6 @@ public class ItemBean {
 
 	/**
 	 * セール中フラグのセット
-	 * @param onSale セール中の場合true
 	 */
 	public void setOnSale(boolean onSale) {
 		this.onSale = onSale;
@@ -224,7 +220,6 @@ public class ItemBean {
 
 	/**
 	 * 残り時間の取得
-	 * @return 残り時間
 	 */
 	public String getRemainingTime() {
 		return remainingTime;
@@ -232,7 +227,6 @@ public class ItemBean {
 
 	/**
 	 * 残り時間のセット
-	 * @param remainingTime 残り時間
 	 */
 	public void setRemainingTime(String remainingTime) {
 		this.remainingTime = remainingTime;

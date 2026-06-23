@@ -69,14 +69,20 @@ public class SaleService {
 	 */
 	public List<SaleSchedule> getActiveSales() {
 		try {
-			return saleRepository.findActiveSales(getCurrentTimeJst());
+			List<SaleSchedule> sales = saleRepository.findActiveSales(getCurrentTimeJst());
+			if (sales != null) {
+				for (SaleSchedule sale : sales) {
+					sale.setRemainingTime(getRemainingTime(sale.getEndTime()));
+				}
+			}
+			return sales != null ? sales : Collections.emptyList();
 		} catch (Exception e) {
 			return Collections.emptyList();
 		}
 	}
 
 	/**
-	 * 特定のカテゴリが現在セール中か確認
+	 * 特定のカテゴリが現在セール中か確認し、セール情報を取得
 	 */
 	public SaleSchedule getActiveSaleByCategory(Integer categoryId) {
 		if (categoryId == null) {
@@ -84,26 +90,35 @@ public class SaleService {
 		}
 		try {
 			List<SaleSchedule> sales = saleRepository.findActiveSaleByCategory(categoryId, getCurrentTimeJst());
-			return (sales == null || sales.isEmpty()) ? null : sales.get(0);
+			if (sales == null || sales.isEmpty()) {
+				return null;
+			}
+			SaleSchedule sale = sales.get(0);
+			sale.setRemainingTime(getRemainingTime(sale.getEndTime()));
+			return sale;
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	/**
-	 * キャッシュを使用して特定のカテゴリがセール中か確認
+	 * キャッシュを使用して特定のカテゴリがセール中か確認（N+1対策）
 	 */
 	public SaleSchedule getActiveSaleByCategoryCached(Integer categoryId) {
 		if (categoryId == null) {
 			return null;
 		}
-		return getActiveSaleMap().get(categoryId);
+		SaleSchedule sale = getActiveSaleMap().get(categoryId);
+		if (sale != null) {
+			sale.setRemainingTime(getRemainingTime(sale.getEndTime()));
+		}
+		return sale;
 	}
 
 	/**
-	 * セール価格を計算する
+	 * 割引価格を計算する
 	 */
-	public Integer calculateSalePrice(Integer originalPrice, Integer discountRate) {
+	public Integer calculateDiscountedPrice(Integer originalPrice, Integer discountRate) {
 		if (originalPrice == null || discountRate == null) {
 			return originalPrice;
 		}

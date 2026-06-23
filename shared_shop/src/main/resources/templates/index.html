@@ -9,11 +9,11 @@
 	<!--/* タイムセールバナー */-->
 	<div class="sale_banner" th:if="${activeSales != null and !activeSales.empty}">
 		<div th:each="sale : ${activeSales}" class="sale_info">
-			🔥 <span th:text="#{msg.sale.active}"></span>
+			🔥 開催中タイムセール
 			<span th:text="${sale.category.name}"></span>
 			<span th:text="${sale.discountRate} + '%OFF'"></span>
-			<span th:text="#{msg.sale.ends_in} + ' ' + ${sale.remainingTime}"></span>
-			<a th:href="@{/sale}" th:text="'[' + #{msg.sale.view_items} + ']'"></a>
+			終了まで <span th:text="${sale.remainingTime}"></span>
+			<a th:href="@{/sale}">［見る］</a>
 		</div>
 	</div>
 	<div>

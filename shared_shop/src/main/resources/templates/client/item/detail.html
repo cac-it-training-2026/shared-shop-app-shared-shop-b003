@@ -23,13 +23,12 @@
 				<dt>[[#{data.item.price}]]</dt>
 				<dd>
 					<th:block th:if="*{onSale}">
-						<span class="original_price" th:text="*{price} + #{data.unit.price}"></span><br/>
-						<span>↓</span><br/>
-						<span class="sale_price" th:text="*{salePrice} + #{data.unit.price}"></span><br/>
+						<span class="original_price" th:text="*{price} + '円'"></span><br/>
+						<span class="sale_price" th:text="*{salePrice} + '円'"></span><br/>
 						<span class="discount_rate" th:text="*{ (price - salePrice) * 100 / price } + '%OFF'"></span>
 					</th:block>
 					<th:block th:unless="*{onSale}">
-						<span th:text="*{price} + #{data.unit.price}"></span>
+						<span th:text="*{price} + '円'"></span>
 					</th:block>
 				</dd>
 				<dt>[[#{data.item.stock}]]</dt>

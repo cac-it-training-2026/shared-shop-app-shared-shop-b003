@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
-<title th:text="#{title.sale.list} + ' | ' + #{shop.title}"> </title>
-<meta charset="UTF-8" />
+	<title th:text="'タイムセール一覧 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
 </head>
-<body class="user sale_list">
-    <h2 class="title" th:text="#{title.sale.list}"></h2>
 
-    <div th:if="${#lists.isEmpty(sales)}">
-        <p th:text="#{msg.sale.none}"></p>
-    </div>
+<body class="user item_list">
 
-    <div th:if="!${#lists.isEmpty(sales)}">
-        <table class="list_table">
-            <tr>
-                <th th:text="#{category}"></th>
-                <th th:text="#{data.sale.discount_rate}"></th>
-                <th th:text="#{data.sale.period}"></th>
-                <th th:text="#{list.title.action}"></th>
-            </tr>
-            <tr th:each="sale : ${sales}">
-                <td th:text="${sale.category.name}"></td>
-                <td th:text="${sale.discountRate} + '%OFF'"></td>
-                <td th:text="${sale.startTime} + ' ～ ' + ${sale.endTime}"></td>
-                <td>
-                    <a th:href="@{/client/item/list/1(categoryId=${sale.category.id})}" th:text="#{msg.sale.view_items}"></a>
-                </td>
-            </tr>
-        </table>
-    </div>
+	<h2 th:class="title">開催中のタイムセール商品</h2>
 
-    <div class="back_link">
-        <a th:href="@{/}" th:text="#{msg.back.to.top}"></a>
-    </div>
+	<th:block th:if="${#lists.isEmpty(items)}">
+		<p>現在開催中のセール商品はありません。</p>
+	</th:block>
+
+	<th:block th:if="!${#lists.isEmpty(items)}">
+		<table class="list_table item_detail">
+			<tr>
+				<th th:text="#{data.item.image}"></th>
+				<th th:text="#{data.item.name}"></th>
+				<th>価格</th>
+				<th>詳細</th>
+			</tr>
+			<tr th:each="item: ${items}">
+				<td class="image">
+					<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" />
+					<img th:src="@{/images/common/no_image.jpg}" th:if="${item.image == null}" />
+				</td>
+				<td th:text="${item.name}"></td>
+				<td>
+					<span class="original_price" th:text="${item.price} + '円'"></span><br/>
+					<span class="sale_price" th:text="${item.salePrice} + '円'"></span><br/>
+					<span class="discount_rate" th:text="${(item.price - item.salePrice) * 100 / item.price} + '%OFF'"></span>
+				</td>
+				<td>
+					<a th:href="@{/client/item/detail/{id}(id=${item.id})}">詳細を見る</a>
+				</td>
+			</tr>
+		</table>
+	</th:block>
+
+	<div class="back_link">
+		<a th:href="@{/}" th:text="#{msg.back.to.top}"></a>
+	</div>
+
 </body>
+
 </html>

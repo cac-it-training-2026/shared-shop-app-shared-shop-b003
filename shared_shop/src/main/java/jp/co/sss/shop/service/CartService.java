@@ -30,7 +30,7 @@ public class CartService {
 
 	/**
 	 * カートに商品を追加する
-	 * 追加時にセール価格を計算し、固定する
+	 * 追加時の価格を固定する（セール価格があればそれを適用し、終了後も保持する）
 	 *
 	 * @param id 商品ID
 	 */
@@ -59,9 +59,9 @@ public class CartService {
 			BasketBean newBean = new BasketBean();
 			BeanUtils.copyProperties(item, newBean);
 
-			// セール価格を計算して固定
-			Integer salePrice = itemService.calculateSalePrice(item);
-			newBean.setPrice(salePrice);
+			// 追加時の価格を決定し固定（セール終了後もこの価格が維持される）
+			Integer priceAtAddition = itemService.calculateSalePrice(item);
+			newBean.setPriceAtAddition(priceAtAddition);
 
 			newBean.setOrderNum(1);
 			basketBeans.add(newBean);

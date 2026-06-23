@@ -29,9 +29,9 @@ public class BasketBean {
 	private Integer orderNum = 1;
 
 	/**
-	 * 購入時価格
+	 * 追加時価格（固定）
 	 */
-	private Integer price;
+	private Integer priceAtAddition;
 
 	/**
 	 * コンストラクタ
@@ -132,19 +132,17 @@ public class BasketBean {
 	}
 
 	/**
-	 * 価格の取得
-	 * @return 価格
+	 * 追加時価格の取得
 	 */
-	public Integer getPrice() {
-		return price;
+	public Integer getPriceAtAddition() {
+		return priceAtAddition;
 	}
 
 	/**
-	 * 価格のセット
-	 * @param price 価格
+	 * 追加時価格のセット
 	 */
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void setPriceAtAddition(Integer priceAtAddition) {
+		this.priceAtAddition = priceAtAddition;
 	}
 
 }

@@ -26,11 +26,11 @@ import jp.co.sss.shop.form.ItemForm;
  */
 @Service
 public class BeanTools {
-	/**
-	 * セール情報
-	 */
 	@Autowired
 	SaleService saleService;
+
+	@Autowired
+	ItemService itemService;
 	/**
 	 * ItemFormクラスの各フィールドの値をItemBeanクラスにコピー
 	 *
@@ -100,18 +100,14 @@ public class BeanTools {
 		bean.setCategoryName(entity.getCategory().getName());
 
 		// タイムセール情報の反映
-		SaleSchedule sale = null;
-		if (bean.getCategoryId() != null) {
-			sale = saleService.getActiveSaleByCategoryCached(bean.getCategoryId());
-		}
-
+		SaleSchedule sale = saleService.getActiveSaleByCategoryCached(bean.getCategoryId());
 		if (sale != null) {
 			bean.setOnSale(true);
-			bean.setSalePrice(saleService.calculateSalePrice(bean.getPrice(), sale.getDiscountRate()));
+			bean.setSalePrice(itemService.calculateSalePrice(entity));
+			bean.setRemainingTime(sale.getRemainingTime());
 		} else {
 			bean.setOnSale(false);
 			bean.setSalePrice(bean.getPrice());
-			bean.setRemainingTime(null);
 		}
 
 		return bean;
@@ -201,9 +197,9 @@ public class BeanTools {
 		OrderItemBean orderItemBean = new OrderItemBean();
 		BeanUtils.copyProperties(item, orderItemBean);
 
-		// カート投入時の価格（セール価格が固定されている）を使用
-		if (basketBean.getPrice() != null) {
-			orderItemBean.setPrice(basketBean.getPrice());
+		// カート投入時の固定価格を使用
+		if (basketBean.getPriceAtAddition() != null) {
+			orderItemBean.setPrice(basketBean.getPriceAtAddition());
 		}
 
 		orderItemBean.setOrderNum(basketBean.getOrderNum());

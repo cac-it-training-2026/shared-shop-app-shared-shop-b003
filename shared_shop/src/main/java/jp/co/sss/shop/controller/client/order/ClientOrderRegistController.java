@@ -24,7 +24,6 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.UserRepository;
-import jp.co.sss.shop.service.PriceCalc;
 
 /**
  * お届け先入力から注文完了までのコントローラー
@@ -55,12 +54,6 @@ public class ClientOrderRegistController {
 	 */
 	@Autowired
 	UserRepository userRepository;
-
-	/**
-	 * 料金計算
-	 */
-	@Autowired
-	PriceCalc priceCalc;
 
 	/**
 	 * お届け先入力画面表示
@@ -179,15 +172,10 @@ public class ClientOrderRegistController {
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
 
-			// カートの価格（固定）を使用、なければ現在のセール価格を計算
-			int price;
-			if (basketBean.getPrice() != null) {
-				price = basketBean.getPrice();
-			} else {
-				price = priceCalc.getItemPrice(item);
-			}
-
+			// カート投入時の固定価格を使用
+			int price = (basketBean.getPriceAtAddition() != null) ? basketBean.getPriceAtAddition() : item.getPrice();
 			orderItemBean.setPrice(price);
+
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
@@ -296,15 +284,10 @@ public class ClientOrderRegistController {
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
 
-			// カートの価格（固定）を使用
-			int price;
-			if (basketBean.getPrice() != null) {
-				price = basketBean.getPrice();
-			} else {
-				price = priceCalc.getItemPrice(item);
-			}
-
+			// カート投入時の固定価格を使用
+			int price = (basketBean.getPriceAtAddition() != null) ? basketBean.getPriceAtAddition() : item.getPrice();
 			orderItemBean.setPrice(price);
+
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(orderNum);
 
@@ -372,11 +355,8 @@ public class ClientOrderRegistController {
 			orderItem.setQuantity(basketBean.getOrderNum());
 
 			// カート投入時の固定価格を使用
-			if (basketBean.getPrice() != null) {
-				orderItem.setPrice(basketBean.getPrice());
-			} else {
-				orderItem.setPrice(priceCalc.getItemPrice(item));
-			}
+			int price = (basketBean.getPriceAtAddition() != null) ? basketBean.getPriceAtAddition() : item.getPrice();
+			orderItem.setPrice(price);
 
 			orderItemRepository.save(orderItem);
 

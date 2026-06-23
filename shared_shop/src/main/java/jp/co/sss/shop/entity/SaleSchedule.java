@@ -25,6 +25,7 @@ public class SaleSchedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_sale_schedule_gen")
 	@SequenceGenerator(name = "seq_sale_schedule_gen", sequenceName = "seq_sale_schedule", allocationSize = 1)
+	@Column(name = "sale_id")
 	private Integer id;
 
 	/**
@@ -59,7 +60,7 @@ public class SaleSchedule {
 	private Integer enabled;
 
 	/**
-	 * 残り時間（表示用）
+	 * 残り時間（表示用、DB保存なし）
 	 */
 	@Transient
 	private String remainingTime;

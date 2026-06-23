@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.service.CartService;
 
 /**
  * 買い物かごのコントローラークラス
@@ -39,7 +40,7 @@ public class ClientBasketController {
 	 * カートサービス
 	 */
 	@Autowired
-	jp.co.sss.shop.service.CartService cartService;
+	CartService cartService;
 
 	/**
 	 * 買い物かご一覧表示処理
