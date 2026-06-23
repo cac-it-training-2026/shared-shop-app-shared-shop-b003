@@ -67,7 +67,7 @@
 			<tr>
 				<th>利用ポイント</th>
 				<td>
-					<input type="number" name="usePoint" id="usePointInput" value="0" min="0" th:max="${currentPoint < total ? currentPoint : total}" step="1" form="orderCompleteForm" /> pt
+					<input type="number" name="usePoint" id="usePointInput" th:value="${prevUsePoint != null ? prevUsePoint : 0}" min="0" th:max="${currentPoint < total ? currentPoint : total}" step="1" form="orderCompleteForm" /> pt
 					<p id="pointErrorMessage" style="color: red; display: none;">不正な値です。保有ポイントおよび注文金額以内で入力してください。</p>
 					<p th:if="${pointError}" style="color: red;">ポイント利用額が正しくありません。再度入力してください。</p>
 				</td>
@@ -139,9 +139,14 @@
 			var currentPoint = [[${currentPoint}]];
 			var maxUsePoint = currentPoint < total ? currentPoint : total;
 
-			$('#usePointInput').on('input', function() {
-				var usePoint = $(this).val();
+			// 初期表示時の計算
+			updatePriceDisplay($('#usePointInput').val());
 
+			$('#usePointInput').on('input', function() {
+				updatePriceDisplay($(this).val());
+			});
+
+			function updatePriceDisplay(usePoint) {
 				// 空文字や数値以外を0として扱う
 				if (usePoint === '') {
 					usePoint = 0;
