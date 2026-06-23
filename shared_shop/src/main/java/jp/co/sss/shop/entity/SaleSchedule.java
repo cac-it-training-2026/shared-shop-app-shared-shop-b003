@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  * タイムセールスケジュールのエンティティクラス
@@ -37,12 +39,14 @@ public class SaleSchedule {
 	 * 開始時間 (HH:mm:ss形式)
 	 */
 	@Column(name = "start_time")
+	@Temporal(TemporalType.TIME)
 	private Date startTime;
 
 	/**
 	 * 終了時間 (HH:mm:ss形式)
 	 */
 	@Column(name = "end_time")
+	@Temporal(TemporalType.TIME)
 	private Date endTime;
 
 	/**
