@@ -1,5 +1,6 @@
 package jp.co.sss.shop.entity;
 
+import java.sql.Timestamp;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
