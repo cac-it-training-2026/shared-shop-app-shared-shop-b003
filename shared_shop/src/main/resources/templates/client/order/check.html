@@ -68,7 +68,9 @@
 			<caption class="table_caption">ポイント利用</caption>
 			<tr>
 				<th>商品合計金額</th>
-				<td><span th:text="${total}"></span> 円</td>
+				<td>
+    <span th:text="${discountedTotal != null ? discountedTotal : total}"></span> 円
+</td>
 			</tr>
 			<tr>
 				<th>保有ポイント</th>
@@ -88,7 +90,11 @@
 			</tr>
 			<tr>
 				<th>お支払予定金額</th>
-				<td><span id="paymentAmount" th:text="${total}"></span> 円</td>
+				<td>
+    <span id="paymentAmount"
+          th:text="${discountedTotal != null ? discountedTotal : total}">
+    </span> 円
+</td>
 			</tr>
 			<tr>
 				<th>獲得予定ポイント</th>
