@@ -18,12 +18,12 @@ public class OrderBean {
 	private String insertDate;
 
 	/**
-	 * 支払方法
+	 * 支払い方法
 	 */
 	private Integer payMethod;
 
 	/**
-	 * 合計金額
+	 * 商品合計金額
 	 */
 	private Integer total;
 
@@ -51,6 +51,31 @@ public class OrderBean {
 	 * 注文会員名
 	 */
 	private String userName;
+
+	/**
+	 * 利用ポイント
+	 */
+	private Integer usedPoint;
+
+	/**
+	 * クーポン割引額
+	 */
+	private Integer couponDiscount;
+
+	/**
+	 * 合計割引額
+	 */
+	private Integer totalDiscount;
+
+	/**
+	 * 支払金額
+	 */
+	private Integer paymentAmount;
+
+	/**
+	 * クーポンコード
+	 */
+	private String couponCode;
 
 	/**
 	 * 注文IDの取得
@@ -101,16 +126,16 @@ public class OrderBean {
 	}
 
 	/**
-	 * 合計金額の取得
-	 * @return 合計金額
+	 * 商品合計金額の取得
+	 * @return 商品合計金額
 	 */
 	public Integer getTotal() {
 		return total;
 	}
 
 	/**
-	 * 合計金額のセット
-	 * @param total 合計金額
+	 * 商品合計金額のセット
+	 * @param total 商品合計金額
 	 */
 	public void setTotal(Integer total) {
 		this.total = total;
@@ -194,6 +219,86 @@ public class OrderBean {
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	/**
+	 * 利用ポイントの取得
+	 * @return 利用ポイント
+	 */
+	public Integer getUsedPoint() {
+		return usedPoint;
+	}
+
+	/**
+	 * 利用ポイントのセット
+	 * @param usedPoint 利用ポイント
+	 */
+	public void setUsedPoint(Integer usedPoint) {
+		this.usedPoint = usedPoint;
+	}
+
+	/**
+	 * クーポン割引額の取得
+	 * @return クーポン割引額
+	 */
+	public Integer getCouponDiscount() {
+		return couponDiscount;
+	}
+
+	/**
+	 * クーポン割引額のセット
+	 * @param couponDiscount クーポン割引額
+	 */
+	public void setCouponDiscount(Integer couponDiscount) {
+		this.couponDiscount = couponDiscount;
+	}
+
+	/**
+	 * 合計割引額の取得
+	 * @return 合計割引額
+	 */
+	public Integer getTotalDiscount() {
+		return totalDiscount;
+	}
+
+	/**
+	 * 合計割引額のセット
+	 * @param totalDiscount 合計割引額
+	 */
+	public void setTotalDiscount(Integer totalDiscount) {
+		this.totalDiscount = totalDiscount;
+	}
+
+	/**
+	 * 支払金額の取得
+	 * @return 支払金額
+	 */
+	public Integer getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * 支払金額のセット
+	 * @param paymentAmount 支払金額
+	 */
+	public void setPaymentAmount(Integer paymentAmount) {
+		this.paymentAmount = paymentAmount;
+	}
+
+	/**
+	 * クーポンコードの取得
+	 * @return クーポンコード
+	 */
+	public String getCouponCode() {
+		return couponCode;
+	}
+
+	/**
+	 * クーポンコードのセット
+	 * @param couponCode クーポンコード
+	 */
+	public void setCouponCode(String couponCode) {
+		this.couponCode = couponCode;
 	}
 
 }

@@ -111,6 +111,15 @@ public class BeanTools {
 		// 会員名を注文情報に設定
 		bean.setUserName(entity.getUser().getName());
 
+		// 割引情報を設定
+		bean.setUsedPoint(entity.getUsedPoint());
+		bean.setCouponDiscount(entity.getCouponDiscount());
+		bean.setTotalDiscount(entity.getTotalDiscount());
+		bean.setPaymentAmount(entity.getPaymentAmount());
+		if (entity.getCoupon() != null) {
+			bean.setCouponCode(entity.getCoupon().getCode());
+		}
+
 		return bean;
 	}
 
