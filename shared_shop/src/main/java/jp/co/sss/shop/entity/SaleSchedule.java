@@ -1,6 +1,6 @@
 package jp.co.sss.shop.entity;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * タイムセールスケジュールのエンティティクラス
@@ -39,15 +37,13 @@ public class SaleSchedule {
 	 * 開始時間 (HH:mm:ss形式)
 	 */
 	@Column(name = "start_time")
-	@Temporal(TemporalType.TIME)
-	private Date startTime;
+	private LocalTime startTime;
 
 	/**
 	 * 終了時間 (HH:mm:ss形式)
 	 */
 	@Column(name = "end_time")
-	@Temporal(TemporalType.TIME)
-	private Date endTime;
+	private LocalTime endTime;
 
 	/**
 	 * 割引率
@@ -77,19 +73,19 @@ public class SaleSchedule {
 		this.category = category;
 	}
 
-	public Date getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
 
