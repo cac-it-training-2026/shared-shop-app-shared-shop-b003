@@ -1,6 +1,5 @@
 package jp.co.sss.shop.entity;
 
-import java.sql.Timestamp;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
@@ -60,6 +59,12 @@ public class Review {
 	private Integer stamp;
 
 	/**
+	 * 0：非公開、1：公開
+	 */
+	@Column
+	private Integer approved;
+
+	/**
 	 * 登録日付
 	 */
 	@Column(insertable = false, updatable = false)
@@ -111,6 +116,14 @@ public class Review {
 
 	public void setStamp(Integer stamp) {
 		this.stamp = stamp;
+	}
+
+	public Integer getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Integer approved) {
+		this.approved = approved;
 	}
 
 	public Date getInsertDate() {
