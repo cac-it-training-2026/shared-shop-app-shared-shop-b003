@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.bean.UserBean;
+import jp.co.sss.shop.bean.ReviewBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Review;
 import jp.co.sss.shop.repository.CategoryRepository;
@@ -19,6 +20,7 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.ReviewRepository;
 import jp.co.sss.shop.service.BeanTools;
+import jp.co.sss.shop.service.SaleService;
 import jp.co.sss.shop.util.Constant;
 
 /**
@@ -67,6 +69,15 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	HttpSession session;
+	 * タイムセールサービス
+	 */
+	@Autowired
+	SaleService saleService;
+  /**
+	 * レビュー一覧を取得する
+	 */
+	@Autowired
+	ReviewRepository reviewRepository;
 
 	/**
 	 * トップ画面 表示処理
@@ -106,6 +117,9 @@ public class ClientItemShowController {
 
 		// エンティティ内の検索結果をJavaBeansにコピー（画面用に変換）
 		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
+
+		// タイムセール適用
+		saleService.applyDiscounts(itemBeanList, saleService.getActiveSales());
 
 		// 商品情報をView（画面）へ渡す（商品一覧、並び順、カテゴリ一覧）
 		model.addAttribute("items", itemBeanList);
@@ -164,6 +178,9 @@ public class ClientItemShowController {
 		// Entity → Bean
 		List<ItemBean> itemBeanList = beanTools.copyEntityListToItemBeanList(itemList);
 
+		// タイムセール適用
+		saleService.applyDiscounts(itemBeanList, saleService.getActiveSales());
+
 		// Viewへ渡す
 		model.addAttribute("items", itemBeanList);
 
@@ -199,20 +216,24 @@ public class ClientItemShowController {
 		// Itemエンティティの各フィールドの値をItemBeanにコピー
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 
-		// レビュー情報を取得
-		List<Review> reviewList = reviewRepository.findByProductIdAndApprovedOrderByCreatedAtDesc(id, 1);
-
 		// 購入済みかチェック
 		boolean hasPurchased = false;
 		UserBean userBean = (UserBean) session.getAttribute("user");
 		if (userBean != null) {
 			hasPurchased = orderItemRepository.existsByUserIdAndItemId(userBean.getId(), id);
 		}
+		// タイムセール適用
+		saleService.applyDiscount(itemBean, saleService.getActiveSales());
 
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
 		model.addAttribute("reviews", reviewList);
 		model.addAttribute("hasPurchased", hasPurchased);
+
+		// レビュー一覧を取得
+		List<Review> reviewList = reviewRepository.findByItemIdOrderByInsertDateDesc(id);
+		List<ReviewBean> reviewBeanList = beanTools.copyEntityListToReviewBeanList(reviewList);
+		model.addAttribute("reviews", reviewBeanList);
 
 		return "client/item/detail";
 	}

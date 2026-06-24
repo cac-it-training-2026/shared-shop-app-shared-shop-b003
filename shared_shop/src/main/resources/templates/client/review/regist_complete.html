@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title th:text="#{review}+#{title.input.complete} + ' | ' + #{shop.title}"></title>
+</head>
+<body class="user">
+	<h2 class="page_title" th:text="#{review}+#{title.input.complete}"></h2>
+	<div class="message">
+		<p th:text="#{msg.regist.complete}"></p>
+		<p class="back_to_top_link"><a th:href="@{/}">トップへ戻る</a></p>
+	</div>
+</body>
+</html>

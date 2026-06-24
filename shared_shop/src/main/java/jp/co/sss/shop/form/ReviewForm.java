@@ -7,43 +7,62 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 /**
- * レビュー入力用フォーム
+ * レビュー投稿用フォーム
  */
 public class ReviewForm {
+	/**
+	 * 商品ID
+	 */
+	private Integer itemId;
 
-	@NotNull
-	private Integer productId;
-
+	/**
+	 * 評価
+	 */
 	@NotNull
 	@Min(1)
 	@Max(5)
-	private Integer rating;
+	private Integer evaluation;
 
-	@NotBlank
+	/**
+	 * 内容
+	 */
 	@Size(max = 1000)
-	private String body;
+	private String content;
 
-	public Integer getProductId() {
-		return productId;
+	/**
+	 * スタンプ
+	 */
+	private Integer stamp;
+
+	public Integer getItemId() {
+		return itemId;
 	}
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
 	}
 
-	public Integer getRating() {
-		return rating;
+	public Integer getEvaluation() {
+		return evaluation;
 	}
 
-	public void setRating(Integer rating) {
-		this.rating = rating;
+	public void setEvaluation(Integer evaluation) {
+		this.evaluation = evaluation;
 	}
 
-	public String getBody() {
-		return body;
+	public String getContent() {
+		return content;
 	}
 
-	public void setBody(String body) {
-		this.body = body;
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getStamp() {
+		return stamp;
+	}
+
+	public void setStamp(Integer stamp) {
+		this.stamp = stamp;
 	}
 }

@@ -1,6 +1,7 @@
 package jp.co.sss.shop.entity;
 
 import java.sql.Timestamp;
+import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,36 +14,56 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
- * 商品レビューエンティティクラス
+ * レビュー情報エンティティクラス
  */
 @Entity
 @Table(name = "reviews")
 public class Review {
-
+	/**
+	 * レビューID
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_reviews_gen")
 	@SequenceGenerator(name = "seq_reviews_gen", sequenceName = "seq_reviews", allocationSize = 1)
 	private Integer id;
 
+	/**
+	 * 商品情報
+	 */
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
-	private Item product;
+	@JoinColumn(name = "item_id", referencedColumnName = "id")
+	private Item item;
 
+	/**
+	 * 会員情報
+	 */
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
+	/**
+	 * 評価（1～5）
+	 */
 	@Column
-	private Integer rating;
+	private Integer evaluation;
 
+	/**
+	 * レビュー内容
+	 */
 	@Column
-	private String body;
+	private String content;
 
+	/**
+	 * スタンプ（1:満足, 2:おすすめ, 3:コスパ良し, 4:プレゼント向き, 5:配送が早い）
+	 */
 	@Column
-	private Integer approved = 0; // 0:非公開, 1:公開
+	private Integer stamp;
 
+	/**
+	 * 登録日付
+	 */
 	@Column(insertable = false, updatable = false)
-	private Timestamp createdAt;
+	private Date insertDate;
 
 	public Integer getId() {
 		return id;
@@ -52,12 +73,12 @@ public class Review {
 		this.id = id;
 	}
 
-	public Item getProduct() {
-		return product;
+	public Item getItem() {
+		return item;
 	}
 
-	public void setProduct(Item product) {
-		this.product = product;
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 	public User getUser() {
@@ -68,35 +89,35 @@ public class Review {
 		this.user = user;
 	}
 
-	public Integer getRating() {
-		return rating;
+	public Integer getEvaluation() {
+		return evaluation;
 	}
 
-	public void setRating(Integer rating) {
-		this.rating = rating;
+	public void setEvaluation(Integer evaluation) {
+		this.evaluation = evaluation;
 	}
 
-	public String getBody() {
-		return body;
+	public String getContent() {
+		return content;
 	}
 
-	public void setBody(String body) {
-		this.body = body;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public Integer getApproved() {
-		return approved;
+	public Integer getStamp() {
+		return stamp;
 	}
 
-	public void setApproved(Integer approved) {
-		this.approved = approved;
+	public void setStamp(Integer stamp) {
+		this.stamp = stamp;
 	}
 
-	public Timestamp getCreatedAt() {
-		return createdAt;
+	public Date getInsertDate() {
+		return insertDate;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
 	}
 }

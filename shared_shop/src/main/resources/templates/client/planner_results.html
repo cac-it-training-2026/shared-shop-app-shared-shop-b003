@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body})}">
+<head>
+<title>提案結果 - スマート購入プランナー</title>
+</head>
+<body>
+	<h2 class="title">提案結果</h2>
+	<p>「<span th:text="${purpose}"></span>」のための予算 <span th:text="${#numbers.formatInteger(budget, 1, 'COMMA')}"></span> 円以内のプランです。</p>
+
+	<div th:if="${plans.isEmpty()}">
+		<p class="error">申し訳ありません。条件に合うプランが見つかりませんでした。</p>
+		<div class="btn_area">
+			<a th:href="@{/client/planner/input}" class="btn">入力画面に戻る</a>
+		</div>
+	</div>
+
+	<div th:each="planEntry : ${plans}">
+		<h3 class="title" th:text="${planEntry.key}"></h3>
+		<p><strong>おすすめ理由：</strong><span th:text="${planEntry.value.recommendation}"></span></p>
+
+		<table class="list_table">
+			<thead>
+				<tr>
+					<th>商品名</th>
+					<th>カテゴリ</th>
+					<th>価格</th>
+					<th>詳細</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item : ${planEntry.value.items}">
+					<td th:text="${item.name}"></td>
+					<td th:text="${item.category.name}"></td>
+					<td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + ' 円'"></td>
+					<td>
+						<a th:href="@{/client/item/detail/{id}(id=${item.id})}">詳細</a>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="2">合計金額</th>
+					<td colspan="2">
+						<strong th:with="total=${#aggregates.sum(planEntry.value.items.![price])}"
+						        th:text="${#numbers.formatInteger(total, 1, 'COMMA')} + ' 円'"></strong>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2">残予算</th>
+					<td colspan="2">
+						<span th:with="total=${#aggregates.sum(planEntry.value.items.![price])}"
+						      th:text="${#numbers.formatInteger(budget - total, 1, 'COMMA')} + ' 円'"></span>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		<br/>
+	</div>
+
+	<div class="btn_area">
+		<a th:href="@{/client/planner/input}" class="btn">再検索する</a>
+	</div>
+</body>
+</html>
