@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title th:text="#{review}+#{title.input.check} + ' | ' + #{shop.title}"></title>
+</head>
+<body class="user">
+	<h2 class="page_title" th:text="#{review}+#{title.input.check}"></h2>
+	<div class="user_info_form_area">
+		<form th:action="@{/client/review/regist/complete}" method="post" th:object="${reviewForm}">
+			<input type="hidden" th:field="*{itemId}" />
+			<input type="hidden" th:field="*{evaluation}" />
+			<input type="hidden" th:field="*{stamp}" />
+			<input type="hidden" th:field="*{content}" />
+			<table class="detail_table">
+				<tr>
+					<th>商品名</th>
+					<td th:text="${item.name}"></td>
+				</tr>
+				<tr>
+					<th>評価</th>
+					<td th:text="*{evaluation}"></td>
+				</tr>
+				<tr>
+					<th>スタンプ</th>
+					<td>
+						<span th:if="*{stamp == 1}">😊 満足</span>
+						<span th:if="*{stamp == 2}">👍 おすすめ</span>
+						<span th:if="*{stamp == 3}">⭐ コスパ良し</span>
+						<span th:if="*{stamp == 4}">🎁 プレゼント向き</span>
+						<span th:if="*{stamp == 5}">🚚 配送が早い</span>
+						<span th:if="*{stamp == 0 or stamp == null}">なし</span>
+					</td>
+				</tr>
+				<tr>
+					<th>内容</th>
+					<td th:text="*{content}"></td>
+				</tr>
+			</table>
+			<div class="detail_button_area">
+				<input type="submit" value="登録" class="send_button" />
+				<input type="button" value="戻る" class="back_button" onclick="history.back()" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>

@@ -53,6 +53,30 @@ public class OrderBean {
 	private String userName;
 
 	/**
+	 * 利用ポイント
+	 */
+	private Integer usedPoint;
+
+	/**
+	 * 支払金額
+	 */
+	private Integer paymentAmount;
+  /**
+	 * 割引額
+	 */
+	private Integer discount;
+
+	/**
+	 * クーポンコード
+	 */
+	private String couponCode;
+
+	/**
+	 * 割引適用後合計金額
+	 */
+	private Integer discountedTotal;
+
+	/**
 	 * 注文IDの取得
 	 * @return 注文ID
 	 */
@@ -194,6 +218,85 @@ public class OrderBean {
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	/**
+	 * 利用ポイントの取得
+	 * @return 利用ポイント
+	 */
+	public Integer getUsedPoint() {
+		return usedPoint;
+	}
+
+	/**
+	 * 利用ポイントのセット
+	 * @param usedPoint 利用ポイント
+	 */
+	public void setUsedPoint(Integer usedPoint) {
+		this.usedPoint = usedPoint;
+	}
+
+	/**
+	 * 支払金額の取得
+	 * @return 支払金額
+	 */
+	public Integer getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * 支払金額のセット
+	 * @param paymentAmount 支払金額
+	 */
+	public void setPaymentAmount(Integer paymentAmount) {
+		this.paymentAmount = paymentAmount;
+  }
+  /**
+	 * 割引額の取得
+	 * @return 割引額
+	 */
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	/**
+	 * 割引額のセット
+	 * @param discount 割引額
+	 */
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+	/**
+	 * クーポンコードの取得
+	 * @return クーポンコード
+	 */
+	public String getCouponCode() {
+		return couponCode;
+	}
+
+	/**
+	 * クーポンコードのセット
+	 * @param couponCode クーポンコード
+	 */
+	public void setCouponCode(String couponCode) {
+		this.couponCode = couponCode;
+	}
+
+	/**
+	 * 割引適用後合計金額の取得
+	 * @return 割引適用後合計金額
+	 */
+	public Integer getDiscountedTotal() {
+		return discountedTotal;
+	}
+
+	/**
+	 * 割引適用後合計金額のセット
+	 * @param discountedTotal 割引適用後合計金額
+	 */
+	public void setDiscountedTotal(Integer discountedTotal) {
+		this.discountedTotal = discountedTotal;
 	}
 
 }

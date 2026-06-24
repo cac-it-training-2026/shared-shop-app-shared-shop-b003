@@ -80,6 +80,31 @@ public class Order {
 	private List<OrderItem> orderItemsList;
 
 	/**
+	 * 利用ポイント
+	 */
+	@Column(name = "used_point")
+	private Integer usedPoint = 0;
+
+	/**
+	 * 支払金額
+	 */
+	@Column(name = "payment_amount")
+	private Integer paymentAmount = 0;
+  
+  /**
+	 * クーポン情報
+	 */
+	@ManyToOne
+	@JoinColumn(name = "coupon_id", referencedColumnName = "id")
+	private Coupon coupon;
+
+	/**
+	 * 割引額
+	 */
+	@Column
+	private Integer discount;
+
+	/**
 	 * 注文IDの取得
 	 * @return 注文ID
 	 */
@@ -224,6 +249,69 @@ public class Order {
 	}
 
 	/**
+	 * 利用ポイントの取得
+	 * @return 利用ポイント
+	 */
+	public Integer getUsedPoint() {
+		return usedPoint;
+	}
+
+	/**
+	 * 利用ポイントのセット
+	 * @param usedPoint 利用ポイント
+	 */
+	public void setUsedPoint(Integer usedPoint) {
+		this.usedPoint = usedPoint;
+	}
+
+	/**
+	 * 支払金額の取得
+	 * @return 支払金額
+	 */
+	public Integer getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	/**
+	 * 支払金額のセット
+	 * @param paymentAmount 支払金額
+	 */
+	public void setPaymentAmount(Integer paymentAmount) {
+		this.paymentAmount = paymentAmount;
+  }
+  /**
+	 * クーポンの取得
+	 * @return クーポン
+	 */
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	/**
+	 * クーポンのセット
+	 * @param coupon クーポン
+	 */
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	/**
+	 * 割引額の取得
+	 * @return 割引額
+	 */
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	/**
+	 * 割引額のセット
+	 * @param discount 割引額
+	 */
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+	/**
 	 * 注文合計金額の取得
 	 * @return 注文合計金額
 	 */
@@ -237,6 +325,18 @@ public class Order {
 		}
 
 		return total;
+	}
+
+	/**
+	 * 割引適用後の注文合計金額の取得
+	 * @return 割引適用後の注文合計金額
+	 */
+	public int getDiscountedTotal() {
+		int total = getTotal();
+		if (discount != null) {
+			total -= discount;
+		}
+		return Math.max(0, total);
 	}
 
 }
