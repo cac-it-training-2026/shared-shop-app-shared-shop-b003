@@ -6,13 +6,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/gacha.css}" />
 <title  th:replace="${title}"></title>
 </head>
-<body class="user">
+  
+<body class="user" th:classappend="${(session.user != null and session.user.themeId != null) ? 'theme-' + session.user.themeId : ''}">
+
 	<!--/* ヘッダー */-->
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>
 	</header>
+	<!--/* タイムセールバー */-->
+	<div th:if="${not #maps.isEmpty(activeSales)}" class="time-sale-bar">
+		<span class="sale-label">🔥 開催中タイムセール</span>
+		<span th:each="entry : ${activeSales}" class="sale-info">
+			[[${entry.value.category.name}]]: [[${entry.value.discountRate}]]% OFF! (残り時間：[[${@saleService.getRemainingTime(entry.value)}]])
+		</span>
+		<a th:href="@{/sale}" class="sale-link">［セール商品を見る］</a>
+	</div>
 	<!--/* ナビゲーションバー */-->
 	<nav th:if="${session.user == null or session.user.authority == 2}" class="navi_area">
 		<div th:replace="~{common/menu :: layout-menu}"></div>
@@ -29,5 +40,25 @@
 	<footer>
 		<div th:replace="~{common/footer :: layout-footer}"></div>
 	</footer>
+
+	<!--/* ガチャモーダル */-->
+	<div th:if="${session.canPlayGacha}" id="gachaModal" class="modal">
+		<div class="modal-content">
+			<h2 th:text="${session.gachaEventType == 'login' ? 'ログインボーナスガチャ！' : '注文完了記念ガチャ！'}"></h2>
+			<div id="gachaAnimation" class="gacha-animation">
+				<div id="gachaEmoji" style="font-size: 100px;">🎁</div>
+			</div>
+			<div id="gachaResult" class="gacha-result" style="display:none;">
+				<p id="resultMessage"></p>
+				<div id="couponInfo" style="display:none;">
+					<p>クーポンコード: <span id="couponCode" class="coupon-code"></span></p>
+					<p>割引内容: <span id="discountInfo"></span></p>
+				</div>
+				<button onclick="closeGacha()" class="btn-close">閉じる</button>
+			</div>
+			<button id="btnPlayGacha" onclick="playGacha()" class="btn-play">ガチャを回す！</button>
+		</div>
+	</div>
+	<script th:if="${session.canPlayGacha}" th:src="@{/js/gacha.js}"></script>
 </body>
 </html>

@@ -25,7 +25,7 @@ public class AdminAccountCheckFilter extends HttpFilter {
 
 		// リクエストURLを取得
 		String requestURL = request.getContextPath() + request.getServletPath();
-		if (!URLCheck.istURLForAdmin(requestURL)) {
+		if (!URLCheck.isURLForAdmin(requestURL, request.getContextPath())) {
 			// セッション情報を取得
 			HttpSession session = request.getSession();
 
@@ -47,7 +47,6 @@ public class AdminAccountCheckFilter extends HttpFilter {
 		} else {
 			chain.doFilter(request, response);
 		}
+
 	}
-
-
 }
