@@ -42,6 +42,26 @@
 				<th>[[#{data.address}+#{data.address.phonenumber}]]</th>
 				<td th:text="${order.phoneNumber}"></td>
 			</tr>
+			<tr>
+				<th>商品合計金額</th>
+				<td th:text="${total} + '円'"></td>
+			</tr>
+			<tr>
+				<th>利用ポイント</th>
+				<td th:text="${order.usedPoint} + 'pt'"></td>
+			</tr>
+			<tr>
+				<th>ポイント割引</th>
+				<td th:text="'-' + ${order.usedPoint} + '円'"></td>
+			</tr>
+			<tr>
+				<th>支払金額</th>
+				<td th:text="${order.paymentAmount} + '円'"></td>
+			</tr>
+			<tr>
+				<th>付与ポイント</th>
+				<td th:text="${order.paymentAmount / 10} + 'pt'"></td>
+			</tr>
 		</table>
 		<table class="list_table detail">
 			<tr>
@@ -60,6 +80,16 @@
 				<td colspan="2"></td>
 				<td class="total">[[#{data.total}]]</td>
 				<td class="total" th:text="${total}"></td>
+			</tr>
+			<tr th:if="${order.discount != null}">
+				<td colspan="2"></td>
+				<td class="total">クーポン割引([[${order.couponCode}]])</td>
+				<td class="total" th:text="'-' + ${order.discount}"></td>
+			</tr>
+			<tr th:if="${order.discount != null}">
+				<td colspan="2"></td>
+				<td class="total" style="color: red;">割引適用後合計</td>
+				<td class="total" style="color: red;" th:text="${order.discountedTotal}"></td>
 			</tr>
 		</table>
 		<form th:action="@{/client/order/list}" method="post" class="detail_button_area">

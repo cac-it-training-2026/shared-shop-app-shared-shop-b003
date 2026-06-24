@@ -223,7 +223,7 @@ public class ClientUserUpdateController {
 		// ログインユーザ情報変更の場合、セッション保存ユーザ情報を更新
 		UserBean loginUser = (UserBean) session.getAttribute("user");
 
-		loginUser.setName(userForm.getName());
+		BeanUtils.copyProperties(user, loginUser);
 
 		session.setAttribute("user", loginUser);
 

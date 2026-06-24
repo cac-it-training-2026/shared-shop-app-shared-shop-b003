@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body})}">
+<head>
+<title th:text="#{planner.input.title}">スマート購入プランナー</title>
+</head>
+<body>
+	<h2 class="title">スマート購入プランナー</h2>
+	<p>用途と予算を入力してください。あなたにぴったりの商品を提案します。</p>
+
+	<div class="user_info_area">
+		<form th:action="@{/client/planner/results}" method="post">
+			<table class="detail_table">
+				<tr>
+					<th>用途</th>
+					<td>
+						<input type="text" name="purpose" required="required" placeholder="例：ゲーム、プログラミング" />
+					</td>
+				</tr>
+				<tr>
+					<th>予算 (円)</th>
+					<td>
+						<input type="number" name="budget" required="required" min="0" value="100000" />
+					</td>
+				</tr>
+			</table>
+			<div class="btn_area">
+				<input type="submit" value="プランを提案する" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>

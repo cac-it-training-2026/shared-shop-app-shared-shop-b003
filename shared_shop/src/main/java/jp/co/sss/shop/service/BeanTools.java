@@ -11,10 +11,12 @@ import jp.co.sss.shop.bean.CategoryBean;
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.bean.OrderItemBean;
+import jp.co.sss.shop.bean.ReviewBean;
 import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.entity.Review;
 import jp.co.sss.shop.form.ItemForm;
 
 /**
@@ -111,6 +113,10 @@ public class BeanTools {
 		// 会員名を注文情報に設定
 		bean.setUserName(entity.getUser().getName());
 
+		// 利用ポイントと支払金額をセット
+		bean.setUsedPoint(entity.getUsedPoint());
+		bean.setPaymentAmount(entity.getPaymentAmount());
+
 		return bean;
 	}
 
@@ -147,6 +153,7 @@ public class BeanTools {
 			BeanUtils.copyProperties(entity, bean);
 
 			if (entity.getCategory() != null) {
+				bean.setCategoryId(entity.getCategory().getId());
 				bean.setCategoryName(entity.getCategory().getName());
 			}
 
@@ -218,5 +225,32 @@ public class BeanTools {
 			orderItemBeanList.add(orderItemBean);
 		}
 		return orderItemBeanList;
+	}
+
+	/**
+	 * Reviewエンティティの各フィールドの値をReviewBeanクラスにコピー(リスト形式)
+	 *
+	 * @param entityList コピー元のエンティティ(リスト形式)
+	 * @return コピー先のオブジェクト(リスト形式)
+	 */
+	public List<ReviewBean> copyEntityListToReviewBeanList(List<Review> entityList) {
+		List<ReviewBean> beanList = new ArrayList<ReviewBean>();
+
+		for (Review entity : entityList) {
+			ReviewBean bean = new ReviewBean();
+			BeanUtils.copyProperties(entity, bean);
+
+			if (entity.getUser() != null) {
+				bean.setUserName(entity.getUser().getName());
+			}
+
+			if (entity.getInsertDate() != null) {
+				bean.setInsertDate(entity.getInsertDate().toString());
+			}
+
+			beanList.add(bean);
+		}
+
+		return beanList;
 	}
 }

@@ -83,6 +83,11 @@ public class AdminOrderShowController {
 			//合計金額のセット
 			orderBean.setTotal(total);
 
+			// 割引後合計金額のセット (クーポン適用の場合)
+			if (order.getDiscount() != null) {
+				orderBean.setDiscountedTotal(order.getDiscountedTotal());
+			}
+
 			orderBeanList.add(orderBean);
 		}
 
@@ -115,6 +120,13 @@ public class AdminOrderShowController {
 
 		// 合計金額を算出
 		int total = priceCalc.orderItemBeanPriceTotalUseSubtotal(orderItemBeanList);
+
+		// クーポン情報の設定
+		if (order.getCoupon() != null) {
+			orderBean.setCouponCode(order.getCoupon().getCode());
+			orderBean.setDiscount(order.getDiscount());
+			orderBean.setDiscountedTotal(order.getDiscountedTotal());
+		}
 
 		// 注文情報をViewへ渡す
 		model.addAttribute("order", orderBean);

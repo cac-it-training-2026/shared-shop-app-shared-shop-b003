@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_3block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>クーポン一覧 | シェアードショップ</title>
+</head>
+
+<body class="admin coupon_list">
+	<h2 class="title">クーポン一覧</h2>
+	<div class="user_info_form_area">
+		<form th:action="@{/admin/coupon/regist/input}" method="get">
+			<input type="submit" value="新規登録" />
+		</form>
+	</div>
+	<table class="list_table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>コード</th>
+				<th>割引タイプ</th>
+				<th>割引値</th>
+				<th>有効期限(から)</th>
+				<th>有効期限(まで)</th>
+				<th>使用上限</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="coupon : ${coupons}">
+				<td th:text="${coupon.id}"></td>
+				<td th:text="${coupon.code}"></td>
+				<td th:text="${coupon.discountType}"></td>
+				<td th:text="${coupon.discountValue}"></td>
+				<td th:text="${coupon.validFrom}"></td>
+				<td th:text="${coupon.validUntil}"></td>
+				<td th:text="${coupon.usageLimit}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+
+</html>
