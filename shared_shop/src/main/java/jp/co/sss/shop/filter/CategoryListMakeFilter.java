@@ -57,6 +57,11 @@ public class CategoryListMakeFilter extends HttpFilter {
 		// リクエストURLを取得
 		String requestURL = request.getContextPath() + request.getServletPath();
 
+		// POSTメソッドの場合の文字化け対策
+		if (request.getMethod().equals("POST")) {
+			request.setCharacterEncoding("UTF-8");
+		}
+
 		if (URLCheck.isURLForMakeCategoryList(requestURL)) {
 
 			// カテゴリ情報を全件検索

@@ -182,6 +182,7 @@ public class URLCheck {
 						|| requestURL.indexOf("/client/user/regist") != -1
 						|| requestURL.indexOf("/client/user/update") != -1
 						|| requestURL.indexOf("/client/user/delete") != -1
+						|| requestURL.indexOf("/client/planner") != -1)) {
 						|| requestURL.indexOf("/client/gacha") != -1)) {
 
 			// URLのリクエスト先がフィルタ実行対象である場合
