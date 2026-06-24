@@ -225,30 +225,50 @@ CREATE SEQUENCE seq_sale_schedule START WITH 1 INCREMENT BY 1;
 -----------------------------------------------------------------------
 -- レコード登録
 -----------------------------------------------------------------------
+-- レコード登録(カテゴリ)
 INSERT INTO categories VALUES(seq_categories.NEXTVAL, '食料品', '野菜類、肉類、海産物、加工食品などを扱います。', DEFAULT, DEFAULT);
 INSERT INTO categories VALUES(seq_categories.NEXTVAL, '書籍', '和書、洋書、専門書、漫画、雑誌などを扱います。', DEFAULT, DEFAULT);
 
+-- レコード登録(商品)
 INSERT INTO items VALUES(seq_items.NEXTVAL, 'りんご', 100, '青森県産のりんごです。とってもみずみずしい！', 0, 'apple.jpg', 1, DEFAULT, DEFAULT);
 INSERT INTO items VALUES(seq_items.NEXTVAL, '辞書', 2000, 'これ一冊があれば大丈夫！', 1, 'dictionary.jpg', 2, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'オレンジ', 150, 'オーストラリア産のオレンジです。', 5, 'orange.jpg', 1, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'バナナ', 150, 'バナナです。', 6, NULL, 1, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'テスト商品', 150, 'テスト用データです。', 9999, NULL, 1, DEFAULT, DEFAULT);
 
+-- レコード登録(会員)
 INSERT INTO users VALUES(seq_users.NEXTVAL, 'tanaka_taro@test.co.jp', 'Testtest0', 'システム管理太郎', '1111111', '東京都台東区1-2-3 ABCビル10階', '0123456789', 0, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'unyo_jiro@test.co.jp', 'Testtest1', '運用管理二郎', '1111111', '東京都台東区1-2-3 ABCビル10階', '0123456789', 1, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
 INSERT INTO users VALUES(seq_users.NEXTVAL, 'ippan_saburo@test.co.jp', 'Testtest2', '一般三郎', '1111111', '東京都台東区4-5-6 ABCマンション5階', '0123456789', 2, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
 
-INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '東京都台東区4-5-6 ABCマンション5階', '一般三郎', '0123456789', 2, 2, DEFAULT, NULL, NULL, 0, 0);
+-- レコード登録(注文)
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '東京都台東区4-5-6 ABCマンション5階', '一般三郎', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '東京都台東区4-5-6 ABCマンション5階', '一般三郎', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '東京都台東区4-5-6 ABCマンション5階', '一般三郎', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
 
+-- レコード登録(商品注文)
 INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 1, 1, 100);
+INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 2, 1, 100);
+INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 3, 1, 100);
 
-UPDATE orders o SET payment_amount = (SELECT NVL(SUM(oi.price * oi.quantity), 0) FROM order_items oi WHERE oi.order_id = o.id) WHERE payment_amount = 0;
-
+-- レコード登録(クーポン・レビュー・セール)
+-- クーポン
 INSERT INTO coupons (id, code, discount_type, discount_value, valid_from, valid_until, usage_limit)
 VALUES (seq_coupons.NEXTVAL, 'WELCOME2026', 'amount', 1000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 365, 1);
+INSERT INTO coupons (id, code, discount_type, discount_value, valid_from, valid_until, usage_limit)
+VALUES (seq_coupons.NEXTVAL, 'SPECIAL10', 'percent', 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 365, 5);
 
+-- レビュー
 INSERT INTO reviews (id, item_id, user_id, evaluation, content, delete_flag, insert_date, stamp)
-VALUES (seq_reviews.NEXTVAL, 1, 2, 5, 'とても美味しいりんごでした！', 0, CURRENT_TIMESTAMP, 0);
+VALUES (seq_reviews.NEXTVAL, 1, 3, 5, 'とてもみずみずしくて美味しいりんごでした！また購入します。', 0, CURRENT_TIMESTAMP, 0);
+INSERT INTO reviews (id, item_id, user_id, evaluation, content, delete_flag, insert_date, stamp)
+VALUES (seq_reviews.NEXTVAL, 2, 3, 4, '非常に詳しくて分かりやすい辞書です。勉強が捗ります。', 0, CURRENT_TIMESTAMP, 0);
 
 -- タイムセール初期データ
 INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
 VALUES (seq_sale_schedule.NEXTVAL, 1, TO_DATE('00:00:00', 'HH24:MI:SS'), TO_DATE('18:00:00', 'HH24:MI:SS'), 20, 0);
+INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
+VALUES (seq_sale_schedule.NEXTVAL, 2, TO_DATE('20:00:00', 'HH24:MI:SS'), TO_DATE('23:00:00', 'HH24:MI:SS'), 15, 0);
 
 COMMIT;
 
