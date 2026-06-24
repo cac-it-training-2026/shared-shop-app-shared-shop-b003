@@ -40,6 +40,16 @@ public class UserBean {
 	private Integer authority;
 
 	/**
+	 * ログイン失敗回数
+	 */
+	private Integer failedLoginCount;
+
+	/**
+	 * ロック解除時刻
+	 */
+	private java.sql.Timestamp lockedUntil;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -165,6 +175,38 @@ public class UserBean {
 	 */
 	public void setAuthority(Integer authority) {
 		this.authority = authority;
+	}
+
+	/**
+	 * ログイン失敗回数の取得
+	 * @return ログイン失敗回数
+	 */
+	public Integer getFailedLoginCount() {
+		return failedLoginCount;
+	}
+
+	/**
+	 * ログイン失敗回数のセット
+	 * @param failedLoginCount ログイン失敗回数
+	 */
+	public void setFailedLoginCount(Integer failedLoginCount) {
+		this.failedLoginCount = failedLoginCount;
+	}
+
+	/**
+	 * ロック解除時刻の取得
+	 * @return ロック解除時刻
+	 */
+	public java.sql.Timestamp getLockedUntil() {
+		return lockedUntil;
+	}
+
+	/**
+	 * ロック解除時刻のセット
+	 * @param lockedUntil ロック解除時刻
+	 */
+	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
+		this.lockedUntil = lockedUntil;
 	}
 
 }

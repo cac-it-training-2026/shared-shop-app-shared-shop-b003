@@ -44,18 +44,43 @@ public class LoginValidator implements ConstraintValidator<LoginCheck, Object> {
 
 		User user = userRepository.findByEmailAndDeleteFlag(emailProp, Constant.NOT_DELETED);
 
-		if (user != null && passwordProp.equals(user.getPassword())) {
-			UserBean userBean = new UserBean();
+		if (user != null) {
+			// アカウントロックの確認
+			if (user.getLockedUntil() != null && user.getLockedUntil().after(new java.sql.Timestamp(System.currentTimeMillis()))) {
+				// アカウントがロックされている
+				context.disableDefaultConstraintViolation();
+				context.buildConstraintViolationWithTemplate("{login.locked.message}").addConstraintViolation();
+				return false;
+			}
 
-			userBean.setId(user.getId());
-			userBean.setName(user.getName());
-			userBean.setAuthority(user.getAuthority());
+			if (passwordProp.equals(user.getPassword())) {
+				// 認証成功
+				UserBean userBean = new UserBean();
+				userBean.setId(user.getId());
+				userBean.setName(user.getName());
+				userBean.setAuthority(user.getAuthority());
 
-			// セッションスコープにログインしたユーザの情報を登録
-			session.setAttribute("user", userBean);
-			isValidFlg = true;
+				// 失敗回数のリセット
+				user.setFailedLoginCount(0);
+				user.setLockedUntil(null);
+				userRepository.save(user);
+
+				// セッションスコープにログインしたユーザの情報を登録
+				session.setAttribute("user", userBean);
+				isValidFlg = true;
+			} else {
+				// 認証失敗
+				int count = (user.getFailedLoginCount() != null ? user.getFailedLoginCount() : 0) + 1;
+				user.setFailedLoginCount(count);
+				if (count >= 5) {
+					// 5回失敗で15分間ロック
+					user.setLockedUntil(new java.sql.Timestamp(System.currentTimeMillis() + 15 * 60 * 1000));
+				}
+				userRepository.save(user);
+				isValidFlg = false;
+			}
 		} else {
-			//ユーザ認証に失敗
+			// ユーザが存在しない
 			isValidFlg = false;
 		}
 		return isValidFlg;
