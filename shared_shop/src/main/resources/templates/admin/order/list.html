@@ -21,8 +21,6 @@
 				<th>[[#{user}+#{userForm.name}]]</th>
 				<th>[[#{data.order.date}]]</th>
 				<th>[[#{data.paymethod}]]</th>
-				<th>[[#{data.total.price}]]</th>
-				<th>利用ポイント</th>
 				<th>支払金額</th>
 			</tr>
 
@@ -39,8 +37,6 @@
 					<span th:case="4">[[#{paymethod.emoney.str}]]</span>
 					<span th:case="5">[[#{paymethod.convenience.str}]]</span>
 				</td>
-				<td th:text="${order.total}"></td>
-				<td th:text="${order.usedPoint} + 'pt'"></td>
 				<td th:text="${order.paymentAmount}"></td>
 			</tr>
 		</table>

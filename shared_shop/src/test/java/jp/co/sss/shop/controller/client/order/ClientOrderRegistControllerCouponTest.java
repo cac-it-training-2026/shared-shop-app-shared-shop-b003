@@ -46,6 +46,12 @@ public class ClientOrderRegistControllerCouponTest {
 	private CouponRepository couponRepository;
 
 	@Mock
+	private jp.co.sss.shop.repository.UserRepository userRepository;
+
+	@Mock
+	private jp.co.sss.shop.repository.PointHistoryRepository pointHistoryRepository;
+
+	@Mock
 	private PriceCalc priceCalc;
 
 	@Mock
@@ -70,6 +76,7 @@ public class ClientOrderRegistControllerCouponTest {
 		itemBean.setId(1);
 		itemBean.setOrderNum(1);
 		itemBean.setPrice(1000);
+		itemBean.setSalePrice(1000); // NullPointerException回避のため追加
 		basket.add(itemBean);
 
 		UserBean userBean = new UserBean();
@@ -98,6 +105,11 @@ public class ClientOrderRegistControllerCouponTest {
 		item.setDeleteFlag(0);
 		item.setName("Test Item");
 		when(itemRepository.getReferenceById(1)).thenReturn(item);
+
+		jp.co.sss.shop.entity.User user = new jp.co.sss.shop.entity.User();
+		user.setId(1);
+		user.setCurrentPoint(0);
+		when(userRepository.getReferenceById(1)).thenReturn(user);
 
 		// Act
 		controller.showOrderComplete(0, false, session, model);

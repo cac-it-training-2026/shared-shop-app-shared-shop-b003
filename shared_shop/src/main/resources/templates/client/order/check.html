@@ -67,8 +67,8 @@
 		<table class="detail_table point">
 			<caption class="table_caption">ポイント利用</caption>
 			<tr>
-				<th>商品合計金額</th>
-				<td><span th:text="${total}"></span> 円</td>
+				<th>対象金額</th>
+				<td><span th:text="${discountedTotal != null ? discountedTotal : total}"></span> 円</td>
 			</tr>
 			<tr>
 				<th>保有ポイント</th>
@@ -77,7 +77,7 @@
 			<tr>
 				<th>利用ポイント</th>
 				<td>
-					<input type="number" name="usePoint" id="usePointInput" th:value="${prevUsePoint != null ? prevUsePoint : 0}" min="0" th:max="${currentPoint < total ? currentPoint : total}" step="1" form="orderCompleteForm" /> pt
+					<input type="number" name="usePoint" id="usePointInput" th:value="${prevUsePoint != null ? prevUsePoint : 0}" min="0" th:max="${currentPoint < (discountedTotal != null ? discountedTotal : total) ? currentPoint : (discountedTotal != null ? discountedTotal : total)}" step="1" form="orderCompleteForm" /> pt
 					<p id="pointErrorMessage" style="color: red; display: none;">不正な値です。保有ポイントおよび注文金額以内で入力してください。</p>
 					<p th:if="${pointError}" style="color: red;">ポイント利用額が正しくありません。再度入力してください。</p>
 				</td>
@@ -145,7 +145,7 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function() {
-			var total = /*[[${total}]]*/0;
+			var total = /*[[${discountedTotal != null ? discountedTotal : total}]]*/0;
 			var currentPoint = /*[[${currentPoint}]]*/0;
 			var maxUsePoint = currentPoint < total ? currentPoint : total;
 

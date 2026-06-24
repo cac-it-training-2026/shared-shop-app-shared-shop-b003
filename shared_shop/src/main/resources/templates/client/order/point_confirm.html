@@ -16,8 +16,8 @@
 
 		<table class="detail_table point">
 			<tr>
-				<th>商品合計金額</th>
-				<td><span th:text="${total}"></span> 円</td>
+				<th>対象金額</th>
+				<td><span th:text="${discountedTotal != null ? discountedTotal : total}"></span> 円</td>
 			</tr>
 			<tr>
 				<th>ポイント割引</th>
@@ -25,7 +25,7 @@
 			</tr>
 			<tr>
 				<th>お支払金額</th>
-				<td><strong th:text="${total - usePoint}"></strong> 円</td>
+				<td><strong th:text="${(discountedTotal != null ? discountedTotal : total) - usePoint}"></strong> 円</td>
 			</tr>
 		</table>
 
