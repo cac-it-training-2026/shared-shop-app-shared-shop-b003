@@ -167,6 +167,7 @@ CREATE TABLE reviews (
     content VARCHAR2(1000),
     delete_flag NUMBER(1) DEFAULT 0 NOT NULL,
     insert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    approved NUMBER(1) DEFAULT 1 NOT NULL,
     stamp NUMBER(10) DEFAULT 0,
     CONSTRAINT fk_reviews_item FOREIGN KEY (item_id) REFERENCES items(id),
     CONSTRAINT fk_reviews_user FOREIGN KEY (user_id) REFERENCES users(id)

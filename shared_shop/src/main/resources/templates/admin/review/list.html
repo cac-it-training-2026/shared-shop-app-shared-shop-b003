@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>レビュー一覧 | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin review_list">
+	<h2 th:class="title">レビュー一覧</h2>
+
+	<div th:if="${pages.totalElements == 0}">
+		<p>レビューはありません。</p>
+	</div>
+
+	<table class="list_table" th:if="${pages.totalElements > 0}">
+		<tr>
+			<th>ID</th>
+			<th>商品名</th>
+			<th>投稿者</th>
+			<th>評価</th>
+			<th>本文</th>
+			<th>投稿日</th>
+			<th>状態</th>
+			<th>操作</th>
+		</tr>
+		<tr th:each="review : ${pages.content}">
+			<td th:text="${review.id}"></td>
+			<td th:text="${review.product.name}"></td>
+			<td th:text="${review.user.name}"></td>
+			<td th:text="${review.rating}"></td>
+			<td th:text="${review.body}"></td>
+			<td th:text="${#dates.format(review.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+			<td>
+				<span th:if="${review.approved == 1}">公開</span>
+				<span th:if="${review.approved == 0}">非公開</span>
+			</td>
+			<td>
+				<form th:action="@{/admin/review/status/{id}(id=${review.id})}" method="post" style="display:inline;">
+					<input type="submit" th:value="${review.approved == 1 ? '非公開にする' : '公開する'}" />
+				</form>
+				<form th:action="@{/admin/review/delete/{id}(id=${review.id})}" method="post" style="display:inline;">
+					<input type="submit" value="削除" class="delete" />
+				</form>
+			</td>
+		</tr>
+	</table>
+
+	<!--/* ページリンク */-->
+	<ul class="paging" th:if="${pages.totalPages > 1}">
+		<li th:class="${pages.first} ? 'disabled':''">
+			<span th:if="${pages.first}">&lt;&lt;</span>
+			<a th:if="${not pages.first}" th:href="@{/admin/review/list(page=0)}">&lt;&lt;</a>
+		</li>
+		<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}' th:class="(${i}==${pages.number})? 'active' : ''">
+			<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
+			<a th:if='${i}!=${pages.number}' th:href="@{/admin/review/list(page=${i})}">
+				<span th:text='${i+1}'>1</span>
+			</a>
+		</li>
+		<li th:class="${pages.last} ? 'disabled':''">
+			<span th:if="${pages.last}">&gt;&gt;</span>
+			<a th:if="${not pages.last}" th:href="@{/admin/review/list(page=(${pages.totalPages}-1))}">&gt;&gt;</a>
+		</li>
+	</ul>
+
+	<div class="detail_button_area">
+		<form th:action="@{/admin/menu}" method="get">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
+</body>
+
+</html>
