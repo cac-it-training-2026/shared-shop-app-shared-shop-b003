@@ -43,8 +43,8 @@ public class SaleServiceTest {
         SaleSchedule foodSale = new SaleSchedule();
         foodSale.setId(100);
         foodSale.setCategory(food);
-        foodSale.setStartTime("00:00:00");
-        foodSale.setEndTime("23:59:59");
+        foodSale.setStartTime(LocalTime.of(0, 0, 0));
+        foodSale.setEndTime(LocalTime.of(23, 59, 59));
         foodSale.setDiscountRate(20);
         foodSale.setDeleteFlag(Constant.NOT_DELETED);
 
