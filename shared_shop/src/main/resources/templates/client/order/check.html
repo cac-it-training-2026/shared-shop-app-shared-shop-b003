@@ -145,8 +145,8 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function() {
-			var total = [[${total}]];
-			var currentPoint = [[${currentPoint}]];
+			var total = /*[[${total}]]*/0;
+			var currentPoint = /*[[${currentPoint}]]*/0;
 			var maxUsePoint = currentPoint < total ? currentPoint : total;
 
 			// 初期表示時の計算
@@ -184,7 +184,7 @@
 					$('#paymentAmount').text(paymentAmount);
 					$('#earnPoint').text(earnPoint);
 				}
-			});
+			};
 		});
 		/*]]>*/
 	</script>
