@@ -164,7 +164,7 @@ CREATE TABLE reviews (
     item_id NUMBER(10) NOT NULL,
     user_id NUMBER(10) NOT NULL,
     evaluation NUMBER(1) NOT NULL,
-    content VARCHAR2(1000) NOT NULL,
+    content VARCHAR2(1000),
     delete_flag NUMBER(1) DEFAULT 0 NOT NULL,
     insert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     stamp NUMBER(10) DEFAULT 0,
