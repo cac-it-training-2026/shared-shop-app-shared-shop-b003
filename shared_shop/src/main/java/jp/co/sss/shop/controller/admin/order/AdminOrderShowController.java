@@ -76,6 +76,11 @@ public class AdminOrderShowController {
 			// BeanToolsクラスのcopyEntityToOrderBeanメソッドを使用して表示する注文情報を生成
 			OrderBean orderBean = beanTools.copyEntityToOrderBean(order);
 
+			// 割引後合計金額のセット (クーポン適用の場合)
+			if (order.getDiscount() != null) {
+				orderBean.setDiscountedTotal(order.getDiscountedTotal());
+			}
+
 			orderBeanList.add(orderBean);
 		}
 
@@ -105,6 +110,16 @@ public class AdminOrderShowController {
 
 		// 注文商品情報を取得
 		List<OrderItemBean> orderItemBeanList = beanTools.generateOrderItemBeanList(order.getOrderItemsList());
+
+		// 合計金額を算出
+		int total = priceCalc.orderItemBeanPriceTotalUseSubtotal(orderItemBeanList);
+
+		// クーポン情報の設定
+		if (order.getCoupon() != null) {
+			orderBean.setCouponCode(order.getCoupon().getCode());
+			orderBean.setDiscount(order.getDiscount());
+			orderBean.setDiscountedTotal(order.getDiscountedTotal());
+		}
 
 		// 注文情報をViewへ渡す
 		model.addAttribute("order", orderBean);

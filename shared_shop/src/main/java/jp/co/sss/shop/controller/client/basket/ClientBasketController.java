@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
+import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.bean.CouponBean;
 import jp.co.sss.shop.entity.Coupon;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.CouponRepository;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.service.BeanTools;
+import jp.co.sss.shop.service.SaleService;
 import jp.co.sss.shop.service.PriceCalc;
 
 /**
@@ -41,6 +44,17 @@ public class ClientBasketController {
 	ItemRepository itemRepository;
 
 	/**
+	 * Entity、Form、Bean間のデータコピーサービス
+	 */
+	@Autowired
+	BeanTools beanTools;
+
+	/**
+	 * タイムセールサービス
+	 */
+	@Autowired
+	SaleService saleService;
+  /**
 	 * クーポン情報 リポジトリ
 	 */
 	@Autowired
@@ -82,8 +96,8 @@ public class ClientBasketController {
 
 				// itemOptionalのnullチェック
 				itemOptional.ifPresent(item -> {
-					// 商品情報を最新に更新
-					BeanUtils.copyProperties(item, basketBean, "orderNum");
+					// 商品情報を最新に更新（価格は上書きしない）
+					BeanUtils.copyProperties(item, basketBean, "orderNum", "salePrice");
 
 					// 在庫数を確認
 					if (item.getStock() <= 0 || item.getDeleteFlag() == 1) {
@@ -199,9 +213,17 @@ public class ClientBasketController {
 		if (!itemOptional.isEmpty()) {
 			// Itemの情報を取り出し
 			Item item = itemOptional.get();
+
+			// タイムセール適用
+			ItemBean itemBean = beanTools.copyEntityToItemBean(item);
+			saleService.applyDiscount(itemBean, saleService.getActiveSales());
+
 			// beanにコピー
 			BeanUtils.copyProperties(item, inputbasketBean);
 			inputbasketBean.setPrice(item.getPrice());
+
+			// セール価格を適用
+			inputbasketBean.setSalePrice(itemBean.getSalePrice());
 
 			// 在庫数の確認
 			if (inputbasketBean.getStock() <= 0) {
