@@ -106,10 +106,20 @@ public class ClientOrderShowController {
 			orderItemBeans.add(orderItemBean);
 		}
 
-		// order→ 注文日、支払方法、届け先情報
+		// OrderBeanの作成
+		jp.co.sss.shop.bean.OrderBean orderBean = new jp.co.sss.shop.bean.OrderBean();
+		org.springframework.beans.BeanUtils.copyProperties(order, orderBean);
+		orderBean.setInsertDate(order.getInsertDate().toString());
+		orderBean.setTotal(total);
+		orderBean.setTotalDiscount(order.getTotalDiscount());
+		if (order.getCoupon() != null) {
+			orderBean.setCouponCode(order.getCoupon().getCode());
+		}
+
+		// order→ 注文日、支払方法、届け先情報、ポイント、クーポン割引など
 		// orderItemBeans→ 商品名、単価、数量、小計
-		// total→ 合計金額
-		model.addAttribute("order", order);
+		// total→ 商品合計金額
+		model.addAttribute("order", orderBean);
 		model.addAttribute("orderItemBeans", orderItemBeans);
 		model.addAttribute("total", total);
 
