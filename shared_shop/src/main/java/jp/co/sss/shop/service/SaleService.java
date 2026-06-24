@@ -2,7 +2,6 @@ package jp.co.sss.shop.service;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +57,8 @@ public class SaleService {
 			if (sale.getStartTime() == null || sale.getEndTime() == null)
 				return false;
 
-			// Date型をLocalTime型に変��
-			LocalTime start = convertDateToLocalTime(sale.getStartTime());
-			LocalTime end = convertDateToLocalTime(sale.getEndTime());
+			LocalTime start = sale.getStartTime();
+			LocalTime end = sale.getEndTime();
 
 			boolean active;
 			if (start.isBefore(end)) {
@@ -76,17 +74,6 @@ public class SaleService {
 	}
 
 	/**
-	 * Date型をLocalTime型に変換
-	 * @param date 変換対象のDate
-	 * @return 変換されたLocalTime
-	 */
-	private LocalTime convertDateToLocalTime(java.util.Date date) {
-		return date.toInstant()
-				.atZone(ZoneId.systemDefault())
-				.toLocalTime();
-	}
-
-	/**
 	 * 残り時間を計算する（「HH時間mm分」形式）
 	 * @param sale セール情報
 	 * @return 残り時間の文字列
@@ -98,7 +85,7 @@ public class SaleService {
 				return "終了";
 			}
 
-			LocalTime end = convertDateToLocalTime(sale.getEndTime());
+			LocalTime end = sale.getEndTime();
 
 			Duration duration;
 			if (now.isBefore(end)) {
