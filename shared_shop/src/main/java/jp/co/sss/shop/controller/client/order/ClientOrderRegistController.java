@@ -541,10 +541,10 @@ public class ClientOrderRegistController {
 			OrderItemBean orderItemBean = new OrderItemBean();
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			orderItemBean.setPrice(basketBean.getSalePrice());
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(basketBean.getOrderNum());
-			int subtotal = item.getPrice() * basketBean.getOrderNum();
+			int subtotal = basketBean.getSalePrice() * basketBean.getOrderNum();
 			orderItemBean.setSubtotal(subtotal);
 			total += subtotal;
 			orderItemBeans.add(orderItemBean);
@@ -553,6 +553,15 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderForm", orderForm);
 		model.addAttribute("total", total);
 		model.addAttribute("orderItemBeans", orderItemBeans);
+
+		// クーポン割引の再計算とモデルへの追加
+		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+		if (couponBean != null) {
+			int discount = priceCalc.calculateDiscount(total, couponBean);
+			int discountedTotal = Math.max(0, total - discount);
+			model.addAttribute("discount", discount);
+			model.addAttribute("discountedTotal", discountedTotal);
+		}
 
 		UserBean userBean = (UserBean) session.getAttribute("user");
 		User user = userRepository.getReferenceById(userBean.getId());
