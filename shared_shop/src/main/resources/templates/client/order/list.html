@@ -31,7 +31,7 @@
 				<span th:case="4">[[#{paymethod.emoney.str}]]</span>
 				<span th:case="5">[[#{paymethod.convenience.str}]]</span>
 			</td>
-			<td th:text="${order.total}" class="text"></td>
+			<td th:text="${order.paymentAmount}" class="text"></td>
 			<td th:text="${order.usedPoint} + 'pt'"></td>
 			<td>
 				<form th:action="@{/client/order/detail/{id}(id=${order.id})}" method="post">
