@@ -16,6 +16,7 @@ import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
+import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
@@ -41,6 +42,12 @@ public class ClientOrderShowController {
 	@Autowired
 	OrderItemRepository orderItemRepository;
 
+	@Autowired
+	BeanTools beanTools;
+
+	/**
+	 * Bean変換ツール
+	 */
 	@Autowired
 	BeanTools beanTools;
 
@@ -97,6 +104,7 @@ public class ClientOrderShowController {
 		// IDから注文情報を取得
 		Order order = orderRepository.getReferenceById(id);
 
+		// 表示する注文情報を生成
 		OrderBean orderBean = beanTools.copyEntityToOrderBean(order);
 
 		// 注文IDに紐づく注文商品を取得
@@ -107,23 +115,8 @@ public class ClientOrderShowController {
 
 		int total = 0;
 
-		// 注文商品情報を１件ずつBeanに移し替える
-		for (OrderItem orderItem : orderItemList) {
-
-			OrderItemBean orderItemBean = new OrderItemBean();
-
-			orderItemBean.setId(orderItem.getId());
-			orderItemBean.setName(orderItem.getItem().getName());
-			orderItemBean.setPrice(orderItem.getPrice());
-			orderItemBean.setOrderNum(orderItem.getQuantity());
-
-			int subtotal = orderItem.getPrice() * orderItem.getQuantity();
-			orderItemBean.setSubtotal(subtotal);
-
-			total += subtotal;
-
-			orderItemBeans.add(orderItemBean);
-		}
+		// 注文商品情報を取得
+		List<OrderItemBean> orderItemBeanList = beanTools.generateOrderItemBeanList(order.getOrderItemsList());
 
 		if (order.getCoupon() != null) {
 			orderBean.setCouponCode(order.getCoupon().getCode());

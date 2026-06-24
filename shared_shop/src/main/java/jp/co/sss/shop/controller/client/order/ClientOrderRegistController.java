@@ -82,6 +82,18 @@ public class ClientOrderRegistController {
 	PointHistoryRepository pointHistoryRepository;
 
 	/**
+	 * クーポン情報リポジトリ
+	 */
+	@Autowired
+	CouponRepository couponRepository;
+
+	/**
+	 * 料金計算サービス
+	 */
+	@Autowired
+	PriceCalc priceCalc;
+
+	/**
 	 * お届け先入力画面表示
 	 * @param model viewへ渡すデータを保持するModel
 	 * @return お届け先入力画面
@@ -383,6 +395,15 @@ public class ClientOrderRegistController {
 				model.addAttribute("discountedTotal", discountedTotal);
 			}
 
+			// クーポン割引の再計算
+			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+			if (couponBean != null) {
+				int discount = priceCalc.calculateDiscount(total, couponBean);
+				int discountedTotal = Math.max(0, total - discount);
+				model.addAttribute("discount", discount);
+				model.addAttribute("discountedTotal", discountedTotal);
+			}
+
 			// 注文可能商品が1件もない場合
 			if (orderItemBeans.isEmpty()) {
 				model.addAttribute("orderItemBeans", null);
@@ -419,6 +440,22 @@ public class ClientOrderRegistController {
 		User orderUser = new User();
 		orderUser.setId(userBean.getId());
 		order.setUser(orderUser);
+
+		// クーポン情報の適用
+		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+		if (couponBean != null) {
+			Coupon coupon = couponRepository.getReferenceById(couponBean.getId());
+			order.setCoupon(coupon);
+
+			int discount = priceCalc.calculateDiscount(total, couponBean);
+			order.setDiscount(discount);
+
+			// 使用回数のデクリメント
+			if (coupon.getUsageLimit() != null) {
+				coupon.setUsageLimit(coupon.getUsageLimit() - 1);
+				couponRepository.save(coupon);
+			}
+		}
 
 		// クーポン情報の適用
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
