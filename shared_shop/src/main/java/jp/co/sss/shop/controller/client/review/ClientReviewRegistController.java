@@ -80,6 +80,8 @@ public class ClientReviewRegistController {
 		review.setEvaluation(form.getEvaluation());
 		review.setContent(form.getContent());
 		review.setStamp(form.getStamp());
+		//追加
+		review.setApproved(1);
 
 		reviewRepository.save(review);
 
