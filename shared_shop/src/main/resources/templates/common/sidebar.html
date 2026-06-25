@@ -47,6 +47,16 @@
 			</li>
 		</ul>
 	</div>
+
+	<!--/* スマート購入プランナーリンク */-->
+	<div class="search_area" th:if="${session.user == null or session.user.authority == 2}">
+		<h2 class="title">便利機能</h2>
+		<ul class="menu">
+			<li>
+				<a th:href="@{/client/planner/input}" class="display_list">スマート購入プランナー</a>
+			</li>
+		</ul>
+	</div>
 </aside>
 </body>
 </html>

@@ -82,6 +82,29 @@ public class User {
 	private Date insertDate;
 
 	/**
+	 * 現在のポイント
+	 */
+	@Column(name = "current_point")
+	private Integer currentPoint = 0;
+	/**
+		 * ログイン失敗回数
+		 */
+	@Column
+	private Integer failedLoginCount = 0;
+
+	/**
+	 * ロック期限
+	 */
+	@Column
+	private java.sql.Timestamp lockedUntil;
+
+	/**
+	 * テーマID
+	 */
+	@Column
+	private Integer themeId;
+
+	/**
 	 * 会員IDの取得
 	 * @return 会員ID
 	 */
@@ -239,5 +262,69 @@ public class User {
 	 */
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
+	}
+
+	/**
+	 * 現在のポイントの取得
+	 * @return 現在のポイント
+	 */
+	public Integer getCurrentPoint() {
+		return currentPoint;
+	}
+
+	/**
+	 * 現在のポイントのセット
+	 * @param currentPoint 現在のポイント
+	 */
+	public void setCurrentPoint(Integer currentPoint) {
+		this.currentPoint = currentPoint;
+	}
+
+	/**
+	 * ログイン失敗回数の取得
+	 * @return ログイン失敗回数
+	 */
+	public Integer getFailedLoginCount() {
+		return failedLoginCount;
+	}
+
+	/**
+	 * ログイン失敗回数のセット
+	 * @param failedLoginCount ログイン失敗回数
+	 */
+	public void setFailedLoginCount(Integer failedLoginCount) {
+		this.failedLoginCount = failedLoginCount;
+	}
+
+	/**
+	 * ロック期限の取得
+	 * @return ロック期限
+	 */
+	public java.sql.Timestamp getLockedUntil() {
+		return lockedUntil;
+	}
+
+	/**
+	 * ロック期限のセット
+	 * @param lockedUntil ロック期限
+	 */
+	public void setLockedUntil(java.sql.Timestamp lockedUntil) {
+		this.lockedUntil = lockedUntil;
+	}
+
+	/**
+	 * テーマIDの取得
+	 * @return テーマID
+	 */
+	public Integer getThemeId() {
+		return themeId;
+	}
+
+	/**
+	 * テーマIDのセット
+	 * @param themeId テーマID
+	 */
+	public void setThemeId(Integer themeId) {
+		this.themeId = themeId;
 	}
 }

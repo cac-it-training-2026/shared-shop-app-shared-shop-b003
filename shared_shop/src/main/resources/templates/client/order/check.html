@@ -49,9 +49,69 @@
 		<tr>
 			<td colspan="3"></td>
 			<td class="total">[[#{data.total}]]</td>
-			<td class="total" th:text="${total}"></td>
+			<td class="total" id="total" th:text="${total}"></td>
+		</tr>
+		<tr th:if="${session.coupon != null}">
+			<td colspan="3"></td>
+			<td class="total">クーポン割引([[${session.coupon.code}]])</td>
+			<td class="total" th:text="'-' + ${discount}"></td>
+		</tr>
+		<tr id="pointDiscountRowMain" style="display: none;">
+			<td colspan="3"></td>
+			<td class="total">ポイント利用</td>
+			<td class="total" id="pointDiscountMain">-0</td>
+		</tr>
+		<tr id="finalTotalRow" th:if="${session.coupon != null}" style="display: table-row;">
+			<td colspan="3"></td>
+			<td class="total" style="color: red;">割引適用後合計</td>
+			<td class="total" style="color: red;" id="finalTotal" th:text="${discountedTotal}"></td>
+		</tr>
+		<tr id="finalTotalRow" th:if="${session.coupon == null}" style="display: none;">
+			<td colspan="3"></td>
+			<td class="total" style="color: red;">割引適用後合計</td>
+			<td class="total" style="color: red;" id="finalTotal" th:text="${total}"></td>
 		</tr>
 	</table>
+
+	<div class="user_info_form_area">
+		<table class="detail_table point">
+			<caption class="table_caption">ポイント利用</caption>
+			<tr>
+				<th>商品合計金額</th>
+				<td>
+    <span th:text="${discountedTotal != null ? discountedTotal : total}"></span> 円
+</td>
+			</tr>
+			<tr>
+				<th>保有ポイント</th>
+				<td th:text="${currentPoint} + ' pt'"></td>
+			</tr>
+			<tr>
+				<th>利用ポイント</th>
+				<td>
+					<input type="number" name="usePoint" id="usePointInput" th:value="${prevUsePoint != null ? prevUsePoint : 0}" min="0" th:max="${currentPoint < total ? currentPoint : total}" step="1" form="orderCompleteForm" /> pt
+					<input type="button" id="applyPointButton" value="適用" />
+					<p id="pointErrorMessage" style="color: red; display: none;">不正な値です。保有ポイントおよび注文金額以内で入力してください。</p>
+					<p th:if="${pointError}" style="color: red;">ポイント利用額が正しくありません。再度入力してください。</p>
+				</td>
+			</tr>
+			<tr id="pointDiscountRow" style="display: none;">
+				<th>ポイント割引額</th>
+				<td>-<span id="pointDiscount">0</span> 円</td>
+			</tr>
+			<tr>
+				<th>お支払予定金額</th>
+				<td>
+    <span id="paymentAmount"
+          th:text="${discountedTotal != null ? discountedTotal : total}">
+    </span> 円
+</td>
+			</tr>
+			<tr>
+				<th>獲得予定ポイント</th>
+				<td><span id="earnPoint" th:text="${total / 10}"></span> pt</td>
+			</tr>
+		</table>
 	<div class="user_info_form_area">
 		<table class="detail_table address">
 			<caption class="table_caption">[[#{data.address}]]</caption>
@@ -85,7 +145,7 @@
 				</td>
 			</tr>
 		</table>
-		<form th:action="@{/client/order/complete}" method="post">
+		<form th:action="@{/client/order/complete}" method="post" id="orderCompleteForm">
 			<input class="send_button" type="submit" value="ご注文の確定" th:if="${orderItemBeans != null}"/>
 		</form>
 		<form th:action="@{/client/order/payment/back}" method="post" class="update">
@@ -98,6 +158,70 @@
 	<th:block  th:unless="${orderItemBeans != null}">
 	<p class="complete_link"><a th:href="@{/}" th:text="#{msg.back.to.top}"></a></p>	
 	</th:block>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		document.addEventListener('DOMContentLoaded', function() {
+			var total = /*[[${total}]]*/0;
+			var discount = /*[[${discount != null ? discount : 0}]]*/0;
+			var discountedTotalBase = /*[[${discountedTotal != null ? discountedTotal : total}]]*/total;
+			var currentPoint = /*[[${currentPoint}]]*/0;
+			var maxUsePoint = currentPoint < discountedTotalBase ? currentPoint : discountedTotalBase;
+
+			var usePointInput = document.getElementById('usePointInput');
+			var applyPointButton = document.getElementById('applyPointButton');
+			var pointErrorMessage = document.getElementById('pointErrorMessage');
+			var sendButton = document.querySelector('.send_button');
+			var pointDiscountRow = document.getElementById('pointDiscountRow');
+			var pointDiscount = document.getElementById('pointDiscount');
+			var paymentAmount = document.getElementById('paymentAmount');
+			var earnPoint = document.getElementById('earnPoint');
+
+			var pointDiscountRowMain = document.getElementById('pointDiscountRowMain');
+			var pointDiscountMain = document.getElementById('pointDiscountMain');
+			var finalTotal = document.getElementById('finalTotal');
+			var finalTotalRow = document.getElementById('finalTotalRow');
+
+			function updatePriceDisplay() {
+				var usePoint = usePointInput.value === '' ? 0 : parseInt(usePointInput.value);
+
+				if (isNaN(usePoint) || usePoint < 0 || usePoint > maxUsePoint) {
+					pointErrorMessage.style.display = 'block';
+					sendButton.disabled = true;
+				} else {
+					pointErrorMessage.style.display = 'none';
+					sendButton.disabled = false;
+
+					var finalAmount = discountedTotalBase - usePoint;
+					var earnPt = Math.floor(finalAmount / 10);
+
+					if (usePoint > 0) {
+						pointDiscountRow.style.display = 'table-row';
+						pointDiscountRowMain.style.display = 'table-row';
+						finalTotalRow.style.display = 'table-row';
+					} else {
+						pointDiscountRow.style.display = 'none';
+						pointDiscountRowMain.style.display = 'none';
+						if (discount === 0) {
+							finalTotalRow.style.display = 'none';
+						}
+					}
+
+					pointDiscount.textContent = usePoint;
+					pointDiscountMain.textContent = '-' + usePoint;
+					paymentAmount.textContent = finalAmount;
+					finalTotal.textContent = finalAmount;
+					earnPoint.textContent = earnPt;
+				}
+			}
+
+			applyPointButton.addEventListener('click', updatePriceDisplay);
+
+			// 初期表示
+			updatePriceDisplay();
+		});
+		/*]]>*/
+	</script>
 </body>
 
 </html>

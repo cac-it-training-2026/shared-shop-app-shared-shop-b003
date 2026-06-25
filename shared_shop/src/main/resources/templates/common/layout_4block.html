@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stylesheet.css}" />
 <title th:replace="${title}">シェアードショップ</title>
 </head>
-<body class="admin">
+<body class="admin" th:classappend="${(session.user != null and session.user.themeId != null) ? 'theme-' + session.user.themeId : ''}">
 	<!--/* ヘッダー */-->
 	<header>
 		<div th:replace="~{common/header :: layout-header}"></div>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+<head>
+<title th:text="#{review}+#{title.input} + ' | ' + #{shop.title}"></title>
+</head>
+<body class="user">
+	<h2 class="page_title" th:text="#{review}+#{title.input}"></h2>
+	<div class="user_info_form_area">
+		<form th:action="@{/client/review/regist/check}" method="post" th:object="${reviewForm}">
+			<input type="hidden" th:field="*{itemId}" />
+			<ul class="error_list" th:if="${#fields.hasErrors('*')}">
+				<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+			</ul>
+			<table class="detail_table">
+				<tr>
+					<th>商品名</th>
+					<td th:text="${item.name}"></td>
+				</tr>
+				<tr>
+					<th>評価</th>
+					<td>
+						<select th:field="*{evaluation}">
+							<option value="5">5（非常に満足）</option>
+							<option value="4">4（満足）</option>
+							<option value="3">3（普通）</option>
+							<option value="2">2（不満）</option>
+							<option value="1">1（非常に不満）</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>スタンプ</th>
+					<td>
+						<label><input type="radio" th:field="*{stamp}" value="1" /> 😊 満足</label><br/>
+						<label><input type="radio" th:field="*{stamp}" value="2" /> 👍 おすすめ</label><br/>
+						<label><input type="radio" th:field="*{stamp}" value="3" /> ⭐ コスパ良し</label><br/>
+						<label><input type="radio" th:field="*{stamp}" value="4" /> 🎁 プレゼント向き</label><br/>
+						<label><input type="radio" th:field="*{stamp}" value="5" /> 🚚 配送が早い</label><br/>
+						<label><input type="radio" th:field="*{stamp}" value="0" checked /> なし</label>
+					</td>
+				</tr>
+				<tr>
+					<th>内容</th>
+					<td><textarea th:field="*{content}" rows="5" cols="40"></textarea></td>
+				</tr>
+			</table>
+			<div class="detail_button_area">
+				<input type="submit" value="確認" class="send_button" />
+				<input type="button" value="戻る" class="back_button" onclick="history.back()" />
+			</div>
+		</form>
+	</div>
+</body>
+</html>
