@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title>ポイント履歴 | [[#{shop.title}]]</title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="user point_history">
+	<h2 th:class="title">ポイント履歴</h2>
+
+	<th:block th:if="${not #lists.isEmpty(pointHistories)}">
+		<table class="list_table">
+			<thead>
+				<tr>
+					<th>日時</th>
+					<th>内容</th>
+					<th>増減ポイント</th>
+					<th>残高</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="history : ${pointHistories}">
+					<td th:text="${#dates.format(history.createdTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+					<td th:text="${history.description}"></td>
+					<td th:text="${history.point > 0 ? '+' + history.point : history.point} + 'pt'"></td>
+					<td th:text="${history.balance} + 'pt'"></td>
+				</tr>
+			</tbody>
+		</table>
+	</th:block>
+
+	<th:block th:if="${#lists.isEmpty(pointHistories)}">
+		<p>ポイント履歴はありません。</p>
+	</th:block>
+
+	<div class="detail_button_area">
+		<form th:action="@{/client/user/detail}" method="get">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
+</body>
+
+</html>

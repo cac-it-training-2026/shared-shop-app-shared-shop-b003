@@ -6,6 +6,24 @@
 <meta charset="UTF-8" />
 </head>
 <body class="user index">
+	<!--/* タイムセール表示エリア */-->
+	<div th:if="${not #maps.isEmpty(activeSales)}" class="time-sale-area">
+		<h2 class="title sale-title">開催中のタイムセール</h2>
+		<div class="sale-items">
+			<div th:each="entry : ${activeSales}" class="sale-category-card">
+				<div class="sale-category-name" th:text="${entry.value.category.name}"></div>
+				<div class="sale-discount-rate" th:text="${entry.value.discountRate} + '% OFF'"></div>
+				<div class="sale-duration">
+					[[${entry.value.startTime}]] 〜 [[${entry.value.endTime}]]
+					<div class="sale-remaining">あと [[${@saleService.getRemainingTime(entry.value)}]]</div>
+				</div>
+			</div>
+		</div>
+		<div class="sale-link-container">
+			<a th:href="@{/sale}" class="btn-sale">［セール商品を見る］</a>
+		</div>
+	</div>
+
 	<div>
 		<h2 class="title">
 				<span th:if="${sortType==1}" th:text="#{sort.latest.title}"></span>
