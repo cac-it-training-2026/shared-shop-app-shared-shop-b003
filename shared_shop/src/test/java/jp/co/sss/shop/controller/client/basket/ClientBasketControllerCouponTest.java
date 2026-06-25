@@ -102,6 +102,7 @@ public class ClientBasketControllerCouponTest {
         BasketBean basketBean = new BasketBean();
         basketBean.setId(1);
         basketBean.setPrice(1000);
+        basketBean.setSalePrice(1000); // タイムセール適用後の価格をセット
         basketBean.setOrderNum(2);
         basket.add(basketBean);
 

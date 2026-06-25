@@ -229,13 +229,14 @@ public class ClientOrderRegistController {
 		model.addAttribute("currentPoint", user.getCurrentPoint());
 
 		// クーポン割引の計算
+		int discountedTotal = total;
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			int discountedTotal = Math.max(0, total - discount);
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
 			model.addAttribute("discount", discount);
-			model.addAttribute("discountedTotal", discountedTotal);
 		}
+		model.addAttribute("discountedTotal", discountedTotal);
 
 		// 全商品が在庫切れの場合のメッセージ渡し
 		if (orderItemBeans.isEmpty()) {
@@ -338,6 +339,14 @@ public class ClientOrderRegistController {
 			orderableBasketBeans.add(basketBean);
 		}
 
+		// クーポン適用後の最終金額を計算
+		int discountedTotal = total;
+		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+		if (couponBean != null) {
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
+		}
+
 		// ポイント関連のバリデーション
 		User user = userRepository.getReferenceById(userBean.getId());
 		int currentPoint = user.getCurrentPoint();
@@ -351,7 +360,7 @@ public class ClientOrderRegistController {
 			pointError = true;
 		} else if (usePoint > currentPoint) {
 			pointError = true;
-		} else if (usePoint > total) {
+		} else if (usePoint > discountedTotal) {
 			pointError = true;
 		}
 
@@ -375,13 +384,13 @@ public class ClientOrderRegistController {
 			model.addAttribute("currentPoint", currentPoint);
 
 			// クーポン割引の再計算
-			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+			int discountedTotalRe = total;
 			if (couponBean != null) {
-				int discount = priceCalc.calculateDiscount(total, couponBean);
-				int discountedTotal = Math.max(0, total - discount);
+				int discount = priceCalc.calculateDiscount(discountedTotalRe, couponBean);
+				discountedTotalRe = Math.max(0, discountedTotalRe - discount);
 				model.addAttribute("discount", discount);
-				model.addAttribute("discountedTotal", discountedTotal);
 			}
+			model.addAttribute("discountedTotal", discountedTotalRe);
 
 			// 注文可能商品が1件もない場合
 			if (orderItemBeans.isEmpty()) {
@@ -399,7 +408,7 @@ public class ClientOrderRegistController {
 
 		// ポイント利用がある場合、未確認なら確認画面へ
 		if (usePoint > 0 && !isConfirmed) {
-			model.addAttribute("total", total);
+			model.addAttribute("total", discountedTotal);
 			model.addAttribute("usePoint", usePoint);
 			return "client/order/point_confirm";
 		}
@@ -414,14 +423,13 @@ public class ClientOrderRegistController {
 		order.setPhoneNumber(orderForm.getPhoneNumber());
 		order.setPayMethod(orderForm.getPayMethod());
 		order.setUsedPoint(usePoint);
-		order.setPaymentAmount(total - usePoint);
+		order.setPaymentAmount(discountedTotal - usePoint);
 
 		User orderUser = new User();
 		orderUser.setId(userBean.getId());
 		order.setUser(orderUser);
 
 		// クーポン情報の適用
-		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
 			Coupon coupon = couponRepository.getReferenceById(couponBean.getId());
 			order.setCoupon(coupon);
@@ -474,7 +482,7 @@ public class ClientOrderRegistController {
 
 		// 【マージ対応：2箇所目】ポイント付与処理とガチャ機能用セッション設定の競合を解決
 		// ポイント付与加算処理（ポイント機能ブランチの処理）
-		int paymentAmount = total - usePoint;
+		int paymentAmount = discountedTotal - usePoint;
 		int earnPoint = paymentAmount / 10;
 		if (earnPoint > 0) {
 			user.setCurrentPoint(user.getCurrentPoint() + earnPoint);
@@ -535,10 +543,11 @@ public class ClientOrderRegistController {
 			OrderItemBean orderItemBean = new OrderItemBean();
 			orderItemBean.setId(item.getId());
 			orderItemBean.setName(item.getName());
-			orderItemBean.setPrice(item.getPrice());
+			// タイムセール適用済みの価格を使用
+			orderItemBean.setPrice(basketBean.getSalePrice());
 			orderItemBean.setImage(item.getImage());
 			orderItemBean.setOrderNum(basketBean.getOrderNum());
-			int subtotal = item.getPrice() * basketBean.getOrderNum();
+			int subtotal = basketBean.getSalePrice() * basketBean.getOrderNum();
 			orderItemBean.setSubtotal(subtotal);
 			total += subtotal;
 			orderItemBeans.add(orderItemBean);
@@ -547,6 +556,16 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderForm", orderForm);
 		model.addAttribute("total", total);
 		model.addAttribute("orderItemBeans", orderItemBeans);
+
+		// クーポン割引の再計算
+		int discountedTotal = total;
+		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
+		if (couponBean != null) {
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
+			model.addAttribute("discount", discount);
+		}
+		model.addAttribute("discountedTotal", discountedTotal);
 
 		UserBean userBean = (UserBean) session.getAttribute("user");
 		User user = userRepository.getReferenceById(userBean.getId());

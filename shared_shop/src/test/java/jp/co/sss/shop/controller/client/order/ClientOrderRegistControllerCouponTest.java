@@ -9,6 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import jp.co.sss.shop.repository.UserRepository;
+import jp.co.sss.shop.repository.PointHistoryRepository;
+import jp.co.sss.shop.entity.User;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -46,6 +49,12 @@ public class ClientOrderRegistControllerCouponTest {
 	private CouponRepository couponRepository;
 
 	@Mock
+	private UserRepository userRepository;
+
+	@Mock
+	private PointHistoryRepository pointHistoryRepository;
+
+	@Mock
 	private PriceCalc priceCalc;
 
 	@Mock
@@ -70,6 +79,7 @@ public class ClientOrderRegistControllerCouponTest {
 		itemBean.setId(1);
 		itemBean.setOrderNum(1);
 		itemBean.setPrice(1000);
+		itemBean.setSalePrice(1000); // タイムセール適用後の価格をセット
 		basket.add(itemBean);
 
 		UserBean userBean = new UserBean();
@@ -90,6 +100,11 @@ public class ClientOrderRegistControllerCouponTest {
 		when(session.getAttribute("coupon")).thenReturn(couponBean);
 		when(couponRepository.getReferenceById(1)).thenReturn(coupon);
 		when(priceCalc.calculateDiscount(1000, couponBean)).thenReturn(100);
+
+		User user = new User();
+		user.setId(1);
+		user.setCurrentPoint(100);
+		when(userRepository.getReferenceById(1)).thenReturn(user);
 
 		Item item = new Item();
 		item.setId(1);
