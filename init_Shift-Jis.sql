@@ -314,7 +314,7 @@ INSERT INTO items VALUES(seq_items.NEXTVAL,'Bluetoothキーボード',3980,'無線接続'
 
 -- モニター
 INSERT INTO items VALUES(seq_items.NEXTVAL,'34インチウルトラワイドモニター',49800,'作業効率向上',5,'moniter.png',(SELECT id FROM categories WHERE name = 'モニター'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'4Kモニター',59800,'高解像度',5,'4KMonitor',(SELECT id FROM categories WHERE name = 'モニター'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'4Kモニター',59800,'高解像度',5,'4KMonitor.jpeg',(SELECT id FROM categories WHERE name = 'モニター'),0,SYSDATE);
 
 -- マイク
 INSERT INTO items VALUES(seq_items.NEXTVAL,'配信用USBマイク',7980,'初心者配信向け',10,'USBMicrophone.jpeg',(SELECT id FROM categories WHERE name = 'マイク'),0,SYSDATE);
