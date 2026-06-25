@@ -32,7 +32,7 @@
 					</th:block>
 				</dd>
 				<dt>付与予定ポイント</dt>
-				<dd th:text="*{price / 10} + 'pt'"></dd>
+				<dd th:text="${item.discountRate > 0 ? item.salePrice / 10 : item.price / 10} + 'pt'"></dd>
 				<dt>[[#{data.item.stock}]]</dt>
 				<dd th:if="*{stock > 5}" th:text="#{data.in.stock}"></dd>
 				<dd th:if="*{stock >= 1 and 5 >= stock }" th:text="*{stock}"></dd>
