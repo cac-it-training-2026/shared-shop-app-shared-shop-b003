@@ -16,7 +16,6 @@ import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
-import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
@@ -41,9 +40,6 @@ public class ClientOrderShowController {
 	 */
 	@Autowired
 	OrderItemRepository orderItemRepository;
-
-	@Autowired
-	BeanTools beanTools;
 
 	/**
 	 * Bean変換ツール

@@ -20,6 +20,7 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.ReviewRepository;
 import jp.co.sss.shop.service.BeanTools;
+import jp.co.sss.shop.service.RecentlyViewedService;
 import jp.co.sss.shop.service.SaleService;
 import jp.co.sss.shop.util.Constant;
 
@@ -74,6 +75,12 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	SaleService saleService;
+
+	/**
+	 * 最近閲覧した商品の履歴を管理するサービス
+	 */
+	@Autowired
+	RecentlyViewedService recentlyViewedService;
 
 	/**
 	 * トップ画面 表示処理
@@ -230,7 +237,8 @@ public class ClientItemShowController {
 		model.addAttribute("reviews", reviewList);
 		model.addAttribute("hasPurchased", hasPurchased);
 		model.addAttribute("reviews", reviewBeanList);
-
+		// 閲覧履歴に追加
+		recentlyViewedService.addToHistory(id);
 		return "client/item/detail";
 	}
 
