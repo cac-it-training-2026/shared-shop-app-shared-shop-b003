@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 
 /**
  * クーポンエンティティ
- *
  * @author Jules
  */
 @Entity
