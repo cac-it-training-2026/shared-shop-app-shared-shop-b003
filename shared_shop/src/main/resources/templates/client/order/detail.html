@@ -86,10 +86,15 @@
 				<td class="total">クーポン割引([[${order.couponCode}]])</td>
 				<td class="total" th:text="'-' + ${order.discount}"></td>
 			</tr>
+			<tr th:if="${order.usedPoint != 0}">
+				<td colspan="2"></td>
+				<td class="total">利用ポイント</td>
+				<td class="total" th:text="'-' + ${order.usedPoint}"></td>
+			</tr>
 			<tr th:if="${order.discount != null}">
 				<td colspan="2"></td>
 				<td class="total" style="color: red;">割引適用後合計</td>
-				<td class="total" style="color: red;" th:text="${order.discountedTotal}"></td>
+				<td class="total" style="color: red;" th:text="${order.discountedTotal - order.usedPoint}"></td>
 			</tr>
 		</table>
 		<form th:action="@{/client/order/list}" method="post" class="detail_button_area">

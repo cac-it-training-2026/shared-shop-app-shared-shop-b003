@@ -60,7 +60,7 @@
 				<input type="submit" value="適用" />
 			</form>
 			<div th:if="${session.coupon != null}" style="margin-top: 10px;">
-				<p>適用中のクーポン: <span th:text="${session.coupon.code}"></span></p>
+				<p>適用中のクーポン: <span th:text="${session.coupon.code}"></span><span th:if="${session.coupon.discountType == 'percent'}" th:text="${' ('+session.coupon.discountValue + '%引き)'}"></span></p>
 				<p>割引額: <span th:text="${discount}"></span>円</p>
 			</div>
 		</div>
