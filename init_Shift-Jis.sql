@@ -395,7 +395,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'キーボード');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'マウス');
--- プランナーキーワード: 具体的なゲームタイseq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: 具体的なゲームタイプ
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'キーボード');
@@ -433,7 +433,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'キーボード');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'マウス');
--- プランナーキーワード: プログラミング・seq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: プログラミング・開発
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'プログラミング', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'プログラミング', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'プログラミング', 'キーボード');
@@ -498,7 +498,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'キーボード');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', '書籍');
--- プランナーキーワード: 配信・録画・動seq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: 配信・録画・動画
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '配信', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '配信', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '配信', 'キーボード');
@@ -544,7 +544,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'マウス');
--- プランナーキーワード: 事務・ビジネス・テレseq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: 事務・ビジネス・テレビ
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '事務', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '事務', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '事務', 'キーボード');
@@ -585,7 +585,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '資料作成', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '資料作成', 'キーボード');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '資料作成', 'マウス');
--- プランナーキーワード: 一般用途・カジseq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: 一般用途
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ブラウジング', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ブラウジング', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ブラウジング', 'マウス');
@@ -649,7 +649,7 @@ INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'コスパ', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'コスパ', 'キーボード');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'コスパ', 'マウス');
--- プランナーキーワード: デザイン・クリエイティブ・seq_planner_keyword_categories.NEXTVAL
+-- プランナーキーワード: デザイン・クリエイティブ
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'イラスト', 'PC');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'イラスト', 'モニター');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'イラスト', 'マウス');
