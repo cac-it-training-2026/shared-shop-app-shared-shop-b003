@@ -41,6 +41,9 @@ public class ClientOrderShowController {
 	@Autowired
 	OrderItemRepository orderItemRepository;
 
+	/**
+	 * Bean変換ツール
+	 */
 	@Autowired
 	BeanTools beanTools;
 
@@ -97,32 +100,18 @@ public class ClientOrderShowController {
 		// IDから注文情報を取得
 		Order order = orderRepository.getReferenceById(id);
 
+		// 表示する注文情報を生成
 		OrderBean orderBean = beanTools.copyEntityToOrderBean(order);
 
 		// 注文IDに紐づく注文商品を取得
 		List<OrderItem> orderItemList = orderItemRepository.findByOrderId(id);
 
-		// HTML表示用の空の商品リスト作成
-		List<OrderItemBean> orderItemBeans = new ArrayList<>();
+		// 注文商品情報を取得
+		List<OrderItemBean> orderItemBeanList = beanTools.generateOrderItemBeanList(order.getOrderItemsList());
 
 		int total = 0;
-
-		// 注文商品情報を１件ずつBeanに移し替える
-		for (OrderItem orderItem : orderItemList) {
-
-			OrderItemBean orderItemBean = new OrderItemBean();
-
-			orderItemBean.setId(orderItem.getId());
-			orderItemBean.setName(orderItem.getItem().getName());
-			orderItemBean.setPrice(orderItem.getPrice());
-			orderItemBean.setOrderNum(orderItem.getQuantity());
-
-			int subtotal = orderItem.getPrice() * orderItem.getQuantity();
-			orderItemBean.setSubtotal(subtotal);
-
-			total += subtotal;
-
-			orderItemBeans.add(orderItemBean);
+		for (OrderItemBean itemBean : orderItemBeanList) {
+			total += itemBean.getSubtotal();
 		}
 
 		if (order.getCoupon() != null) {
@@ -135,7 +124,7 @@ public class ClientOrderShowController {
 		// orderItemBeans→ 商品名、単価、数量、小計
 		// total→ 合計金額
 		model.addAttribute("order", orderBean);
-		model.addAttribute("orderItemBeans", orderItemBeans);
+		model.addAttribute("orderItemBeans", orderItemBeanList);
 		model.addAttribute("total", total);
 
 		return "client/order/detail";

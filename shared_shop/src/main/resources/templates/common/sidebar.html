@@ -27,6 +27,18 @@
 			</form>
 		</div>
 	</div>
+		<!--/* 最近チェックした商品(非会員、一般会員用) */-->
+	<div class="search_area" th:if="${(session.user == null or session.user.authority == 2) and recentlyViewedItems != null and !recentlyViewedItems.isEmpty()}">
+		<h2 th:class="title" th:text="#{recent.viewed.items.title}"></h2>
+		<ul class="recent_viewed">
+			<li th:each="item : ${recentlyViewedItems}">
+				<a th:href="@{/client/item/detail/{id}(id=${item.id})}">
+					<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" width="50" height="50" />
+					<span th:text="${item.name}"></span>
+				</a>
+			</li>
+		</ul>
+	</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
 	<div th:if="${session.user != null and session.user.authority != 2}">

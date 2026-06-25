@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * レビュー情報エンティティクラス
@@ -57,6 +58,13 @@ public class Review {
 	 */
 	@Column
 	private Integer stamp;
+
+	/**
+	 * 0：非公開、1：公開
+	 */
+	@Column
+	@NotNull
+	private Integer approved = 1;
 
 	/**
 	 * 登録日付
@@ -110,6 +118,14 @@ public class Review {
 
 	public void setStamp(Integer stamp) {
 		this.stamp = stamp;
+	}
+
+	public Integer getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Integer approved) {
+		this.approved = approved;
 	}
 
 	public Date getInsertDate() {
