@@ -336,7 +336,7 @@ INSERT INTO items VALUES(seq_items.NEXTVAL,'電子レンジ',12800,'一人暮ら
 -- 日用品
 INSERT INTO items VALUES(seq_items.NEXTVAL,'ティッシュペーパー',298,'5箱セット',50,NULL,(SELECT id FROM categories WHERE name = '日用品'),0,SYSDATE);
 INSERT INTO items VALUES(seq_items.NEXTVAL,'洗濯洗剤',498,'大容量タイプ',30,NULL,(SELECT id FROM categories WHERE name = '日用品'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'歯ブラシセット',398,'3本入り',50,NULL,(SELECT id FROM categories WHERE name = '日用品'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'歯ブラシセット',398,'3本入り',50,'ToothbrushSet.jpeg',(SELECT id FROM categories WHERE name = '日用品'),0,SYSDATE);
 
 -- ファッション
 INSERT INTO items VALUES(seq_items.NEXTVAL,'無地Tシャツ',1980,'定番アイテム',30,'Tshirt.jpg',(SELECT id FROM categories WHERE name = 'ファッション'),0,SYSDATE);
