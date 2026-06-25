@@ -137,18 +137,21 @@ public class ClientBasketController {
 		if (basketBeans != null) {
 			int total = 0;
 			for (BasketBean bean : basketBeans) {
-				total += bean.getPrice() * bean.getOrderNum();
+				total += bean.getSalePrice() * bean.getOrderNum();
 			}
 			model.addAttribute("total", total);
+
+			// はじめに discountedTotal = total をする
+			int discountedTotal = total;
 
 			// クーポン適用後の合計
 			CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 			if (couponBean != null) {
-				int discount = priceCalc.calculateDiscount(total, couponBean);
-				int discountedTotal = Math.max(0, total - discount);
+				int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+				discountedTotal = Math.max(0, discountedTotal - discount);
 				model.addAttribute("discount", discount);
-				model.addAttribute("discountedTotal", discountedTotal);
 			}
+			model.addAttribute("discountedTotal", discountedTotal);
 		}
 
 		// エラーメッセージの表示

@@ -229,13 +229,14 @@ public class ClientOrderRegistController {
 		model.addAttribute("currentPoint", user.getCurrentPoint());
 
 		// クーポン割引の計算
+		int discountedTotal = total;
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			int discountedTotal = Math.max(0, total - discount);
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
 			model.addAttribute("discount", discount);
-			model.addAttribute("discountedTotal", discountedTotal);
 		}
+		model.addAttribute("discountedTotal", discountedTotal);
 
 		// 全商品が在庫切れの場合のメッセージ渡し
 		if (orderItemBeans.isEmpty()) {
@@ -339,11 +340,11 @@ public class ClientOrderRegistController {
 		}
 
 		// クーポン適用後の最終金額を計算
-		int finalTotal = total;
+		int discountedTotal = total;
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			finalTotal = Math.max(0, total - discount);
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
 		}
 
 		// ポイント関連のバリデーション
@@ -359,7 +360,7 @@ public class ClientOrderRegistController {
 			pointError = true;
 		} else if (usePoint > currentPoint) {
 			pointError = true;
-		} else if (usePoint > finalTotal) {
+		} else if (usePoint > discountedTotal) {
 			pointError = true;
 		}
 
@@ -383,12 +384,13 @@ public class ClientOrderRegistController {
 			model.addAttribute("currentPoint", currentPoint);
 
 			// クーポン割引の再計算
+			int discountedTotalRe = total;
 			if (couponBean != null) {
-				int discount = priceCalc.calculateDiscount(total, couponBean);
-				int discountedTotal = Math.max(0, total - discount);
+				int discount = priceCalc.calculateDiscount(discountedTotalRe, couponBean);
+				discountedTotalRe = Math.max(0, discountedTotalRe - discount);
 				model.addAttribute("discount", discount);
-				model.addAttribute("discountedTotal", discountedTotal);
 			}
+			model.addAttribute("discountedTotal", discountedTotalRe);
 
 			// 注文可能商品が1件もない場合
 			if (orderItemBeans.isEmpty()) {
@@ -406,7 +408,7 @@ public class ClientOrderRegistController {
 
 		// ポイント利用がある場合、未確認なら確認画面へ
 		if (usePoint > 0 && !isConfirmed) {
-			model.addAttribute("total", finalTotal);
+			model.addAttribute("total", discountedTotal);
 			model.addAttribute("usePoint", usePoint);
 			return "client/order/point_confirm";
 		}
@@ -421,7 +423,7 @@ public class ClientOrderRegistController {
 		order.setPhoneNumber(orderForm.getPhoneNumber());
 		order.setPayMethod(orderForm.getPayMethod());
 		order.setUsedPoint(usePoint);
-		order.setPaymentAmount(finalTotal - usePoint);
+		order.setPaymentAmount(discountedTotal - usePoint);
 
 		User orderUser = new User();
 		orderUser.setId(userBean.getId());
@@ -480,7 +482,7 @@ public class ClientOrderRegistController {
 
 		// 【マージ対応：2箇所目】ポイント付与処理とガチャ機能用セッション設定の競合を解決
 		// ポイント付与加算処理（ポイント機能ブランチの処理）
-		int paymentAmount = finalTotal - usePoint;
+		int paymentAmount = discountedTotal - usePoint;
 		int earnPoint = paymentAmount / 10;
 		if (earnPoint > 0) {
 			user.setCurrentPoint(user.getCurrentPoint() + earnPoint);
@@ -556,13 +558,14 @@ public class ClientOrderRegistController {
 		model.addAttribute("orderItemBeans", orderItemBeans);
 
 		// クーポン割引の再計算
+		int discountedTotal = total;
 		CouponBean couponBean = (CouponBean) session.getAttribute("coupon");
 		if (couponBean != null) {
-			int discount = priceCalc.calculateDiscount(total, couponBean);
-			int discountedTotal = Math.max(0, total - discount);
+			int discount = priceCalc.calculateDiscount(discountedTotal, couponBean);
+			discountedTotal = Math.max(0, discountedTotal - discount);
 			model.addAttribute("discount", discount);
-			model.addAttribute("discountedTotal", discountedTotal);
 		}
+		model.addAttribute("discountedTotal", discountedTotal);
 
 		UserBean userBean = (UserBean) session.getAttribute("user");
 		User user = userRepository.getReferenceById(userBean.getId());
