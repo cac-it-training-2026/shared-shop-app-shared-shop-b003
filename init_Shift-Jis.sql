@@ -1,54 +1,54 @@
 -- ==========================================
--- 1. ƒVƒXƒeƒ€ƒ†[ƒU[‚Å‚Ìİ’èiPDBØ‚è‘Ö‚¦Eƒ†[ƒU[ì¬j
+-- 1. ã‚·ã‚¹ãƒ†ãƒ ãƒ¦ãƒ¼ã‚¶ãƒ¼ã§ã®è¨­å®šï¼ˆPDBåˆ‡ã‚Šæ›¿ãˆãƒ»ãƒ¦ãƒ¼ã‚¶ãƒ¼ä½œæˆï¼‰
 -- ==========================================
----- PDB‚ÉØ‚è‘Ö‚¦
+---- PDBã«åˆ‡ã‚Šæ›¿ãˆ
 --ALTER SESSION SET CONTAINER = xepdb1;
----- ƒ†[ƒU‚Ìì¬
+---- ãƒ¦ãƒ¼ã‚¶ã®ä½œæˆ
 --CREATE USER shared_shop_user IDENTIFIED BY systemsss;
----- Œ ŒÀ‚Ì•t—^
+---- æ¨©é™ã®ä»˜ä¸
 --GRANT ALL PRIVILEGES TO shared_shop_user;
 
 -- ==========================================
--- 2. shared_shop_user ‚ÅÚ‘±‚µ‚½Œã‚Ìİ’è
+-- 2. shared_shop_user ã§æ¥ç¶šã—ãŸå¾Œã®è¨­å®š
 -- ==========================================
 
 -----------------------------------------------------------------------
-/*‰Šú‰»•¶*/
+/*åˆæœŸåŒ–æ–‡*/
 -----------------------------------------------------------------------
--- 1. ƒ|ƒCƒ“ƒg—š—ğƒe[ƒuƒ‹‚Ìíœi‰ïˆõ‚ÉˆË‘¶j
+-- 1. ãƒã‚¤ãƒ³ãƒˆå±¥æ­´ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ï¼ˆä¼šå“¡ã«ä¾å­˜ï¼‰
 DROP TABLE point_histories CASCADE CONSTRAINTS;
 
--- 2. ƒ^ƒCƒ€ƒZ[ƒ‹—pƒe[ƒuƒ‹‚ÌíœiƒJƒeƒSƒŠ‚ÉˆË‘¶j
+-- 2. ã‚¿ã‚¤ãƒ ã‚»ãƒ¼ãƒ«ç”¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ï¼ˆã‚«ãƒ†ã‚´ãƒªã«ä¾å­˜ï¼‰
 DROP TABLE sale_schedule CASCADE CONSTRAINTS;
 
--- 3. ƒKƒ`ƒƒƒƒOƒe[ƒuƒ‹‚Ìíœi‘¼‚©‚ç‚ÌQÆ‚È‚µj
+-- 3. ã‚¬ãƒãƒ£ãƒ­ã‚°ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ï¼ˆä»–ã‹ã‚‰ã®å‚ç…§ãªã—ï¼‰
 DROP TABLE gacha_logs CASCADE CONSTRAINTS;
 
--- 4. ’•¶¤•iƒe[ƒuƒ‹i’•¶‚Æ¤•i‚ÉˆË‘¶j‚Ìíœ
+-- 4. æ³¨æ–‡å•†å“ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆæ³¨æ–‡ã¨å•†å“ã«ä¾å­˜ï¼‰ã®å‰Šé™¤
 DROP TABLE order_items CASCADE CONSTRAINTS;
 
--- 5. ƒŒƒrƒ…[ƒe[ƒuƒ‹i¤•i‚Æ‰ïˆõ‚ÉˆË‘¶j‚Ìíœ
+-- 5. ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆå•†å“ã¨ä¼šå“¡ã«ä¾å­˜ï¼‰ã®å‰Šé™¤
 DROP TABLE reviews CASCADE CONSTRAINTS;
 
--- 6. ’•¶ƒe[ƒuƒ‹i‰ïˆõ‚ÆƒN[ƒ|ƒ“‚ÉˆË‘¶j‚Ìíœ
+-- 6. æ³¨æ–‡ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆä¼šå“¡ã¨ã‚¯ãƒ¼ãƒãƒ³ã«ä¾å­˜ï¼‰ã®å‰Šé™¤
 DROP TABLE orders CASCADE CONSTRAINTS;
 
--- 7. ¤•iƒe[ƒuƒ‹iƒJƒeƒSƒŠ‚ÉˆË‘¶j‚Ìíœ
+-- 7. å•†å“ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆã‚«ãƒ†ã‚´ãƒªã«ä¾å­˜ï¼‰ã®å‰Šé™¤
 DROP TABLE items CASCADE CONSTRAINTS;
 
--- 8. ‰ïˆõƒe[ƒuƒ‹‚Ìíœ
+-- 8. ä¼šå“¡ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤
 DROP TABLE users CASCADE CONSTRAINTS;
 
--- 9. ƒJƒeƒSƒŠƒe[ƒuƒ‹‚Ìíœ
+-- 9. ã‚«ãƒ†ã‚´ãƒªãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤
 DROP TABLE categories CASCADE CONSTRAINTS;
 
--- 10. ƒN[ƒ|ƒ“ƒe[ƒuƒ‹‚Ìíœ
+-- 10. ã‚¯ãƒ¼ãƒãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤
 DROP TABLE coupons CASCADE CONSTRAINTS;
 
---11. ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒhƒe[ƒuƒ‹‚Ìíœ
+--11. ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤
 DROP TABLE planner_keyword_categories CASCADE CONSTRAINTS;
 
--- ƒV[ƒPƒ“ƒX‚Ìíœ
+-- ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã®å‰Šé™¤
 DROP SEQUENCE seq_order_items;
 DROP SEQUENCE seq_orders;
 DROP SEQUENCE seq_users;
@@ -64,7 +64,7 @@ DROP SEQUENCE seq_planner_keyword_categories;
 PURGE RECYCLEBIN;
 
 -----------------------------------------------------------------------
--- ƒN[ƒ|ƒ“ƒe[ƒuƒ‹‚Ìì¬
+-- ã‚¯ãƒ¼ãƒãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE coupons (
     id NUMBER(10) PRIMARY KEY,
@@ -79,7 +79,7 @@ CREATE TABLE coupons (
 );
 
 -----------------------------------------------------------------------
--- ƒJƒeƒSƒŠƒe[ƒuƒ‹‚Ìì¬
+-- ã‚«ãƒ†ã‚´ãƒªãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE categories (
   id NUMBER(2) PRIMARY KEY,
@@ -90,7 +90,7 @@ CREATE TABLE categories (
 );
 
 -----------------------------------------------------------------------
--- ¤•iƒe[ƒuƒ‹‚Ìì¬
+-- å•†å“ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE items (
   id NUMBER(6) PRIMARY KEY,
@@ -105,7 +105,7 @@ CREATE TABLE items (
 );
 
 -----------------------------------------------------------------------
--- ‰ïˆõƒe[ƒuƒ‹‚Ìì¬
+-- ä¼šå“¡ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE users (
   id NUMBER(6) PRIMARY KEY,
@@ -127,7 +127,7 @@ CREATE TABLE users (
 );
 
 -----------------------------------------------------------------------
--- ’•¶ƒe[ƒuƒ‹‚Ìì¬
+-- æ³¨æ–‡ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE orders (
   id NUMBER(6) PRIMARY KEY,
@@ -146,7 +146,7 @@ CREATE TABLE orders (
 );
 
 -----------------------------------------------------------------------
--- ’•¶¤•iƒe[ƒuƒ‹‚Ìì¬
+-- æ³¨æ–‡å•†å“ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE order_items (
   id NUMBER(6) PRIMARY KEY,
@@ -157,7 +157,7 @@ CREATE TABLE order_items (
 );
 
 -----------------------------------------------------------------------
--- ƒŒƒrƒ…[ƒe[ƒuƒ‹‚Ìì¬
+-- ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE reviews (
     id NUMBER(10) PRIMARY KEY,
@@ -174,7 +174,7 @@ CREATE TABLE reviews (
 );
 
 -----------------------------------------------------------------------
--- ƒKƒ`ƒƒƒƒOƒe[ƒuƒ‹‚Ìì¬
+-- ã‚¬ãƒãƒ£ãƒ­ã‚°ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE gacha_logs (
     id NUMBER(10) PRIMARY KEY,
@@ -188,7 +188,7 @@ CREATE TABLE gacha_logs (
 );
 
 -----------------------------------------------------------------------
--- ƒ|ƒCƒ“ƒg—š—ğƒe[ƒuƒ‹‚Ìì¬
+-- ãƒã‚¤ãƒ³ãƒˆå±¥æ­´ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE point_histories (
   id NUMBER(6) PRIMARY KEY,
@@ -201,7 +201,7 @@ CREATE TABLE point_histories (
 );
 
 -----------------------------------------------------------------------
--- ƒ^ƒCƒ€ƒZ[ƒ‹—pƒe[ƒuƒ‹‚Ìì¬
+-- ã‚¿ã‚¤ãƒ ã‚»ãƒ¼ãƒ«ç”¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE sale_schedule (
     id NUMBER(10) PRIMARY KEY,
@@ -214,7 +214,7 @@ CREATE TABLE sale_schedule (
 );
 
 -----------------------------------------------------------------------
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒhƒe[ƒuƒ‹‚Ìì¬
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE TABLE planner_keyword_categories (
     id NUMBER(6) PRIMARY KEY,
@@ -223,7 +223,7 @@ CREATE TABLE planner_keyword_categories (
 );
 
 -----------------------------------------------------------------------
--- ƒV[ƒPƒ“ƒX‚Ìì¬
+-- ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã®ä½œæˆ
 -----------------------------------------------------------------------
 CREATE SEQUENCE seq_categories NOCACHE;
 CREATE SEQUENCE seq_items NOCACHE;
@@ -238,450 +238,450 @@ CREATE SEQUENCE seq_sale_schedule START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE seq_planner_keyword_categories START WITH 1 INCREMENT BY 1 NOCACHE;
 
 -----------------------------------------------------------------------
--- ƒŒƒR[ƒh“o˜^
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²
 -----------------------------------------------------------------------
--- ƒŒƒR[ƒh“o˜^(ƒJƒeƒSƒŠ)
-INSERT INTO categories VALUES(seq_categories.NEXTVAL, 'H—¿•i', '–ìØ—ŞA“÷—ŞAŠCY•¨A‰ÁHH•i‚È‚Ç‚ğˆµ‚¢‚Ü‚·B', DEFAULT, DEFAULT);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL, '‘Ğ', '˜a‘A—m‘Aê–å‘A–Ÿ‰æAG‚È‚Ç‚ğˆµ‚¢‚Ü‚·B', DEFAULT, DEFAULT);
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(ã‚«ãƒ†ã‚´ãƒª)
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, 'é£Ÿæ–™å“', 'é‡èœé¡ã€è‚‰é¡ã€æµ·ç”£ç‰©ã€åŠ å·¥é£Ÿå“ãªã©ã‚’æ‰±ã„ã¾ã™ã€‚', DEFAULT, DEFAULT);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL, 'æ›¸ç±', 'å’Œæ›¸ã€æ´‹æ›¸ã€å°‚é–€æ›¸ã€æ¼«ç”»ã€é›‘èªŒãªã©ã‚’æ‰±ã„ã¾ã™ã€‚', DEFAULT, DEFAULT);
 
--- ƒŒƒR[ƒh“o˜^(¤•i)
-INSERT INTO items VALUES(seq_items.NEXTVAL, '‚è‚ñ‚²', 100, 'ÂXŒ§Y‚Ì‚è‚ñ‚²‚Å‚·B‚Æ‚Á‚Ä‚à‚İ‚¸‚İ‚¸‚µ‚¢I', 0, 'apple.jpg', 1, DEFAULT, DEFAULT);
-INSERT INTO items VALUES(seq_items.NEXTVAL, '«‘', 2000, '‚±‚êˆêû‚ª‚ ‚ê‚Î‘åä•vI', 1, 'dictionary.jpg', 2, DEFAULT, DEFAULT);
-INSERT INTO items VALUES(seq_items.NEXTVAL, 'ƒIƒŒƒ“ƒW', 150, 'ƒI[ƒXƒgƒ‰ƒŠƒAY‚ÌƒIƒŒƒ“ƒW‚Å‚·B', 5, 'orange.jpg', 1, DEFAULT, DEFAULT);
-INSERT INTO items VALUES(seq_items.NEXTVAL, 'ƒoƒiƒi', 150, 'ƒoƒiƒi‚Å‚·B', 6, 'banana.jpg', 1, DEFAULT, DEFAULT);
-INSERT INTO items VALUES(seq_items.NEXTVAL, 'ƒeƒXƒg¤•i', 150, 'ƒeƒXƒg—pƒf[ƒ^‚Å‚·B', 9999, NULL, 1, DEFAULT, DEFAULT);
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(å•†å“)
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'ã‚Šã‚“ã”', 100, 'é’æ£®çœŒç”£ã®ã‚Šã‚“ã”ã§ã™ã€‚ã¨ã£ã¦ã‚‚ã¿ãšã¿ãšã—ã„ï¼', 0, 'apple.jpg', 1, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'è¾æ›¸', 2000, 'ã“ã‚Œä¸€å†ŠãŒã‚ã‚Œã°å¤§ä¸ˆå¤«ï¼', 1, 'dictionary.jpg', 2, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'ã‚ªãƒ¬ãƒ³ã‚¸', 150, 'ã‚ªãƒ¼ã‚¹ãƒˆãƒ©ãƒªã‚¢ç”£ã®ã‚ªãƒ¬ãƒ³ã‚¸ã§ã™ã€‚', 5, 'orange.jpg', 1, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'ãƒãƒŠãƒŠ', 150, 'ãƒãƒŠãƒŠã§ã™ã€‚', 6, 'banana.jpg', 1, DEFAULT, DEFAULT);
+INSERT INTO items VALUES(seq_items.NEXTVAL, 'ãƒ†ã‚¹ãƒˆå•†å“', 150, 'ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿ã§ã™ã€‚', 9999, NULL, 1, DEFAULT, DEFAULT);
 
--- ƒŒƒR[ƒh“o˜^(‰ïˆõ)
-INSERT INTO users VALUES(seq_users.NEXTVAL, 'tanaka_taro@test.co.jp', 'Testtest0', 'ƒVƒXƒeƒ€ŠÇ—‘¾˜Y', '1111111', '“Œ‹“s‘ä“Œ‹æ1-2-3 ABCƒrƒ‹10ŠK', '0123456789', 0, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
-INSERT INTO users VALUES(seq_users.NEXTVAL, 'unyo_jiro@test.co.jp', 'Testtest1', '‰^—pŠÇ—“ñ˜Y', '1111111', '“Œ‹“s‘ä“Œ‹æ1-2-3 ABCƒrƒ‹10ŠK', '0123456789', 1, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
-INSERT INTO users VALUES(seq_users.NEXTVAL, 'ippan_saburo@test.co.jp', 'Testtest2', 'ˆê”ÊO˜Y', '1111111', '“Œ‹“s‘ä“Œ‹æ4-5-6 ABCƒ}ƒ“ƒVƒ‡ƒ“5ŠK', '0123456789', 2, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(ä¼šå“¡)
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'tanaka_taro@test.co.jp', 'Testtest0', 'ã‚·ã‚¹ãƒ†ãƒ ç®¡ç†å¤ªéƒ', '1111111', 'æ±äº¬éƒ½å°æ±åŒº1-2-3 ABCãƒ“ãƒ«10éš', '0123456789', 0, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'unyo_jiro@test.co.jp', 'Testtest1', 'é‹ç”¨ç®¡ç†äºŒéƒ', '1111111', 'æ±äº¬éƒ½å°æ±åŒº1-2-3 ABCãƒ“ãƒ«10éš', '0123456789', 1, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'ippan_saburo@test.co.jp', 'Testtest2', 'ä¸€èˆ¬ä¸‰éƒ', '1111111', 'æ±äº¬éƒ½å°æ±åŒº4-5-6 ABCãƒãƒ³ã‚·ãƒ§ãƒ³5éš', '0123456789', 2, DEFAULT, DEFAULT, 0, 0, 0, 0, 0, NULL);
 
--- ƒŒƒR[ƒh“o˜^(’•¶)
-INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '“Œ‹“s‘ä“Œ‹æ4-5-6 ABCƒ}ƒ“ƒVƒ‡ƒ“5ŠK', 'ˆê”ÊO˜Y', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
-INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '“Œ‹“s‘ä“Œ‹æ4-5-6 ABCƒ}ƒ“ƒVƒ‡ƒ“5ŠK', 'ˆê”ÊO˜Y', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
-INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', '“Œ‹“s‘ä“Œ‹æ4-5-6 ABCƒ}ƒ“ƒVƒ‡ƒ“5ŠK', 'ˆê”ÊO˜Y', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(æ³¨æ–‡)
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', 'æ±äº¬éƒ½å°æ±åŒº4-5-6 ABCãƒãƒ³ã‚·ãƒ§ãƒ³5éš', 'ä¸€èˆ¬ä¸‰éƒ', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', 'æ±äº¬éƒ½å°æ±åŒº4-5-6 ABCãƒãƒ³ã‚·ãƒ§ãƒ³5éš', 'ä¸€èˆ¬ä¸‰éƒ', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
+INSERT INTO orders VALUES(seq_orders.NEXTVAL, '1111111', 'æ±äº¬éƒ½å°æ±åŒº4-5-6 ABCãƒãƒ³ã‚·ãƒ§ãƒ³5éš', 'ä¸€èˆ¬ä¸‰éƒ', '0123456789', 2, 3, DEFAULT, NULL, NULL, 0, 0);
 
--- ƒŒƒR[ƒh“o˜^(¤•i’•¶)
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(å•†å“æ³¨æ–‡)
 INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 1, 1, 100);
 INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 2, 1, 100);
 INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 3, 1, 100);
 
--- ƒŒƒR[ƒh“o˜^(ƒN[ƒ|ƒ“EƒŒƒrƒ…[EƒZ[ƒ‹)
--- ƒN[ƒ|ƒ“
+-- ãƒ¬ã‚³ãƒ¼ãƒ‰ç™»éŒ²(ã‚¯ãƒ¼ãƒãƒ³ãƒ»ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ»ã‚»ãƒ¼ãƒ«)
+-- ã‚¯ãƒ¼ãƒãƒ³
 INSERT INTO coupons (id, code, discount_type, discount_value, valid_from, valid_until, usage_limit)
 VALUES (seq_coupons.NEXTVAL, 'WELCOME2026', 'amount', 1000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 365, 1);
 INSERT INTO coupons (id, code, discount_type, discount_value, valid_from, valid_until, usage_limit)
 VALUES (seq_coupons.NEXTVAL, 'SPECIAL10', 'percent', 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 365, 5);
 
--- ƒŒƒrƒ…[
+-- ãƒ¬ãƒ“ãƒ¥ãƒ¼
 INSERT INTO reviews (id, item_id, user_id, evaluation, content, delete_flag, insert_date, stamp)
-VALUES (seq_reviews.NEXTVAL, 1, 3, 5, '‚Æ‚Ä‚à‚İ‚¸‚İ‚¸‚µ‚­‚Ä”ü–¡‚µ‚¢‚è‚ñ‚²‚Å‚µ‚½I‚Ü‚½w“ü‚µ‚Ü‚·B', 0, CURRENT_TIMESTAMP, 0);
+VALUES (seq_reviews.NEXTVAL, 1, 3, 5, 'ã¨ã¦ã‚‚ã¿ãšã¿ãšã—ãã¦ç¾å‘³ã—ã„ã‚Šã‚“ã”ã§ã—ãŸï¼ã¾ãŸè³¼å…¥ã—ã¾ã™ã€‚', 0, CURRENT_TIMESTAMP, 0);
 INSERT INTO reviews (id, item_id, user_id, evaluation, content, delete_flag, insert_date, stamp)
-VALUES (seq_reviews.NEXTVAL, 2, 3, 4, '”ñí‚ÉÚ‚µ‚­‚Ä•ª‚©‚è‚â‚·‚¢«‘‚Å‚·B•×‹­‚ª’»‚è‚Ü‚·B', 0, CURRENT_TIMESTAMP, 0);
+VALUES (seq_reviews.NEXTVAL, 2, 3, 4, 'éå¸¸ã«è©³ã—ãã¦åˆ†ã‹ã‚Šã‚„ã™ã„è¾æ›¸ã§ã™ã€‚å‹‰å¼·ãŒæ—ã‚Šã¾ã™ã€‚', 0, CURRENT_TIMESTAMP, 0);
 
--- ƒ^ƒCƒ€ƒZ[ƒ‹‰Šúƒf[ƒ^
+-- ã‚¿ã‚¤ãƒ ã‚»ãƒ¼ãƒ«åˆæœŸãƒ‡ãƒ¼ã‚¿
 INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
 VALUES (seq_sale_schedule.NEXTVAL, 1, TO_DATE('00:00:00', 'HH24:MI:SS'), TO_DATE('18:00:00', 'HH24:MI:SS'), 20, 0);
 INSERT INTO sale_schedule (id, category_id, start_time, end_time, discount_rate, delete_flag)
 VALUES (seq_sale_schedule.NEXTVAL, 2, TO_DATE('20:00:00', 'HH24:MI:SS'), TO_DATE('23:00:00', 'HH24:MI:SS'), 15, 0);
 
 -----------------------------------------------------------------------
--- ƒeƒXƒg¤•i“o˜^(¤•i)
+-- ãƒ†ã‚¹ãƒˆå•†å“ç™»éŒ²(å•†å“)
 -----------------------------------------------------------------------
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'PC','ƒpƒ\ƒRƒ“ŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒ}ƒEƒX','ƒ}ƒEƒXŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒL[ƒ{[ƒh','ƒL[ƒ{[ƒhŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒ‚ƒjƒ^[','ƒ‚ƒjƒ^[ŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒ}ƒCƒN','ƒ}ƒCƒNŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'WebƒJƒƒ‰','WebƒJƒƒ‰ŠÖ˜A¤•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒQ[ƒ€','PCƒQ[ƒ€EƒRƒ“ƒVƒ…[ƒ}ƒQ[ƒ€‹@',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'‰Æ“d','ÅV‚Ì“d‰»»•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'“ú—p•i','¶Šˆ‚ÉŒ‡‚©‚¹‚È‚¢Á–Õ•i',0,SYSDATE);
-INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ƒtƒ@ƒbƒVƒ‡ƒ“','ˆß—ŞEƒAƒNƒZƒTƒŠ[',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'PC','ãƒ‘ã‚½ã‚³ãƒ³é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ãƒã‚¦ã‚¹','ãƒã‚¦ã‚¹é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰','ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ãƒ¢ãƒ‹ã‚¿ãƒ¼','ãƒ¢ãƒ‹ã‚¿ãƒ¼é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ãƒã‚¤ã‚¯','ãƒã‚¤ã‚¯é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'Webã‚«ãƒ¡ãƒ©','Webã‚«ãƒ¡ãƒ©é–¢é€£å•†å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ã‚²ãƒ¼ãƒ ','PCã‚²ãƒ¼ãƒ ãƒ»ã‚³ãƒ³ã‚·ãƒ¥ãƒ¼ãƒã‚²ãƒ¼ãƒ æ©Ÿ',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'å®¶é›»','æœ€æ–°ã®é›»åŒ–è£½å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'æ—¥ç”¨å“','ç”Ÿæ´»ã«æ¬ ã‹ã›ãªã„æ¶ˆè€—å“',0,SYSDATE);
+INSERT INTO categories VALUES(seq_categories.NEXTVAL,'ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³','è¡£é¡ãƒ»ã‚¢ã‚¯ã‚»ã‚µãƒªãƒ¼',0,SYSDATE);
 
 -- PC
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒrƒWƒlƒXƒm[ƒgPC',79800,'d–Œü‚¯ƒm[ƒgPC',15,'BusinessPC.png',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒNƒŠƒGƒCƒ^[PC',158000,'“®‰æ•ÒWŒü‚¯',8,'VideoEditingPC.jpeg',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒGƒ“ƒgƒŠ[PC',59800,'‰SÒŒü‚¯PC',20,'pc.png',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ“ã‚¸ãƒã‚¹ãƒãƒ¼ãƒˆPC',79800,'ä»•äº‹å‘ã‘ãƒãƒ¼ãƒˆPC',15,'BusinessPC.png',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ã‚¯ãƒªã‚¨ã‚¤ã‚¿ãƒ¼PC',158000,'å‹•ç”»ç·¨é›†å‘ã‘',8,'VideoEditingPC.jpeg',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ã‚¨ãƒ³ãƒˆãƒªãƒ¼PC',59800,'åˆå¿ƒè€…å‘ã‘PC',20,'pc.png',(SELECT id FROM categories WHERE name = 'PC'),0,SYSDATE);
 
--- ƒ}ƒEƒX
-INSERT INTO items VALUES(seq_items.NEXTVAL,'Bluetoothƒ}ƒEƒX',2480,'‚¿‰^‚ÑŒü‚¯',20,'BluetoothMouse.jpeg',(SELECT id FROM categories WHERE name = 'ƒ}ƒEƒX'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'Ã‰¹ƒ}ƒEƒX',1980,'ƒNƒŠƒbƒN‰¹ŒyŒ¸',20,'SilentMouse.png',(SELECT id FROM categories WHERE name = 'ƒ}ƒEƒX'),0,SYSDATE);
+-- ãƒã‚¦ã‚¹
+INSERT INTO items VALUES(seq_items.NEXTVAL,'Bluetoothãƒã‚¦ã‚¹',2480,'æŒã¡é‹ã³å‘ã‘',20,'BluetoothMouse.jpeg',(SELECT id FROM categories WHERE name = 'ãƒã‚¦ã‚¹'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'é™éŸ³ãƒã‚¦ã‚¹',1980,'ã‚¯ãƒªãƒƒã‚¯éŸ³è»½æ¸›',20,'SilentMouse.png',(SELECT id FROM categories WHERE name = 'ãƒã‚¦ã‚¹'),0,SYSDATE);
 
--- ƒL[ƒ{[ƒh
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒeƒ“ƒL[ƒŒƒXƒL[ƒ{[ƒh',4980,'ÈƒXƒy[ƒX',15,'TKLKeyboard.jpeg',(SELECT id FROM categories WHERE name = 'ƒL[ƒ{[ƒh'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'BluetoothƒL[ƒ{[ƒh',3980,'–³üÚ‘±',15,'BluetoothKeyboard.jpg',(SELECT id FROM categories WHERE name = 'ƒL[ƒ{[ƒh'),0,SYSDATE);
+-- ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ†ãƒ³ã‚­ãƒ¼ãƒ¬ã‚¹ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰',4980,'çœã‚¹ãƒšãƒ¼ã‚¹',15,'TKLKeyboard.jpeg',(SELECT id FROM categories WHERE name = 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'Bluetoothã‚­ãƒ¼ãƒœãƒ¼ãƒ‰',3980,'ç„¡ç·šæ¥ç¶š',15,'BluetoothKeyboard.jpg',(SELECT id FROM categories WHERE name = 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰'),0,SYSDATE);
 
--- ƒ‚ƒjƒ^[
-INSERT INTO items VALUES(seq_items.NEXTVAL,'34ƒCƒ“ƒ`ƒEƒ‹ƒgƒ‰ƒƒCƒhƒ‚ƒjƒ^[',49800,'ì‹ÆŒø—¦Œüã',5,'moniter.png',(SELECT id FROM categories WHERE name = 'ƒ‚ƒjƒ^['),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'4Kƒ‚ƒjƒ^[',59800,'‚‰ğ‘œ“x',5,'4KMonitor.jpeg',(SELECT id FROM categories WHERE name = 'ƒ‚ƒjƒ^['),0,SYSDATE);
+-- ãƒ¢ãƒ‹ã‚¿ãƒ¼
+INSERT INTO items VALUES(seq_items.NEXTVAL,'34ã‚¤ãƒ³ãƒã‚¦ãƒ«ãƒˆãƒ©ãƒ¯ã‚¤ãƒ‰ãƒ¢ãƒ‹ã‚¿ãƒ¼',49800,'ä½œæ¥­åŠ¹ç‡å‘ä¸Š',5,'moniter.png',(SELECT id FROM categories WHERE name = 'ãƒ¢ãƒ‹ã‚¿ãƒ¼'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'4Kãƒ¢ãƒ‹ã‚¿ãƒ¼',59800,'é«˜è§£åƒåº¦',5,'4KMonitor.jpeg',(SELECT id FROM categories WHERE name = 'ãƒ¢ãƒ‹ã‚¿ãƒ¼'),0,SYSDATE);
 
--- ƒ}ƒCƒN
-INSERT INTO items VALUES(seq_items.NEXTVAL,'”zM—pUSBƒ}ƒCƒN',7980,'‰SÒ”zMŒü‚¯',10,'USBMicrophone.jpeg',(SELECT id FROM categories WHERE name = 'ƒ}ƒCƒN'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒ_ƒCƒiƒ~ƒbƒNƒ}ƒCƒN',15800,'ƒmƒCƒY‚É‹­‚¢',5,'dynamic.jpg',(SELECT id FROM categories WHERE name = 'ƒ}ƒCƒN'),0,SYSDATE);
+-- ãƒã‚¤ã‚¯
+INSERT INTO items VALUES(seq_items.NEXTVAL,'é…ä¿¡ç”¨USBãƒã‚¤ã‚¯',7980,'åˆå¿ƒè€…é…ä¿¡å‘ã‘',10,'USBMicrophone.jpeg',(SELECT id FROM categories WHERE name = 'ãƒã‚¤ã‚¯'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ€ã‚¤ãƒŠãƒŸãƒƒã‚¯ãƒã‚¤ã‚¯',15800,'ãƒã‚¤ã‚ºã«å¼·ã„',5,'dynamic.jpg',(SELECT id FROM categories WHERE name = 'ãƒã‚¤ã‚¯'),0,SYSDATE);
 
--- WebƒJƒƒ‰
-INSERT INTO items VALUES(seq_items.NEXTVAL,'4K WebƒJƒƒ‰',19800,'‚‰æ¿”zMŒü‚¯',5,'4kweb.png',(SELECT id FROM categories WHERE name = 'WebƒJƒƒ‰'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'LŠpWebƒJƒƒ‰',5980,'‰ï‹cŒü‚¯',10,'wideweb.png',(SELECT id FROM categories WHERE name = 'WebƒJƒƒ‰'),0,SYSDATE);
+-- Webã‚«ãƒ¡ãƒ©
+INSERT INTO items VALUES(seq_items.NEXTVAL,'4K Webã‚«ãƒ¡ãƒ©',19800,'é«˜ç”»è³ªé…ä¿¡å‘ã‘',5,'4kweb.png',(SELECT id FROM categories WHERE name = 'Webã‚«ãƒ¡ãƒ©'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'åºƒè§’Webã‚«ãƒ¡ãƒ©',5980,'ä¼šè­°å‘ã‘',10,'wideweb.png',(SELECT id FROM categories WHERE name = 'Webã‚«ãƒ¡ãƒ©'),0,SYSDATE);
 
--- ƒQ[ƒ€
-INSERT INTO items VALUES(seq_items.NEXTVAL,'Ši“¬ƒQ[ƒ€',6980,'ƒIƒ“ƒ‰ƒCƒ“‘Îí‘Î‰',20,'fighter_game.png',(SELECT id FROM categories WHERE name = 'ƒQ[ƒ€'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒŒ[ƒVƒ“ƒOƒQ[ƒ€',5980,'ƒŠƒAƒ‹ƒhƒ‰ƒCƒu‘ÌŒ±',20,'race_game.png',(SELECT id FROM categories WHERE name = 'ƒQ[ƒ€'),0,SYSDATE);
+-- ã‚²ãƒ¼ãƒ 
+INSERT INTO items VALUES(seq_items.NEXTVAL,'æ ¼é—˜ã‚²ãƒ¼ãƒ ',6980,'ã‚ªãƒ³ãƒ©ã‚¤ãƒ³å¯¾æˆ¦å¯¾å¿œ',20,'fighter_game.png',(SELECT id FROM categories WHERE name = 'ã‚²ãƒ¼ãƒ '),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ¬ãƒ¼ã‚·ãƒ³ã‚°ã‚²ãƒ¼ãƒ ',5980,'ãƒªã‚¢ãƒ«ãƒ‰ãƒ©ã‚¤ãƒ–ä½“é¨“',20,'race_game.png',(SELECT id FROM categories WHERE name = 'ã‚²ãƒ¼ãƒ '),0,SYSDATE);
 
--- ‰Æ“d
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒƒ{ƒbƒg‘|œ‹@',29800,'©“®‘|œ',10,'robbot.png',(SELECT id FROM categories WHERE name = '‰Æ“d'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'‹ó‹C´ò‹@',19800,'‰Ô•²‘Îô',10,'air_cleaner.png',(SELECT id FROM categories WHERE name = '‰Æ“d'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'“dqƒŒƒ“ƒW',12800,'ˆêl•é‚ç‚µŒü‚¯',10,'denshi.jpg',(SELECT id FROM categories WHERE name = '‰Æ“d'),0,SYSDATE);
+-- å®¶é›»
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ­ãƒœãƒƒãƒˆæƒé™¤æ©Ÿ',29800,'è‡ªå‹•æƒé™¤',10,'robbot.png',(SELECT id FROM categories WHERE name = 'å®¶é›»'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ç©ºæ°—æ¸…æµ„æ©Ÿ',19800,'èŠ±ç²‰å¯¾ç­–',10,'air_cleaner.png',(SELECT id FROM categories WHERE name = 'å®¶é›»'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'é›»å­ãƒ¬ãƒ³ã‚¸',12800,'ä¸€äººæš®ã‚‰ã—å‘ã‘',10,'denshi.jpg',(SELECT id FROM categories WHERE name = 'å®¶é›»'),0,SYSDATE);
 
--- “ú—p•i
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒeƒBƒbƒVƒ…ƒy[ƒp[',298,'5” ƒZƒbƒg',50,'haburasi3.png',(SELECT id FROM categories WHERE name = '“ú—p•i'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ô‘óôÜ',498,'‘å—e—Êƒ^ƒCƒv',30,'LaundryDetergent.png',(SELECT id FROM categories WHERE name = '“ú—p•i'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'•ƒuƒ‰ƒVƒZƒbƒg',398,'3–{“ü‚è',50,'ToothbrushSet.jpeg',(SELECT id FROM categories WHERE name = '“ú—p•i'),0,SYSDATE);
+-- æ—¥ç”¨å“
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ†ã‚£ãƒƒã‚·ãƒ¥ãƒšãƒ¼ãƒ‘ãƒ¼',298,'5ç®±ã‚»ãƒƒãƒˆ',50,'tissue.png',(SELECT id FROM categories WHERE name = 'æ—¥ç”¨å“'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'æ´—æ¿¯æ´—å‰¤',498,'å¤§å®¹é‡ã‚¿ã‚¤ãƒ—',30,'LaundryDetergent.png',(SELECT id FROM categories WHERE name = 'æ—¥ç”¨å“'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'æ­¯ãƒ–ãƒ©ã‚·ã‚»ãƒƒãƒˆ',398,'3æœ¬å…¥ã‚Š',50,'ToothbrushSet.jpeg',(SELECT id FROM categories WHERE name = 'æ—¥ç”¨å“'),0,SYSDATE);
 
--- ƒtƒ@ƒbƒVƒ‡ƒ“
-INSERT INTO items VALUES(seq_items.NEXTVAL,'–³’nTƒVƒƒƒc',1980,'’è”ÔƒAƒCƒeƒ€',30,'Tshirt.jpg',(SELECT id FROM categories WHERE name = 'ƒtƒ@ƒbƒVƒ‡ƒ“'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒfƒjƒ€ƒpƒ“ƒc',4980,'ƒJƒWƒ…ƒAƒ‹Œü‚¯',20,'Jeans.jpeg',(SELECT id FROM categories WHERE name = 'ƒtƒ@ƒbƒVƒ‡ƒ“'),0,SYSDATE);
-INSERT INTO items VALUES(seq_items.NEXTVAL,'ƒXƒj[ƒJ[',7980,'l‹Cƒ‚ƒfƒ‹',15,'sneakers.jpg',(SELECT id FROM categories WHERE name = 'ƒtƒ@ƒbƒVƒ‡ƒ“'),0,SYSDATE);
+-- ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ç„¡åœ°Tã‚·ãƒ£ãƒ„',1980,'å®šç•ªã‚¢ã‚¤ãƒ†ãƒ ',30,'Tshirt.jpg',(SELECT id FROM categories WHERE name = 'ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ãƒ‡ãƒ‹ãƒ ãƒ‘ãƒ³ãƒ„',4980,'ã‚«ã‚¸ãƒ¥ã‚¢ãƒ«å‘ã‘',20,'Jeans.jpeg',(SELECT id FROM categories WHERE name = 'ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³'),0,SYSDATE);
+INSERT INTO items VALUES(seq_items.NEXTVAL,'ã‚¹ãƒ‹ãƒ¼ã‚«ãƒ¼',7980,'äººæ°—ãƒ¢ãƒ‡ãƒ«',15,'sneakers.jpg',(SELECT id FROM categories WHERE name = 'ãƒ•ã‚¡ãƒƒã‚·ãƒ§ãƒ³'),0,SYSDATE);
 
 -----------------------------------------------------------------------
--- ƒXƒ}[ƒgw“üƒvƒ‰ƒ“ƒi[iŒŸõƒL[ƒ[ƒhj
+-- ã‚¹ãƒãƒ¼ãƒˆè³¼å…¥ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ï¼ˆæ¤œç´¢ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼‰
 -----------------------------------------------------------------------
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ƒQ[ƒ€EeƒXƒ|[ƒcˆê”Ê
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒO', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒO', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€—p', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€—p', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€—p', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ€—p', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒOPC', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒOPC', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒOPC', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒQ[ƒ~ƒ“ƒOPC', 'ƒ}ƒEƒX');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: ã‚²ãƒ¼ãƒ ãƒ»eã‚¹ãƒãƒ¼ãƒ„ä¸€èˆ¬
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ç”¨', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ç”¨', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ç”¨', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒ ç”¨', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°PC', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°PC', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°PC', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚²ãƒ¼ãƒŸãƒ³ã‚°PC', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'game', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'gaming', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'FPS', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'TPS', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'RPG', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eƒXƒ|[ƒc', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eƒXƒ|[ƒc', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eƒXƒ|[ƒc', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eƒXƒ|[ƒc', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'MMO', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eã‚¹ãƒãƒ¼ãƒ„', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eã‚¹ãƒãƒ¼ãƒ„', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eã‚¹ãƒãƒ¼ãƒ„', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'eã‚¹ãƒãƒ¼ãƒ„', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ‹ï‘Ì“I‚ÈƒQ[ƒ€ƒ^ƒCseq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'esports', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: å…·ä½“çš„ãªã‚²ãƒ¼ãƒ ã‚¿ã‚¤seq_planner_keyword_categories.NEXTVAL
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'League of Legends', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'LoL', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Arknights', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Arknights', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Arknights', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒA[ƒNƒiƒCƒc', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒA[ƒNƒiƒCƒc', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒA[ƒNƒiƒCƒc', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Arknights', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Arknights', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ¼ã‚¯ãƒŠã‚¤ãƒ„', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ¼ã‚¯ãƒŠã‚¤ãƒ„', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ¼ã‚¯ãƒŠã‚¤ãƒ„', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Slay the Spire', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Slay the Spire', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Slay the Spire', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Slay the Spire', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Slay the Spire', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Balatro', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Balatro', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Balatro', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•ö‰óƒXƒ^[ƒŒƒCƒ‹', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•ö‰óƒXƒ^[ƒŒƒCƒ‹', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•ö‰óƒXƒ^[ƒŒƒCƒ‹', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '°', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '°', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '°', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒpƒYƒhƒ‰', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒpƒYƒhƒ‰', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒpƒYƒhƒ‰', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Balatro', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Balatro', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å´©å£Šã‚¹ã‚¿ãƒ¼ãƒ¬ã‚¤ãƒ«', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å´©å£Šã‚¹ã‚¿ãƒ¼ãƒ¬ã‚¤ãƒ«', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å´©å£Šã‚¹ã‚¿ãƒ¼ãƒ¬ã‚¤ãƒ«', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é›€é­‚', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é›€é­‚', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é›€é­‚', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ‘ã‚ºãƒ‰ãƒ©', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ‘ã‚ºãƒ‰ãƒ©', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ‘ã‚ºãƒ‰ãƒ©', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Valorant', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ƒvƒƒOƒ‰ƒ~ƒ“ƒOEseq_planner_keyword_categories.NEXTVAL
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒvƒƒOƒ‰ƒ~ƒ“ƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒvƒƒOƒ‰ƒ~ƒ“ƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒvƒƒOƒ‰ƒ~ƒ“ƒO', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒvƒƒOƒ‰ƒ~ƒ“ƒO', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒR[ƒfƒBƒ“ƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒR[ƒfƒBƒ“ƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒR[ƒfƒBƒ“ƒO', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒR[ƒfƒBƒ“ƒO', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ŠJ”­', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ŠJ”­', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ŠJ”­', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ŠJ”­', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒGƒ“ƒWƒjƒA', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒGƒ“ƒWƒjƒA', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒGƒ“ƒWƒjƒA', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒGƒ“ƒWƒjƒA', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'APEX', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ãƒ»seq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é–‹ç™º', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é–‹ç™º', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é–‹ç™º', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é–‹ç™º', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JavaScript', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'JS', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ChromeŠg’£‹@”\', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ChromeŠg’£‹@”\', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ChromeŠg’£‹@”\', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ChromeŠg’£‹@”\', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WebŠJ”­', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WebŠJ”­', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WebŠJ”­', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WebŠJ”­', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒtƒƒ“ƒgƒGƒ“ƒh', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒtƒƒ“ƒgƒGƒ“ƒh', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒtƒƒ“ƒgƒGƒ“ƒh', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒtƒƒ“ƒgƒGƒ“ƒh', '‘Ğ');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒAƒvƒŠŠJ”­', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒAƒvƒŠŠJ”­', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒAƒvƒŠŠJ”­', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒAƒvƒŠŠJ”­', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VS Code', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Chromeæ‹¡å¼µæ©Ÿèƒ½', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Chromeæ‹¡å¼µæ©Ÿèƒ½', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Chromeæ‹¡å¼µæ©Ÿèƒ½', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Chromeæ‹¡å¼µæ©Ÿèƒ½', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Webé–‹ç™º', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Webé–‹ç™º', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Webé–‹ç™º', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Webé–‹ç™º', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰', 'æ›¸ç±');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ—ãƒªé–‹ç™º', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ—ãƒªé–‹ç™º', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ—ãƒªé–‹ç™º', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¢ãƒ—ãƒªé–‹ç™º', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Java', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Python', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C++', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', '‘Ğ');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'C#', 'æ›¸ç±');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', '‘Ğ');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ”zME˜^‰æE“®seq_planner_keyword_categories.NEXTVAL
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '”zM', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '”zM', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '”zM', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '”zM', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'À‹µ', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'À‹µ', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'À‹µ', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'À‹µ', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'React', 'æ›¸ç±');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: é…ä¿¡ãƒ»éŒ²ç”»ãƒ»å‹•seq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é…ä¿¡', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é…ä¿¡', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é…ä¿¡', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é…ä¿¡', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å®Ÿæ³', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å®Ÿæ³', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å®Ÿæ³', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å®Ÿæ³', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS˜^‰æ', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS˜^‰æ', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS˜^‰æ', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS˜^‰æ', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBS', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBSéŒ²ç”»', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBSéŒ²ç”»', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBSéŒ²ç”»', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'OBSéŒ²ç”»', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR˜^‰æ', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR˜^‰æ', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR˜^‰æ', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR˜^‰æ', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDR', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDRéŒ²ç”»', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDRéŒ²ç”»', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDRéŒ²ç”»', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'HDRéŒ²ç”»', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ•ÒW', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ•ÒW', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ•ÒW', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ•ÒW', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒNƒŠƒGƒCƒ^[', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒNƒŠƒGƒCƒ^[', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒNƒŠƒGƒCƒ^[', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒNƒŠƒGƒCƒ^[', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ§ì', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ§ì', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ§ì', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰æ‘œ•ÒW', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰æ‘œ•ÒW', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰æ‘œ•ÒW', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'VTuber', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»ç·¨é›†', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»ç·¨é›†', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»ç·¨é›†', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»ç·¨é›†', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¯ãƒªã‚¨ã‚¤ã‚¿ãƒ¼', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¯ãƒªã‚¨ã‚¤ã‚¿ãƒ¼', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¯ãƒªã‚¨ã‚¤ã‚¿ãƒ¼', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¯ãƒªã‚¨ã‚¤ã‚¿ãƒ¼', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»åˆ¶ä½œ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»åˆ¶ä½œ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»åˆ¶ä½œ', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ç”»åƒç·¨é›†', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ç”»åƒç·¨é›†', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ç”»åƒç·¨é›†', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ––±EƒrƒWƒlƒXEƒeƒŒseq_planner_keyword_categories.NEXTVAL
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '––±', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '––±', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '––±', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '––±', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒeƒŒƒ[ƒN', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒeƒŒƒ[ƒN', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒeƒŒƒ[ƒN', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒeƒŒƒ[ƒN', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŠƒ‚[ƒgƒ[ƒN', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŠƒ‚[ƒgƒ[ƒN', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŠƒ‚[ƒgƒ[ƒN', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŠƒ‚[ƒgƒ[ƒN', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'İ‘î‹Î–±', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'İ‘î‹Î–±', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'İ‘î‹Î–±', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'İ‘î‹Î–±', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒIƒ“ƒ‰ƒCƒ“ö‹Æ', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒIƒ“ƒ‰ƒCƒ“ö‹Æ', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒIƒ“ƒ‰ƒCƒ“ö‹Æ', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒIƒ“ƒ‰ƒCƒ“ö‹Æ', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'd–', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'd–', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'd–', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'd–', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒrƒWƒlƒX', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒrƒWƒlƒX', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒrƒWƒlƒX', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒrƒWƒlƒX', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŒƒ|[ƒg', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŒƒ|[ƒg', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŒƒ|[ƒg', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒŒƒ|[ƒg', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘²˜_', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘²˜_', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘²˜_', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘²˜_', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘—¿ì¬', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘—¿ì¬', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘—¿ì¬', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‘—¿ì¬', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ˆê”Ê—p“rEƒJƒWseq_planner_keyword_categories.NEXTVAL
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒ‰ƒEƒWƒ“ƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒ‰ƒEƒWƒ“ƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒ‰ƒEƒWƒ“ƒO', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ‹’®', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ‹’®', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“®‰æ‹’®', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒlƒbƒgƒT[ƒtƒBƒ“', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒlƒbƒgƒT[ƒtƒBƒ“', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒlƒbƒgƒT[ƒtƒBƒ“', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•’ig‚¢', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•’ig‚¢', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '•’ig‚¢', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“úíg‚¢', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“úíg‚¢', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '“úíg‚¢', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰SÒ', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰SÒ', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰SÒ', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Photoshop', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: äº‹å‹™ãƒ»ãƒ“ã‚¸ãƒã‚¹ãƒ»ãƒ†ãƒ¬seq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'äº‹å‹™', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'äº‹å‹™', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'äº‹å‹™', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'äº‹å‹™', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ†ãƒ¬ãƒ¯ãƒ¼ã‚¯', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ†ãƒ¬ãƒ¯ãƒ¼ã‚¯', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ†ãƒ¬ãƒ¯ãƒ¼ã‚¯', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ†ãƒ¬ãƒ¯ãƒ¼ã‚¯', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒªãƒ¢ãƒ¼ãƒˆãƒ¯ãƒ¼ã‚¯', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒªãƒ¢ãƒ¼ãƒˆãƒ¯ãƒ¼ã‚¯', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒªãƒ¢ãƒ¼ãƒˆãƒ¯ãƒ¼ã‚¯', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒªãƒ¢ãƒ¼ãƒˆãƒ¯ãƒ¼ã‚¯', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åœ¨å®…å‹¤å‹™', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åœ¨å®…å‹¤å‹™', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åœ¨å®…å‹¤å‹™', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åœ¨å®…å‹¤å‹™', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚ªãƒ³ãƒ©ã‚¤ãƒ³æˆæ¥­', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚ªãƒ³ãƒ©ã‚¤ãƒ³æˆæ¥­', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚ªãƒ³ãƒ©ã‚¤ãƒ³æˆæ¥­', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚ªãƒ³ãƒ©ã‚¤ãƒ³æˆæ¥­', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ä»•äº‹', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ä»•äº‹', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ä»•äº‹', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ä»•äº‹', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ“ã‚¸ãƒã‚¹', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ“ã‚¸ãƒã‚¹', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ“ã‚¸ãƒã‚¹', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ“ã‚¸ãƒã‚¹', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ¬ãƒãƒ¼ãƒˆ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ¬ãƒãƒ¼ãƒˆ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ¬ãƒãƒ¼ãƒˆ', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ¬ãƒãƒ¼ãƒˆ', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å’è«–', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å’è«–', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å’è«–', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å’è«–', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'è³‡æ–™ä½œæˆ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'è³‡æ–™ä½œæˆ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'è³‡æ–™ä½œæˆ', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'è³‡æ–™ä½œæˆ', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: ä¸€èˆ¬ç”¨é€”ãƒ»ã‚«ã‚¸seq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ©ã‚¦ã‚¸ãƒ³ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ©ã‚¦ã‚¸ãƒ³ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ©ã‚¦ã‚¸ãƒ³ã‚°', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»è¦–è´', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»è¦–è´', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'å‹•ç”»è¦–è´', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒãƒƒãƒˆã‚µãƒ¼ãƒ•ã‚£ãƒ³', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒãƒƒãƒˆã‚µãƒ¼ãƒ•ã‚£ãƒ³', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒãƒƒãƒˆã‚µãƒ¼ãƒ•ã‚£ãƒ³', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ™®æ®µä½¿ã„', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ™®æ®µä½¿ã„', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ™®æ®µä½¿ã„', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ—¥å¸¸ä½¿ã„', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ—¥å¸¸ä½¿ã„', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'æ—¥å¸¸ä½¿ã„', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åˆå¿ƒè€…', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åˆå¿ƒè€…', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'åˆå¿ƒè€…', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'YouTube', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'YouTube', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'YouTube', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'YouTube', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'YouTube', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Netflix', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Netflix', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Netflix', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Netflix', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Netflix', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'SNS', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'SNS', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'SNS', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒuƒƒO', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ƒXƒyƒbƒNEŠÂseq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'SNS', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'SNS', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ­ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ­ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒ–ãƒ­ã‚°', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: ã‚¹ãƒšãƒƒã‚¯ãƒ»ç’°seq_planner_keyword_categories.NEXTVAL
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚‘¬‰ñü', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚‘¬‰ñü', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚‘¬‰ñü', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚‘¬‰ñü', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '10Gbps', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é«˜é€Ÿå›ç·š', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é«˜é€Ÿå›ç·š', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é«˜é€Ÿå›ç·š', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'é«˜é€Ÿå›ç·š', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'WQHD', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '180Hz', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '144Hz', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒnƒCƒXƒyƒbƒN', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒnƒCƒXƒyƒbƒN', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒnƒCƒXƒyƒbƒN', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒnƒCƒXƒyƒbƒN', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒRƒXƒp', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒRƒXƒp', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒRƒXƒp', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒRƒXƒp', 'ƒ}ƒEƒX');
--- ƒvƒ‰ƒ“ƒi[ƒL[ƒ[ƒh: ƒfƒUƒCƒ“EƒNƒŠƒGƒCƒeƒBƒuEseq_planner_keyword_categories.NEXTVAL
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒCƒ‰ƒXƒg', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒCƒ‰ƒXƒg', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ƒCƒ‰ƒXƒg', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚¨ŠG•`‚«', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚¨ŠG•`‚«', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‚¨ŠG•`‚«', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dƒ‚ƒfƒŠƒ“ƒO', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dƒ‚ƒfƒŠƒ“ƒO', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dƒ‚ƒfƒŠƒ“ƒO', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '240Hz', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒã‚¤ã‚¹ãƒšãƒƒã‚¯', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒã‚¤ã‚¹ãƒšãƒƒã‚¯', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒã‚¤ã‚¹ãƒšãƒƒã‚¯', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãƒã‚¤ã‚¹ãƒšãƒƒã‚¯', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ã‚¹ãƒ‘', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ã‚¹ãƒ‘', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ã‚¹ãƒ‘', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚³ã‚¹ãƒ‘', 'ãƒã‚¦ã‚¹');
+-- ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰: ãƒ‡ã‚¶ã‚¤ãƒ³ãƒ»ã‚¯ãƒªã‚¨ã‚¤ãƒ†ã‚£ãƒ–ãƒ»seq_planner_keyword_categories.NEXTVAL
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¤ãƒ©ã‚¹ãƒˆ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¤ãƒ©ã‚¹ãƒˆ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ã‚¤ãƒ©ã‚¹ãƒˆ', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãŠçµµæã', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãŠçµµæã', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'ãŠçµµæã', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '3Dãƒ¢ãƒ‡ãƒªãƒ³ã‚°', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Blender', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Blender', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Blender', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Blender', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Blender', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'Unity', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ƒ}ƒEƒX');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰¹Šy§ì', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰¹Šy§ì', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰¹Šy§ì', 'ƒL[ƒ{[ƒh');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, '‰¹Šy§ì', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'DTM', 'ãƒã‚¦ã‚¹');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'éŸ³æ¥½åˆ¶ä½œ', 'PC');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'éŸ³æ¥½åˆ¶ä½œ', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'éŸ³æ¥½åˆ¶ä½œ', 'ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'éŸ³æ¥½åˆ¶ä½œ', 'ãƒã‚¦ã‚¹');
 INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'CAD', 'PC');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'CAD', 'ƒ‚ƒjƒ^[');
-INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'CAD', 'ƒ}ƒEƒX');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'CAD', 'ãƒ¢ãƒ‹ã‚¿ãƒ¼');
+INSERT INTO planner_keyword_categories (id, keyword, category_name) VALUES (seq_planner_keyword_categories.NEXTVAL, 'CAD', 'ãƒã‚¦ã‚¹');
 
 COMMIT;
 
 -----------------------------------------------------------------------
--- ƒeƒXƒg—pSQL
+-- ãƒ†ã‚¹ãƒˆç”¨SQL
 -----------------------------------------------------------------------
 -- 005
 -- DELETE order_items;
