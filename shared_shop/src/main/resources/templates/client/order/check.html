@@ -161,7 +161,7 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function() {
-			var total = /*[[${total}]]*/0;
+			var total = /*[[${discountedTotal != null ? discountedTotal : total}]]*/0;
 			var currentPoint = /*[[${currentPoint}]]*/0;
 			var maxUsePoint = currentPoint < total ? currentPoint : total;
 
